@@ -20,34 +20,20 @@ sass:
 
 # Collections
 collections:
-  # colletion.label is "learning_notes", use alias to avoid it  
-  learning_notes:   
+  Suggested_libraries:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
-    # An alias should be given or the UNDERSCRO will appeared 
-    alias           : "Learning Notes"
-  portfolio:
+  Reaver_in_Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
-    order: # specify post order manually
-      - portfolio3.md
-      - portfolio2.md
-      - portfolio1.md
-  Suggested libraries:
+  Lorcon2_in_Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
-    sort_by         : date
-  Reaver in Air::Legacy:
+  Cryptography_ in_Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
-  Lorcon2 in Air::Legacy:
-    output          : true
-    permalink       : /:collection/:title/
-  Crypto in Air::Legacy:
-    output          : true
-    permalink       : /:collection/:title/
-  Features in Air::Legacy:
+  Features_in_Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
   

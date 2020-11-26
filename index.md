@@ -2,12 +2,12 @@
 layout: default
 post_list: false
 toc: false
-comment: true
-home_btn: true
+comment: false
+home_btn: false
 btn_text: true
 footer: true
 title: ""
-author: ""
+author: "Edoardo Mantovani"
 encrypted_text: true
 permalink: /
 ---

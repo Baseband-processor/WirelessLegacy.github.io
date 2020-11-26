@@ -23,6 +23,7 @@ collections:
   Suggested_libraries:
     output          : true
     permalink       : /:collection/:title/
+      - Net::Pcap
     sort_by         : date
     alias           : "Suggested Libraries"
   Reaver_in_Air::Legacy:

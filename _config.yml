@@ -23,25 +23,25 @@ collections:
   Suggested_libraries:
     output          : true
     permalink       : /:collection/:title/
-      - Net::Pcap
+      - Net::Pcap.md
     sort_by         : date
     alias           : "Suggested Libraries"
-  Reaver_in_Air::Legacy:
+  Reaver in Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Reaver in Air::Legacy"
-  Lorcon2_in_Air::Legacy:
+  Lorcon2 in Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Lorcon2 in Air::Legacy"
-  Cryptography_ in_Air::Legacy:
+  Cryptography in Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Cryptograpy in Air::Legacy"
-  Features_in_Air::Legacy:
+  Features in Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date

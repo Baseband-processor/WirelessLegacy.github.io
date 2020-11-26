@@ -59,25 +59,6 @@ toc_level           : 4
 bgtext              : "0123456789ABCFGHKLMNPQRSVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*+-;/[]<>~" # texts randomly displayed in background
 # Disqus settings（disqus.com）
 # disqus_username     : akiritsu
-
-# Default page configuration
-defaults:
-  -    
-    scope:
-      path: ""
-      type: notes # file under notes
-    values:
-      layout: "post"
-      tags: n0t3s
-      author: aaa
-  -    
-    scope:
-      path: ""
-      type: portfolio
-    values:
-      layout: "post"
-      tags: pfl
-
 # Plugins
 plugins:
   - jekyll-feed

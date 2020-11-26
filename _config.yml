@@ -20,22 +20,27 @@ sass:
 
 # Collections
 collections:
-  "Suggested libraries":
+  Suggested_libraries:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
+    alias           : "Suggested Libraries"
   Reaver_in_Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
+    alias           : "Reaver in Air::Legacy"
   Lorcon2_in_Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
+    alias           : "Lorcon2 in Air::Legacy"
   Cryptography_ in_Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
+    alias           : "Cryptograpy in Air::Legacy"
   Features_in_Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
+    alias           : "Features in Air::Legacy"
   
 # Social Media Accounts
 email               : "Baseband@cpan.org" 

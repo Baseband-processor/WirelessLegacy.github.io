@@ -49,14 +49,13 @@ collections:
 # Social Media Accounts
 email               : "Baseband@cpan.org" 
 linkedin            : 
-github              : "Baseband-processor/Air-Legacy" 
-personal github     : "Baseband-processor" 
+github              : "Baseband-processor/" 
 # website             : 
 
 # Global Variables
 statement           : "Designed by DeerRIDER, All Rights Reserved, used by Edoardo Mantovani. All Rights Reserved too"
-toc_level           : 3
-bgtext              : "ABCFGHKLMNPQRSVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*+-;/[]<>~" # texts randomly displayed in background
+toc_level           : 4
+bgtext              : "0123456789ABCFGHKLMNPQRSVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*+-;/[]<>~" # texts randomly displayed in background
 # Disqus settings（disqus.com）
 # disqus_username     : akiritsu
 

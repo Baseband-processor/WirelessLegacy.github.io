@@ -24,53 +24,263 @@ Synopsis
 ====================================================
 
 
-##  Features
-* Highly customizable with user-friendly hacker-like design.
-* Easy to gather your notes or portfolios with multiple collection design.
-* Supports formula insertion with `MathJax`.
-<div style="color: rgb(233, 32, 32)">
-$$
-NADH+Q+5\;H_{matrix}^{+}\rightarrow NAD^{+}+QH_{2}+4\;H_{intermembrane}^{+}\!
-$$
-</div>
-* Supports code highlight with `Rouge`.
+This is the most basic example avaiable of Air::Legacy, it uses only a small sets of subroutines taken from the original Lorcon2 API     
 
-```python
-# Function to do Quick sort 
-def quickSort(arr,low,high): 
-    if low < high: 
-  
-        # pi is partitioning index, arr[p] is now 
-        # at right place 
-        pi = partition(arr,low,high) 
-  
-        # Separately sort elements before 
-        # partition and after partition 
-        quickSort(arr, low, pi-1) 
-        quickSort(arr, pi+1, high) 
-  
-# Driver code to test above 
-arr = [10, 7, 8, 9, 1, 5] 
-n = len(arr) 
-quickSort(arr,0,n-1) 
-print ("Sorted array is:") 
-for i in range(n): 
-    print ("%d" %arr[i]), 
+
+Now, Lorcon2 has a limited attack set, you can create network fuzzers and sniff packets from multiple interfaces,but it isn't able  to send WPS packet or to bruteforce WPA/WPA2 packets, this would be a serious limitation, obviously.
+
+Air::Legacy is the union of every wireless attacks implementation into a single, compact perl library.
+
+```perl
+#!/usr/bin/perl
+
+# Made by Edoardo Mantovani, 2020
+
+sub BEGIN{
+
+use strict;
+use Net::Pcap qw( pcap_lookupdev );
+use Air::Legacy qw(:lorcon); # This will export every lorcon2's subroutines
+
+my $pcap_err = '';
+my $pcap_interface = pcap_lookupdev( \$pcap_err ); # This will give us the best interface avaiable for sniffing 
+
+print lorcon_actual_cards() or die $!;
+
+# NOTE: lorcon_list_drivers will show supported drivers avaiable in the current host, while tx80211_getcardlist function
+# will show the lorcon's supported network cards list
+
+my $driver = <STDIN>;
+chomp( $driver ); # Delete the 'ret' character from the $driver string
+my $drv = lorcon_find_driver( $driver );
+
+my $context = lorcon_create($pcap_interface, $drv) or die $!;
+
+# From here we have access to an huge number of functions, some simple examples are:
+
+lorcon_ifdown( $context ) or die lorcon_get_error( $context ); # Set interface 'down'
+lorcon_ifup( $context ) or die lorcon_get_error( $context ); # Set interface 'up'
+
+my $channel = 2;
+
+lorcon_set_channel( $context, $channel ) or die lorcon_get_error( $context ); # set channel to 2
+lorcon_get_channel( $context ) or die lorcon_get_error( $context ); # return the channel, in this case 2
+
+lorcon_open_inject (  $context ) or die lorcon_get_error( $context ); # set the injection mode
+lorcon_open_monitor(  $context ) or die lorcon_get_error( $context ); # set the monitor mode
+lorcon_open_injmon (  $context ) or die lorcon_get_error( $context ); # set both
+
+# We can also initialize our preferred network driver using
+
+drv_madwifing_init( $context ); 
+
+# ||
+
+drv_mac80211_init( $context ); 
+
+# And if we add a packet the possible uses  grows exponentially:
+
+my $Packet = "\xdd\x09\x00\x50\xf2\x04\x10\x4a\x00\x01\x10"; # WPS probe packet
+
+# || 
+
+my $Packet = Packet_to_hex("sample_packet"); # return a hexadecimal version of "sample_packet" with \x format
+
+lorcon_send_bytes( $context, length($Packet), \$Packet ); # this will send the raw bytes though the network
+
+$Packet = undef;
+
+# NOTE:
+# Since version 17.6 is possible to use also this simplified function:
+
+print Send_Bytes( $context, $Packet); 
+# The $Packet length is processed in the Back-End.
+
+
+my $lcpa = lcpa_init();
+$Packet = packet_from_lcpa( $context, $lcpa ); # return a AirLorconPacket variable
+
+# decode the packet
+lorcon_packet_decode( $Packet );
+
+# Get a valid Pcap object, usefull for built-in (or with Net::Pcap) routines
+
+my $pcap = lorcon_get_pcap( $context );
+
+# Set frequency using libpcap
+
+pcap_can_set_rfmon( $pcap );
+
+# Send packet using libpcap
+
+pcap_sendpacket( $pcap, $Packet, length( $Packet ) );
+
+# Note: pcap_sendpacket and pcap_inject are almost the same function, the only difference stands in the output: for pcap_inject it will be the packet's number of bytes
+
+# For more info see: https://linux.die.net/man/3/pcap_inject
+
+# Lorcon2 offers also the possibility of sending bytes using specific drivers, some example are as follow:
+
+madwifing_sendpacket( $context, $Packet );
+mac80211_sendpacket( $context, $Packet );
+
+# Note that $Packet has lorcon_packet_t type
+
+my $raw_bytes = "\x00\x00\x00\x00\x00";
+tuntap_sendbytes( $context, length( $raw_bytes ), \$raw_bytes );
+
+}
 ```
 
-* Decrypt and encrypt text (access token: 233): 
-  * secret msg example: 
-  <p class="encrypted" id="/MZAf/PKx9jpw8/Jnp7XQQFki2ibGnArZP46W+keVThXquhWwFROEFnbY8eC57Tw==">Encrypted content!</p>
 
-## Download and Documentation
+**Send WPS probe packet**
 
-[**pRoJEct VeXEd README (Github)**](https://github.com/akiritsu/pRoJEct-VeXEd)
+```perl
+#!/usr/bin/perl
 
-[Download .zip files](https://codeload.github.com/akiritsu/pRoJEct-VeXEd/zip/master)
+# Made by Edoardo Mantovani, 2020 
+# Craft and send WPS packets
 
-[中文自述及使用教程](https://akiritsu.github.io/pRoJEct-VeXEd/posts/readme/)
+sub BEGIN{
 
-## More Samples
+use strict;
+use warnings;
+use Term::ANSIColor;
+use Air::Lorcon2 qw( :lorcon :reaver );
+
+# NOTE: lorcon export is usefull only for pcap_inject function
+
+use Net::Wireless::802_11::WPA::CLI; 
+
+# NOTE: Net::Wireless::802_11::WPA::CLI is usefull for retrieve bssid and Essid informations about APs
+
+my $scan = Net::Wireless::802_11::WPA::CLI->new();
+
+my $essid = <STDIN>;
+chomp( $essid );
+
+sub Wireless_Scan(){
+  $scan->scan();
+  foreach ( $scan->scan_results() ){
+    if($_ =~ /:/){
+      push @BSSID, $_;
+    }else{
+       if(length($_->{ssid}) != 25){
+         while(length($_->{ssid}) != 25){    # leverage the distance between the SSID and the '|' 
+            chop($_->{ssid}) if (length($_->{ssid}) > 25);
+            $_->{ssid} .= " " if (length($_->{ssid}) < 25);
+            }
+          } 
+     print  colored(['red'], $_->{ssid}, '   |  ', colored(['cyan'],$BSSID[$x]), ' ', colored(['green'], $_->{frequency}), ' ', colored(['yellow'], $_->{flags}), "\n"); # print various informations in a fashion/colored way
+     $x++; 
+}  
+  
+  }
+
+}
+ 
+
+}
+&Wireless_Scan();
+
+sleep(2);
+my $bssid = <STDIN>;
+chomp( $bssid );
+my $probe = build_wps_probe_request( \$bssid, \$essid);
+
+
+# Craft a Lorcon2 pcap object compatible type
+
+my $driver = <STDIN>;
+chomp( $driver ); # Delete the 'ret' character from the $driver string
+my $drv = lorcon_find_driver( $driver );
+
+my $context = lorcon_create("wlan0", $drv) or die $!; # automatically use wlan0 interface
+
+my $pcap = lorcon_get_pcap( $context );
+
+# send WPS probe packet
+
+pcap_inject( $pcap, $probe, length( $probe ) );
+}
+
+
+```
+
+**Convert Pcap packet to Lorcon2 packet and analyze them**
+
+
+```perl
+#!/usr/bin/perl
+
+# Made by Edoardo Mantovani, 2020
+
+sub BEGIN{
+
+use strict;
+use Net::Pcap qw( pcap_lookupdev pcap_open_live pcap_loop);
+use Air::Legacy qw( :lorcon :packet_checksum  );
+
+my $pcap_error = '';
+my $pcap_interface = pcap_lookupdev( \$pcap_error );
+
+# consider our driver the mac80211 layer
+my $drv = lorcon_find_driver( "mac80211" );
+
+my $lorcon_context = lorcon_create( $pcap_interface, $drv );
+
+# open the pcap device for live listening
+my $pcap = pcap_open_live( $pcap_interface, 1024, 1, 0, \$pcap_error );
+ 
+# capture next 50 packets
+pcap_loop($pcap, 50, \&process_packet, "");
+ 
+# close the device
+pcap_close($pcap);
+ 
+sub process_packet {
+    my ($user_data, $header, $packet) = @_;
+    # convert pcap packet into lorcon2 packet
+    my $packet_from_pcap = lorcon_packet_from_pcap( $lorcon_context, \$header, $packet );
+    
+    # calculate Shannon's entropy for each packet
+    print packet_entropy( $packet_from_pcap ), "\n";
+
+ }
+
+ }
+```
+
+**Represent WPS data into JSON file**
+
+```perl
+#!/usr/bin/perl
+
+# Made by Edoardo Mantovani, 2020
+
+sub BEGIN{
+
+use strict;
+use warnings;
+use Air::Lorcon2 qw( :lorcon :reaver );
+
+my $libWPS = libwps_meta();
+
+# generate 2 random MAC address, just for try :)
+
+my $mac1 = RMAC_gen();
+my $SSid; #IDK
+my $channel = int(rand(6));
+
+# get the RSSI through Net::Wireless::802_11::WPA::CLI
+
+my $rssi;
+
+wps_data_to_json($mac1, ssid, $channel,  rssi, \"\x00\x00\x00\x00\x00\x00", $libWPS, \"10") 
+
+sleep(5);
+}
+```
 
 ### Font style and link
 * normal

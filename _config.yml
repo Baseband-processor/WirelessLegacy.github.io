@@ -52,24 +52,18 @@ collections:
     permalink       : /:collection/:title/
     
 # Social Media Accounts
-email               : "just-test" 
+email               : "Baseband@cpan.org" 
 linkedin            : 
-github              : "just-test" 
-gitlab              : 
-website             : 
-twitter             : "just-test"
-facebook            : "just-test"
-instagram           : 
-youtube             : "just-test"
-steam               : "just-test"
-weibo               : "just-test"
+github              : "https://github.com/Baseband-processor/Air-Legacy" 
+personal github     : "https://github.com/Baseband-processor" 
+# website             : 
 
 # Global Variables
 statement           : "Designed by DeerRIDER, All Rights Reserved, used by Edoardo Mantovani. All Rights Reserved too"
 toc_level           : 3
 bgtext              : "ABCFGHKLMNPQRSVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*+-;/[]<>~" # texts randomly displayed in background
 # Disqus settings（disqus.com）
-disqus_username     : akiritsu
+# disqus_username     : akiritsu
 
 # Default page configuration
 defaults:

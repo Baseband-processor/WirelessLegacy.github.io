@@ -34,23 +34,23 @@ collections:
       - portfolio3.md
       - portfolio2.md
       - portfolio1.md
-  album:
+  Suggested libraries:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
-  physics:
+  Reaver in Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
-  biology:
+  Lorcon2 in Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
-  finance:
+  Crypto in Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
-  blog:
+  Features in Air::Legacy:
     output          : true
     permalink       : /:collection/:title/
-    
+  
 # Social Media Accounts
 email               : "Baseband@cpan.org" 
 linkedin            : 

@@ -26,22 +26,22 @@ collections:
       - Net::Pcap.md
     sort_by         : date
     alias           : "Suggested Libraries"
-  Reaver in Air::Legacy:
+  Reaver_Functions:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Reaver in Air::Legacy"
-  Lorcon2 in Air::Legacy:
+  Lorcon2_Functions:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Lorcon2 in Air::Legacy"
-  Cryptography in Air::Legacy:
+  Cryptography_Functions:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Cryptograpy in Air::Legacy"
-  Features in Air::Legacy:
+  Other_Features    :
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date

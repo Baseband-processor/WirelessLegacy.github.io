@@ -62,11 +62,6 @@ bgtext              : "0123456789ABCFGHKLMNPQRSVWXYZabcdefghijklmnopqrstuvwxyz@#
 
 # Default page configuration
 defaults:
-  -
-    scope:
-      path: "_posts" # an empty string here means all files in the project
-    values:
-      layout: "post"
   -    
     scope:
       path: ""

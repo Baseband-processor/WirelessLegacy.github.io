@@ -298,7 +298,7 @@ As you have seen, usually Air::Legacy uses some companion libraries for extendin
 
 Requests and collaborations
 ==============================
-Feel free to email me at sing [Baseband@cpan.org](mailto:Baseband@cpan.org)
+Feel free to email me at [Baseband@cpan.org](mailto:Baseband@cpan.org)
 
 I am open to suggestions, code improvement, collaboration and other requests
  

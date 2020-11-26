@@ -20,7 +20,7 @@ sass:
 
 # Collections
 collections:
-  Suggested_libraries:
+  "Suggested libraries":
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date

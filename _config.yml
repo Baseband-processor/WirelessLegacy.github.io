@@ -1,10 +1,10 @@
 # Site Settings
-title               : pRoJEct-VeXEd
-owner               : "DeerRIDER"
+title               : Air-Legacy
+owner               : "Edoardo Mantovani"
 ## url                : "https://akiritsu.github.io"
 ## baseurl            : "/pRoJEct-VeXEd"
 permalink           : /:title/
-description         : "A hacker-style note-keeping website template."
+description         : "Introduction to Air::Legacy perl library."
 markdown            : kramdown
 
 # Where things are
@@ -65,7 +65,7 @@ steam               : "just-test"
 weibo               : "just-test"
 
 # Global Variables
-statement           : "Designed by DeerRIDER, All Rights Reserved"
+statement           : "Designed by DeerRIDER, All Rights Reserved, used by Edoardo Mantovani. All Rights Reserved too"
 toc_level           : 3
 bgtext              : "ABCFGHKLMNPQRSVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*+-;/[]<>~" # texts randomly displayed in background
 # Disqus settings（disqus.com）

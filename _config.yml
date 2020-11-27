@@ -22,7 +22,7 @@ sass:
 collections:
   Suggested_libraries:
     output          : true
-    permalink       : /:collection/:title/
+    permalink       : /:collection/:_Suggested_libraries/
     alias           : "Suggested Libraries"
     order:
       - Socket.md

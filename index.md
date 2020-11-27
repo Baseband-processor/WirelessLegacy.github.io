@@ -20,6 +20,14 @@ Air::Legacy is growing, now it is ready to infect also the WWW!
 
 *Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks*
 
+
+Installation
+===================================================
+
+![installation](./installation.gif)
+_for installing properly Air::Legacy libraries just type 'sudo make full'._
+
+
 Synopsis
 ====================================================
 

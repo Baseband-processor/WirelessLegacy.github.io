@@ -44,6 +44,9 @@ Now, Lorcon2 has a limited attack set, you can create network fuzzers and sniff 
 
 Air::Legacy is the union of every wireless attacks implementation into a single, compact perl library.
 
+The following perl snippets are some examples which helps to understand many Legacy's functions:
+
+
 ```perl
 #!/usr/bin/perl
 

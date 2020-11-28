@@ -27,8 +27,8 @@ Installation
 ![installation](./installation.gif)
 
 
-for installing properly Air::Legacy libraries just type 'sudo make full', everything will be installed automatically.
-=======================================================================================================================
+*for installing properly Air::Legacy libraries just type 'sudo make full', everything will be installed automatically.*
+
 
 Synopsis
 ====================================================

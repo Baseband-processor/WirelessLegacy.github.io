@@ -67,7 +67,12 @@ collections:
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Features in Air::Legacy"
-  
+  FaQ               :
+    output          : true
+    permalink       : /:collection/:title/
+    sort_by         : date
+    alias           : "Frequently Asked Questions"
+
 # Social Media Accounts
 email               : "Baseband@cpan.org" 
 linkedin            : 

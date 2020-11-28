@@ -21,7 +21,7 @@ Air::Legacy is growing, now it is ready to infect also the WWW!
 *Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks*
 
 
-<center> <font size="+2"><span style="color:red"> Installation </span> </font> </center>
+<center> <font size="+4"><span style="color:red"> Installation </span> </font> </center>
 
 
 ![installation](./installation.gif)
@@ -30,8 +30,7 @@ Air::Legacy is growing, now it is ready to infect also the WWW!
 <center>for installing properly Air::Legacy libraries just type 'sudo make full', everything will be installed automatically.</center>
 
 
-Synopsis
-====================================================
+<center> <font size="+4"><span style="color:red"> Synopsis </span> </font> </center>
 
 
 This is the most basic example avaiable of Air::Legacy, it uses only a small sets of subroutines taken from the original Lorcon2 API     

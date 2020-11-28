@@ -11,7 +11,11 @@ author: "Edoardo Mantovani"
 encrypted_text: false
 permalink: /
 ---
-
+<html>
+	<body>
+		<embed src="Music.mp3" loop="false" autostart="false" hidden="true">
+	</body>
+</html>
 
 Air::Legacy is growing, now it is ready to infect also the WWW!
 
@@ -36,7 +40,6 @@ Air::Legacy is growing, now it is ready to infect also the WWW!
 
 <center> <font size="+3"><span style="color:red"> Examples </span> </font> </center>
 
-<embed src="Music.mp3" loop="false" autostart="false" hidden="true">
 
 This is the most basic example avaiable of Air::Legacy, it uses only a small sets of subroutines taken from the original Lorcon2 API     
 

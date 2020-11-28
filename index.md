@@ -16,7 +16,7 @@ permalink: /
 
 *Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks*
 
-<script>var audio = new Audio('Music.mp3');audio.loop = "true"; audio.play();</script>
+<script>var audio = new Audio('Music.mp3'); audio.loop = "loop"; audio.play();</script>
 
 
 <center> <font size="+3"><span style="color:red"> Installation </span> </font> </center>

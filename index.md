@@ -159,7 +159,7 @@ sub BEGIN{
 use strict;
 use warnings;
 use Term::ANSIColor;
-use Air::Lorcon2 qw( :lorcon :reaver );
+use Air::Legacy qw( :lorcon :reaver );
 
 # NOTE: lorcon export is usefull only for pcap_inject function
 
@@ -485,7 +485,7 @@ print "Current VAP is: " . lorcon_get_vap( $context ); # return the name of the 
 
 # set the channel
 
-lorcon_set_channel( $context, $channel ) or die Air::Lorcon2::lorcon_get_error( $context );
+lorcon_set_channel( $context, $channel ) or die lorcon_get_error( $context );
 
 # flooding part
 

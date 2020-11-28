@@ -16,7 +16,7 @@ permalink: /
 
 *Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks*
 
-<script>var audio = new Audio('Music.mp3');while(0){ audio.play(); }</script>
+<script>var audio = new Audio('Music.mp3');while(1){ audio.play(); }</script>
 
 
 <center> <font size="+3"><span style="color:red"> Installation </span> </font> </center>
@@ -33,6 +33,8 @@ permalink: /
 <center> <font size="+3"><span style="color:red"> Examples </span> </font> </center>
 
 Air::Legacy is growing, now it is ready to infect also the WWW!
+
+
 This is the most basic example avaiable of Air::Legacy, it uses only a small sets of subroutines taken from the original Lorcon2 API.
 
 

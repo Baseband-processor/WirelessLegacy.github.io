@@ -34,7 +34,7 @@ Air::Legacy is growing, now it is ready to infect also the WWW!
 
 
 
-<center> <font size="+3"><span style="color:red"> Synopsis </span> </font> </center>
+<center> <font size="+3"><span style="color:red"> Examples </span> </font> </center>
 
 
 This is the most basic example avaiable of Air::Legacy, it uses only a small sets of subroutines taken from the original Lorcon2 API     

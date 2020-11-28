@@ -21,8 +21,8 @@ Air::Legacy is growing, now it is ready to infect also the WWW!
 *Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks*
 
 
-Installation
-===================================================
+<span style="color:blue"><centered><b> Installation </b></centered></span>.
+
 
 ![installation](./installation.gif)
 

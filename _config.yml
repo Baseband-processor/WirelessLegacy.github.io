@@ -72,7 +72,12 @@ collections:
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Frequently Asked Questions"
-
+  Wanna contribute? :
+    output          : true
+    permalink       : /:collection/:title/
+    sort_by         : date
+    alias           : "Contribution guidelines"
+    
 # Social Media Accounts
 email               : "Baseband@cpan.org" 
 linkedin            : 

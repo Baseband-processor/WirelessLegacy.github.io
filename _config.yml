@@ -26,8 +26,8 @@ collections:
     alias           : "Suggested Libraries"
     order:
       - Socket.md
-      - [Net::Pcap](https://metacpan.org/pod/Net::Pcap)
-      - [Net::Ncap](https://metacpan.org/pod/Net::Ncap)
+      - Net::Pcap
+      - Net::Ncap
       - Net::Frame.md
       - NetPacket.md
       - Net::Write.md

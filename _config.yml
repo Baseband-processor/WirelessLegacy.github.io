@@ -76,7 +76,10 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Frequently Asked Questions"
-
+  Updates :
+    output          : true
+    permalink       : /:collection/:title/
+    alias           : "Air::Legacy updates"
     
 # Social Media Accounts
 email               : "Baseband@cpan.org" 

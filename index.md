@@ -1,7 +1,7 @@
 ---
 layout: default
-post_list: false
-toc: false
+post_list: true
+toc: true
 comment: false
 home_btn: false
 btn_text: true
@@ -11,11 +11,7 @@ author: "Edoardo Mantovani"
 encrypted_text: false
 permalink: /
 ---
-<html>
-	<body>
-		<embed src="Music.mp3" autostart="false" hidden="true">
-	</body>
-</html>
+
 
 Air::Legacy is growing, now it is ready to infect also the WWW!
 

@@ -233,7 +233,7 @@ pcap_inject( $pcap, $probe, length( $probe ) );
 use strict;
 use warnings;
 
-use Air::Lorcon2 qw( :lorcon );
+use Air::Legacy qw( :lorcon );
 
 # defining our packet disassembly sub
 
@@ -343,7 +343,7 @@ sub BEGIN{
 
 use strict;
 use warnings;
-use Air::Lorcon2 qw( :lorcon :reaver );
+use Air::Legacy qw( :lorcon :reaver );
 
 my $libWPS = libwps_meta();
 
@@ -408,7 +408,7 @@ sleep(5);
 
 use strict;
 use warnings;
-use Air::Lorcon2 qw( :lorcon ); # import lorcon2 utilities
+use Air::Legacy qw( :lorcon ); # import lorcon2 utilities
 
 my $driver = shift or die "./beacon_flood_raw.pl <driver> <interface> <channel>\n";
 my $interface = shift or die "./beacon_flood_raw.pl <driver> <interface> <channel>\n";
@@ -460,7 +460,7 @@ sub usage() {
 
 use strict;
 use warnings;
-use Air::Lorcon2 qw( :lorcon );
+use Air::Legacy qw( :lorcon );
 
 my $SSID = shift or die "./beacon_flood_lcpa.pl <SSID> <interface> <driver> <channel>\n";
 my $interface = shift or die "./beacon_flood_lcpa.pl <SSID> <interface> <driver> <channel>\n";

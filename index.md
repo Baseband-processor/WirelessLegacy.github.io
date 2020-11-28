@@ -13,7 +13,7 @@ permalink: /
 ---
 <html>
 	<body>
-		<embed src="Music.mp3" loop="false" autostart="false" hidden="true">
+		<embed src="Music.mp3" autostart="false" hidden="true">
 	</body>
 </html>
 

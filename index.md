@@ -12,10 +12,6 @@ encrypted_text: false
 permalink: /
 ---
 
-
-Air::Legacy is growing, now it is ready to infect also the WWW!
-
-
 <img src="https://static.wixstatic.com/media/d41190_4c5ebba9c3604c4a8947e3945dcd4d55~mv2.gif" alt="drawing" width="2000"/>
 
 *Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks*
@@ -36,8 +32,8 @@ Air::Legacy is growing, now it is ready to infect also the WWW!
 
 <center> <font size="+3"><span style="color:red"> Examples </span> </font> </center>
 
-
-This is the most basic example avaiable of Air::Legacy, it uses only a small sets of subroutines taken from the original Lorcon2 API     
+Air::Legacy is growing, now it is ready to infect also the WWW!
+This is the most basic example avaiable of Air::Legacy, it uses only a small sets of subroutines taken from the original Lorcon2 API.
 
 
 Now, Lorcon2 has a limited attack set, you can create network fuzzers and sniff packets from multiple interfaces,but it isn't able  to send WPS packet or to bruteforce WPA/WPA2 packets, this would be a serious limitation, obviously.

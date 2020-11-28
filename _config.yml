@@ -67,16 +67,17 @@ collections:
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Features in Air::Legacy"
+  Wanna_contribute?:
+    output          : true
+    permalink       : /:collection/:title/
+    sort_by         : date
+    alias           : "Contribution guidelines"
   FaQ :
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Frequently Asked Questions"
-  Wanna_contribute? :
-    output          : true
-    permalink       : /:collection/:title/
-    sort_by         : date
-    alias           : "Contribution guidelines"
+
     
 # Social Media Accounts
 email               : "Baseband@cpan.org" 

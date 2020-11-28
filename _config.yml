@@ -67,12 +67,12 @@ collections:
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Features in Air::Legacy"
-  FaQ               :
+  FaQ :
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Frequently Asked Questions"
-  Wanna contribute? :
+  Wanna_contribute? :
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date

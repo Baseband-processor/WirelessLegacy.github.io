@@ -90,7 +90,11 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Air::Legacy updates"
-    
+  About_me :
+    output          : true
+    permalink       : /:collection/:title/
+    alias           : "About the Authors"
+ 
 # Social Media Accounts
 email               : "Baseband@cpan.org" 
 linkedin            : 

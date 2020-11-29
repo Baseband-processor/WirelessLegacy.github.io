@@ -52,6 +52,11 @@ collections:
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Reaver in Air::Legacy"
+  Osdep_Functions:
+    output          : true
+    permalink       : /:collection/:title/
+    sort_by         : date
+    alias           : "Osdep in Air::Legacy" 
   Lorcon2_Functions:
     output          : true
     permalink       : /:collection/:title/
@@ -62,6 +67,11 @@ collections:
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Cryptograpy in Air::Legacy"
+  Airpcap_Functions:
+    output          : true
+    permalink       : /:collection/:title/
+    sort_by         : date
+    alias           : "Airpcap in Air::Legacy"
   Other_Features    :
     output          : true
     permalink       : /:collection/:title/

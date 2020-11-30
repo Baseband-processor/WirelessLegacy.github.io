@@ -20,7 +20,7 @@ sass:
 
 # Collections
 collections:
-order:
+sort_by: order
   Suggested_libraries:
     output          : true
     permalink       : /:collection/:title/

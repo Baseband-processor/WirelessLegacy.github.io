@@ -63,6 +63,8 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Frequently Asked Questions"
+    order:
+      - Why_not_stop_to_lorcon2.html
   Ii:
     output          : true
     permalink       : /:collection/:title/

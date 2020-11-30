@@ -20,54 +20,54 @@ sass:
 
 # Collections
 collections:
-  G:
+  Gg:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Suggested Libraries"
-  C:
+  Cc:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Reaver in Air::Legacy"
-  E:
+  Ee:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Osdep in Air::Legacy" 
-  A:
+  Aa:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Lorcon2 in Air::Legacy"
-  D:
+  Dd:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Cryptograpy in Air::Legacy"
-  B:
+  Bb:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Airpcap in Air::Legacy"
-  F    :
+  Ff:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Features in Air::Legacy"
-  H :
+  Hh:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Contribution guidelines"
-  I :
+  Ii:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Frequently Asked Questions"
-  J :
+  Jj:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Air::Legacy updates"
-  K :
+  Kk:
     output          : true
     permalink       : /:collection/:title/
     alias           : "About the Authors"

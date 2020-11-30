@@ -33,7 +33,7 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
-    alias           : "Reaver in Air::Legacy" 
+    alias           : "Wireless-Tools in Air::Legacy" 
   Aa:
     output          : true
     permalink       : /:collection/:title/

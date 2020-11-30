@@ -23,7 +23,7 @@ collections:
   Gg:
     output          : true
     permalink       : /:collection/:title/
-    alias           : "Suggested Libraries"
+    alias           : "Cryptography in Air::Legacy"
   Cc:
     output          : true
     permalink       : /:collection/:title/
@@ -33,7 +33,7 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
-    alias           : "Osdep in Air::Legacy" 
+    alias           : "Reaver in Air::Legacy" 
   Aa:
     output          : true
     permalink       : /:collection/:title/
@@ -43,7 +43,7 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
-    alias           : "Cryptograpy in Air::Legacy"
+    alias           : "Formal methods in Air::Legacy"
   Bb:
     output          : true
     permalink       : /:collection/:title/
@@ -53,17 +53,17 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
-    alias           : "Features in Air::Legacy"
+    alias           : "OSdep in Air::Legacy"
   Hh:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
-    alias           : "Contribution guidelines"
-  Ii:
+    alias           : "Suggested perl libraries"
+  Jj:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Frequently Asked Questions"
-  Jj:
+  Ii:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Air::Legacy updates"

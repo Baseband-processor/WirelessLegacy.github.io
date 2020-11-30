@@ -72,6 +72,10 @@ collections:
   Kk:
     output          : true
     permalink       : /:collection/:title/
+    alias           : "Download"
+  Zz:
+    output          : true
+    permalink       : /:collection/:title/
     alias           : "About the Authors"
  
 # Social Media Accounts

@@ -1,0 +1,4 @@
+<h1 id="why-not-stop-to-lorcon2-">Why not stop to Lorcon2?</h1>
+<p>Lorcon2 is a great library, it offers a good abstraction which permits to interact with drivers and use them for sending packets or from sniff data, the only problem is that the possible attack scenarios with (the old) Air::Lorcon2 were reduced, this isn&#39;t good.. More attack can be used, more the efficency growns.</p>
+
+<img src="https://media.giphy.com/media/cHLLRNVaqALxCv1Kgb/giphy.gif" alt="drawing" width="2000"/>

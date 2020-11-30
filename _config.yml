@@ -20,34 +20,10 @@ sass:
 
 # Collections
 collections:
-sort_by: order
   Suggested_libraries:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Suggested Libraries"
-    order:
-      - Socket.md
-      - Net::Pcap
-      - Net::Ncap
-      - Net::Frame.md
-      - NetPacket.md
-      - Net::Write.md
-      - Net::Analysis.md
-      - Net::Silk.md
-      - Net::Inspect.md
-      - Net::Tshark.md
-      - Net::Sharktools.md
-      - File::PCAP.md
-      - Net::P0f.md
-      - Net::Pcap::Reassemble.md
-      - Nagios::NRPE.md
-      - Monitoring::Plugin.md
-      - Net::Connection::Sniffer.md
-      - Net::ARP.md
-      - SNMPMonitor.md
-      - Net::LibNIDS.md
-      - Parse::Snort.md
-      - Linux::TunTap.md
   Reaver_Functions:
     output          : true
     permalink       : /:collection/:title/

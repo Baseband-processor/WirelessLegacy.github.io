@@ -64,6 +64,7 @@ collections:
     permalink       : /:collection/:title/
     alias           : "Frequently Asked Questions"
     order:
+      - Why (not) Python?.html 
       - Why "Legacy"?.html
       - Why not stop to lorcon2?.html
   Ii:

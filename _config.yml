@@ -20,6 +20,10 @@ sass:
 
 # Collections
 collections:
+  00:
+    output          : true
+    permalink       : /:collection/:title/
+    alias           : "AirPwn in Air::Legacy"
   Gg:
     output          : true
     permalink       : /:collection/:title/

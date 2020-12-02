@@ -1,0 +1,1835 @@
+---
+layout: default
+permalink: /collections/_Aa/Lorcon2_Functions.html
+toc: false
+footer: false
+---
+
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+        <title>Net::Pcap - Interface to the pcap(3) LBL packet capture library - metacpan.org</title>
+        <link rel="alternate" type="application/rss+xml" title="Recent CPAN Uploads of Net-Pcap - MetaCPAN" href="/feed/distribution/Net-Pcap" />
+        <link href="/_assets/09a20e39bc03ec6c8fbc017562af3184c4c5b48e.css" rel="stylesheet" type="text/css">
+        <link rel="search" href="/static/opensearch.xml" type="application/opensearchdescription+xml" title="MetaCPAN">
+        <link rel="canonical" href="https://metacpan.org/pod/Net::Pcap" />
+        <meta name="description" content="Interface to the pcap(3) LBL packet capture library" />
+        <link rel="shortcut icon" href="/static/icons/favicon.ico">
+        <link rel="apple-touch-icon" sizes="152x152" href="/static/icons/apple-touch-icon.png">
+        <script src="/_assets/fd5168e65900c25667cf67492768981b6ae747ea.js" type="text/javascript" defer></script>
+        <link rel="preload" href="/static/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/static/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/static/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin />
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-27829474-1', {
+              siteSpeedSampleRate : 100
+          });
+          ga('send', 'pageview');
+        </script>
+        
+        <meta name="twitter:card"        content="summary" />
+<meta name="twitter:url"         content="https://metacpan.org/pod/Net::Pcap" />
+<meta name="twitter:title"       content="Net::Pcap" />
+<meta name="twitter:description" content="Interface to the pcap(3) LBL packet capture library" />
+<meta name="twitter:site"        content="metacpan" />
+
+        
+    </head>
+    <body>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                <li class="visible-xs">
+                <a href="#" data-toggle="slidepanel" data-target=".slidepanel">
+                  <i class="fa fa-bars icon-slidepanel"></i>
+                </a>
+                </li>
+            
+                    <li class="">
+                        <a href="/"><img src="/static/icons/metacpan-icon.png"  alt="MetaCPAN icon"/>                            Home                        </a>
+                    </li>
+                    <li class="">
+                        <a href="https://grep.metacpan.org"><i class="fa fa-search"></i>                            grep::cpan                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/recent"><i class="fa fa-history"></i>                            Recent                        </a>
+                    </li>
+                    <li class="hidden-xs">
+                        <a href="/about"><i class="fa fa-info"></i>                            About                        </a>
+                    </li>
+                    <li class="hidden-xs">
+                        <a href="/about/faq"><i class="fa fa-question"></i>                            FAQ                        </a>
+                    </li>
+                    <li class="hidden-xs">
+                        <a href="https://github.com/metacpan/metacpan-web/issues"><i class="fa fa-github-alt"></i>                            GitHub Issues                        </a>
+                    </li>
+                    <li class="hidden-xs">
+                        <a href="/news"><i class="fa fa-newspaper-o"></i>                            News                        </a>
+                    </li>
+                    <li class="hidden-xs">
+                        <a href="/tools"><i class="fa fa-wrench"></i>                            Tools                        </a>
+                    </li>
+                    <li class="hidden-xs">
+                        <a href="https://fastapi.metacpan.org"><i class="fa fa-database"></i>                            API                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <form action="/account/logout" method="POST" id="metacpan-logout"></form>
+                    <li class="dropdown logged_in" style="display: none;">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Account
+                        <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/account/identities">Identities</a></li>
+                            <li><a href="/account/profile">Profile</a></li>
+                            <li><a href="/account/favorite/list">Favorites</a></li>
+                            <li>
+                                <a href="#" onclick="$('#metacpan-logout').submit(); return false">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown logged_out" style="display: none;">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Sign in
+                        <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="https://fastapi.metacpan.org/oauth2/authorize?client_id=metacpan.org&amp;choice=github" onclick="return logInPAUSE(this)">
+                                <i class="fa fa-github fa-fw"></i>
+                                GitHub
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://fastapi.metacpan.org/oauth2/authorize?client_id=metacpan.org&amp;choice=twitter" onclick="return logInPAUSE(this)">
+                                <i class="fa fa-twitter fa-fw"></i>
+                                Twitter
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://fastapi.metacpan.org/oauth2/authorize?client_id=metacpan.org&amp;choice=google" onclick="return logInPAUSE(this)">
+                                <i class="fa fa-google fa-fw"></i>
+                                Google
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/login/openid">
+                                <i class="fa fa-openid fa-fw"></i>
+                                OpenID
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+
+        
+
+            
+            <div class="row hidden-phone">
+                <div class="head-small-logo col-md-3">
+                    <a href="/" class="small-logo"></a>
+                </div>
+                <div class="col-md-9">
+                    <form action="/search" class="search-form form-horizontal">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" name="q" size="41" id="search-input" class="form-control" value="">
+                                <span class="input-group-btn">
+                                    <button class="btn search-btn" type="submit">Search</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+
+            <div class="row">
+                <div class="main-content col-md-12">
+                    
+
+
+
+
+<div itemscope itemtype="http://schema.org/SoftwareApplication">
+  
+
+
+<div class="breadcrumbs">
+  <span itemprop="author" itemscope itemtype="http://schema.org/Person" >
+    <a itemprop="url"  data-keyboard-shortcut="g a" rel="author" href="/author/SAPER" title="Sebastien Aperghis-Tramoni" class="author-name"><span itemprop="name" >Sébastien Aperghis-Tramoni</span></a>
+  </span>
+  <span>&nbsp;/&nbsp;</span>
+  <div class="release status-latest maturity-released">
+    <span class="dropdown"><b class="caret"></b></span>
+    <select class="" onchange="document.location.href=this.value">
+
+  <option selected value="/module/SAPER/Net-Pcap-0.18/Pcap.pm">
+    0.18
+      (SAPER on 2016-05-15)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.17/Pcap.pm">
+    0.17
+      (SAPER on 2012-11-27)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.16/Pcap.pm">
+    0.16
+      (SAPER on 2008-01-01)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.15/Pcap.pm">
+    0.15
+      (SAPER on 2007-12-02)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.14/Pcap.pm">
+    0.14
+      (SAPER on 2006-09-05)
+      
+  </option>
+
+  <option  value="/module/KCARNUT/Net-Pcap-0.05/Pcap.pm">
+    0.05
+      (KCARNUT on 2003-06-16)
+      
+  </option>
+
+  <option  value="/module/TIMPOTTER/Net-Pcap-0.04/Pcap.pm">
+    0.04
+      (TIMPOTTER on 2000-05-17)
+      
+  </option>
+
+  <option  value="/module/PLISTER/Net-Pcap-0.01/Pcap.pm">
+    0.01
+      (PLISTER on 1997-08-27)
+      
+  </option>
+        <optgroup label="BackPAN">
+          
+
+  <option  value="/module/SAPER/Net-Pcap-0.15_01/Pcap.pm">
+    0.15_01 DEV
+      (SAPER on 2006-09-13)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.13/Pcap.pm">
+    0.13
+      (SAPER on 2006-08-28)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.12/Pcap.pm">
+    0.12
+      (SAPER on 2006-03-19)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.11/Pcap.pm">
+    0.11
+      (SAPER on 2005-12-27)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.10/Pcap.pm">
+    0.10
+      (SAPER on 2005-11-01)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.09/Pcap.pm">
+    0.09
+      (SAPER on 2005-10-26)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.08/Pcap.pm">
+    0.08
+      (SAPER on 2005-10-07)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.07/Pcap.pm">
+    0.07
+      (SAPER on 2005-09-23)
+      
+  </option>
+
+  <option  value="/module/SAPER/Net-Pcap-0.06/Pcap.pm">
+    0.06
+      (SAPER on 2005-09-15)
+      
+  </option>
+
+  <option  value="/module/TIMPOTTER/Net-Pcap-0.03/Pcap.pm">
+    0.03
+      (TIMPOTTER on 1999-03-25)
+      
+  </option>
+        </optgroup>
+    
+</select>
+    
+    <a data-keyboard-shortcut="g d" class="release-name" href="/release/Net-Pcap">Net-Pcap-0.18</a>
+    
+    
+  </div>
+  <!--
+  Unlike an <img>, an <object> grafts the SVG document into the DOM, which
+  means browsers will display the <title> elements of the SVG.  Yay!
+-->
+<span class="river-gauge-gauge">
+
+  <svg width="24px"
+       height="15px"
+       version="1.1"
+       xmlns="http://www.w3.org/2000/svg"
+       xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <g>
+      <!--
+        There is some careful attention below to the resulting whitespace
+        after template interpolation, ensuring that the tooltip looks good on
+        both Chrome and Firefox. Please don't adjust it blithely, thanks!
+      -->
+      <title>River stage two &#10;• 13 direct dependents &#10;• 21 total dependents</title>
+
+      <!-- 5 bars, 4x15px, 1px apart, colored #e4e2e2 or #7ea3f2 -->
+      <rect x="0"  y="0" width="4" height="15" fill="#7ea3f2" />
+      <rect x="5"  y="0" width="4" height="15" fill="#7ea3f2" />
+      <rect x="10" y="0" width="4" height="15" fill="#e4e2e2" />
+      <rect x="15" y="0" width="4" height="15" fill="#e4e2e2" />
+      <rect x="20" y="0" width="4" height="15" fill="#e4e2e2" />
+    </g>
+  </svg>
+
+
+</span>
+<div id="Net-Pcap-fav" class="logged_in">
+<form action="/account/favorite/add" style="display: inline" onsubmit="return favDistribution(this)">
+    <input type="hidden" name="remove" value="0">
+    <input type="hidden" name="release" value="Net-Pcap-0.18">
+    <input type="hidden" name="author" value="SAPER">
+    <input type="hidden" name="distribution" value="Net-Pcap">
+    <button type="submit" class="favorite highlight"><span>3</span> ++</button>
+</form>
+</div>
+<div class="logged_out">
+<a href="" onclick="alert('Please sign in to add favorites'); return false" class="favorite highlight">
+<span>3</span> ++</a>
+</div>
+
+  &nbsp;/&nbsp;<span itemprop="name" >Net::Pcap</span>
+</div>
+
+  <ul class="nav-list slidepanel">
+    <li class="visible-xs">
+      <div>
+    <form action="/search">
+        <input type="search" class="form-control tool-bar-form" placeholder="Search" name="q">
+        <input type="submit" class="hidden">
+    </form>
+</div>
+
+    </li>
+    <li class="nav-header">      <time class="relatize" itemprop="dateModified" datetime="2016-05-15">15 May 2016 13:42:27 UTC</time>
+    </li>
+    
+    <li>
+      Distribution: Net-Pcap</span>
+    </li>
+    
+    <li>
+      Module version: <span itemprop="softwareVersion">0.18</span>
+    </li>
+    
+        <li>
+      <a data-keyboard-shortcut="g s" href="/release/Net-Pcap/source/Pcap.pm"><i class="fa fa-fw fa-file-code-o black"></i>Source</a>
+      (<a href="/release/Net-Pcap/source/Pcap.pm?raw=1">raw</a>)
+    </li>
+    
+    <li>
+      <a data-keyboard-shortcut="g b" href="/release/Net-Pcap/source/"><i class="fa fa-fw fa-folder-open black"></i>Browse</a>
+      (<a href="/release/Net-Pcap/source/?raw=1">raw</a>)
+    </li>
+    <li>
+    <a data-keyboard-shortcut="g c" href="/changes/distribution/Net-Pcap"><i class="fa fa-fw fa-cogs black"></i>Changes</a>
+</li>
+
+<li>
+    <a class="nopopup" href="/contributing-to/Net-Pcap"><i class="fa fa-fw fa-plus-circle black"></i>How to Contribute</a>
+</li>
+
+<li>
+    
+    
+    <a rel="noopener nofollow" href="https://github.com/maddingue/Net-Pcap"><i class="fa fa-fw fa-code-fork black"></i>Clone  repository</a>
+    
+</li>
+
+<li>
+    <a rel="noopener nofollow" data-keyboard-shortcut="g i" href="https://rt.cpan.org/Public/Dist/Display.html?Name=Net-Pcap"><i class="fa fa-fw fa-info-circle black"></i>Issues</a>
+    (19)
+</li>
+<li>
+    
+    <a rel="noopener nofollow" href="http://matrix.cpantesters.org/?dist=Net-Pcap+0.18" title="Matrix"><i class="fa fa-fw fa-check-circle black"></i>Testers</a>
+    <span title="(pass / fail / na)">(<a rel="noopener nofollow" href="https://www.cpantesters.org/distro/N/Net-Pcap.html?oncpan=1&amp;distmat=1&amp;version=0.18&amp;grade=2" style="color: #090">917</a> / <a rel="noopener nofollow" href="https://www.cpantesters.org/distro/N/Net-Pcap.html?oncpan=1&amp;distmat=1&amp;version=0.18&amp;grade=3" style="color: #900">704</a> / <a rel="noopener nofollow" href="https://www.cpantesters.org/distro/N/Net-Pcap.html?oncpan=1&amp;distmat=1&amp;version=0.18&amp;grade=4">0</a>)</span>
+</li>
+<li>
+    <a rel="noopener nofollow" href="http://cpants.cpanauthors.org/release/SAPER/Net-Pcap-0.18"><i class="fa fa-fw fa-line-chart black"></i>Kwalitee</a>
+</li>
+
+  <li>
+    <i class="fa fa-fw fa-pie-chart black"></i><a rel="noopener nofollow" href="http://cpancover.com/latest/Net-Pcap-0.18/index.html">% Coverage </a>
+  </li>
+
+
+
+<li><i class="fa fa-fw fa-gavel black"></i>License: perl_5</li>
+
+
+<li>
+  <i class="fa fa-fw fa-greater-than-equal black"></i>Perl: v5.6.1
+</li>
+
+
+
+
+    <li class="nav-header">Activity</li>
+    <li><div class="activity-graph">
+  <img src="/activity?res=month&amp;distribution=Net-Pcap" width="170" height="22" />
+  <div align="right"><small class="comment">24 month</small></div>
+</div>
+</li>
+    <li class="nav-header">Tools</li>
+<li>
+    <a itemprop="downloadUrl" href="https://cpan.metacpan.org/authors/id/S/SA/SAPER/Net-Pcap-0.18.tar.gz">
+    <i class="fa fa-download fa-fw black"></i>Download (<span itemprop="fileSize" >92Kb</span>)</a>
+    
+    <span class="invisible" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+      <span itemprop="price">0</span>
+    </span>
+    
+</li>
+<li>
+    <a href="https://explorer.metacpan.org/?url=/module/SAPER/Net-Pcap-0.18/Pcap.pm">
+    <i class="fa fa-list-alt fa-fw black"></i>MetaCPAN Explorer
+    </a>
+</li>
+<li>
+  <a href="/permission/distribution/Net-Pcap">
+    <i class="fa fa-key fa-fw black"></i>Permissions
+  </a>
+</li>
+<li>
+    <a href="/feed/distribution/Net-Pcap">
+    <i class="fa fa-rss-square fa-fw black"></i>Subscribe to distribution
+    </a>
+</li>
+<li>
+    <button class="btn btn-link" data-toggle="modal" data-target="#install-instructions-dialog">
+      <i class="fa fa-terminal fa-fw black"></i>Install Instructions
+    </button>
+</li>
+<li>
+    <form action="/search">
+        <input type="hidden" name="q" value="dist:Net-Pcap">
+        <input type="search" name="q" placeholder="Search distribution" style="width: 153px" class="form-control tool-bar-form">
+        <input type="submit" style="display: none">
+    </form>
+</li>
+<li>
+    <form action="https://grep.metacpan.org/search">
+        <input type="hidden" name="qd" value="Net-Pcap">
+        <input type="hidden" name="source" value="metacpan">
+         <input type="search" name="q" placeholder="grep distribution" style="width: 153px" class="form-control tool-bar-form">
+         <input type="submit" style="display: none">
+     </form>
+</li>
+<li>
+    <select onchange="document.location.href='/module/'+this.value" class="form-control tool-bar-form">
+        <option>Jump to version</option>
+    <option value="SAPER/Net-Pcap-0.17/Pcap.pm">0.17 (SAPER on 2012-11-27)</option>
+
+    <option value="SAPER/Net-Pcap-0.16/Pcap.pm">0.16 (SAPER on 2008-01-01)</option>
+
+    <option value="SAPER/Net-Pcap-0.15/Pcap.pm">0.15 (SAPER on 2007-12-02)</option>
+
+    <option value="SAPER/Net-Pcap-0.14/Pcap.pm">0.14 (SAPER on 2006-09-05)</option>
+
+    <option value="KCARNUT/Net-Pcap-0.05/Pcap.pm">0.05 (KCARNUT on 2003-06-16)</option>
+
+    <option value="TIMPOTTER/Net-Pcap-0.04/Pcap.pm">0.04 (TIMPOTTER on 2000-05-17)</option>
+
+    <option value="PLISTER/Net-Pcap-0.01/Pcap.pm">0.01 (PLISTER on 1997-08-27)</option>
+
+<optgroup label="BackPAN"></optgroup>
+
+    <option value="SAPER/Net-Pcap-0.15_01/Pcap.pm">0.15_01 DEV (SAPER on 2006-09-13)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.13/Pcap.pm">0.13 (SAPER on 2006-08-28)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.12/Pcap.pm">0.12 (SAPER on 2006-03-19)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.11/Pcap.pm">0.11 (SAPER on 2005-12-27)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.10/Pcap.pm">0.10 (SAPER on 2005-11-01)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.09/Pcap.pm">0.09 (SAPER on 2005-10-26)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.08/Pcap.pm">0.08 (SAPER on 2005-10-07)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.07/Pcap.pm">0.07 (SAPER on 2005-09-23)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.06/Pcap.pm">0.06 (SAPER on 2005-09-15)
+    </option>
+
+    <option value="TIMPOTTER/Net-Pcap-0.03/Pcap.pm">0.03 (TIMPOTTER on 1999-03-25)
+    </option>
+
+
+    </select>
+</li>
+<li>
+    <select name="release" onchange="document.location.href='/diff/file/?target=SAPER/Net-Pcap-0.18/Pcap.pm&amp;source=' + encodeURIComponent(this.value)" class="form-control tool-bar-form">
+        <option>Diff with version</option>
+    <option value="SAPER/Net-Pcap-0.17/Pcap.pm">0.17 (SAPER on 2012-11-27)</option>
+
+    <option value="SAPER/Net-Pcap-0.16/Pcap.pm">0.16 (SAPER on 2008-01-01)</option>
+
+    <option value="SAPER/Net-Pcap-0.15/Pcap.pm">0.15 (SAPER on 2007-12-02)</option>
+
+    <option value="SAPER/Net-Pcap-0.14/Pcap.pm">0.14 (SAPER on 2006-09-05)</option>
+
+    <option value="KCARNUT/Net-Pcap-0.05/Pcap.pm">0.05 (KCARNUT on 2003-06-16)</option>
+
+    <option value="TIMPOTTER/Net-Pcap-0.04/Pcap.pm">0.04 (TIMPOTTER on 2000-05-17)</option>
+
+    <option value="PLISTER/Net-Pcap-0.01/Pcap.pm">0.01 (PLISTER on 1997-08-27)</option>
+
+<optgroup label="BackPAN"></optgroup>
+
+    <option value="SAPER/Net-Pcap-0.15_01/Pcap.pm">0.15_01 DEV (SAPER on 2006-09-13)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.13/Pcap.pm">0.13 (SAPER on 2006-08-28)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.12/Pcap.pm">0.12 (SAPER on 2006-03-19)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.11/Pcap.pm">0.11 (SAPER on 2005-12-27)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.10/Pcap.pm">0.10 (SAPER on 2005-11-01)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.09/Pcap.pm">0.09 (SAPER on 2005-10-26)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.08/Pcap.pm">0.08 (SAPER on 2005-10-07)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.07/Pcap.pm">0.07 (SAPER on 2005-09-23)
+    </option>
+
+    <option value="SAPER/Net-Pcap-0.06/Pcap.pm">0.06 (SAPER on 2005-09-15)
+    </option>
+
+    <option value="TIMPOTTER/Net-Pcap-0.03/Pcap.pm">0.03 (TIMPOTTER on 1999-03-25)
+    </option>
+
+
+    </select>
+</li>
+
+<li class="nav-header">Permalinks</li>
+<li>
+    <a href="/pod/release/SAPER/Net-Pcap-0.18/Pcap.pm">This version</a>
+</li>
+<li>
+    <a itemprop="url" href="/pod/Net::Pcap">Latest version</a>
+</li>
+
+  </ul>
+
+  <button id="right-panel-toggle" class="btn-link" onclick="togglePanel('right'); return false;"><span class="panel-hidden">Show</span><span class="panel-visible">Hide</span> Right Panel</button>
+  <div id="right-panel" class="pull-right">
+  <div class="box-right">
+  <!-- For plussers -->
+
+<div class="plussers hidden-phone">
+<div><b>++ed by:</b></div>
+
+
+
+
+<a class="display-all" href="/author/BASEBAND"><img src="https://www.gravatar.com/avatar/30492071f1b12ce4bb7a2bb955c2ec06?s=20&amp;d=identicon" title="BASEBAND" alt="BASEBAND"></a>
+
+
+
+<a class="display-all" href="/author/KEEDI"><img src="https://www.gravatar.com/avatar/95f905a7a4ccc573c711e9d264c0fde8?s=20&amp;d=identicon" title="KEEDI" alt="KEEDI"></a>
+
+
+
+<!-- Display counts of plussers-->
+<p>
+
+<a href="/release/Net-Pcap/plussers">2 PAUSE users</a><br>
+
+
+1 non-PAUSE user.
+
+</p>
+</div>
+
+
+<div class="author-pic">
+<a href="/author/SAPER">
+  <img src="https://www.gravatar.com/avatar/cad36eb4c5da1a39158c9c58b45590bd?s=130&amp;d=identicon" alt="Author image">
+</a>
+<strong>
+  <a rel="author" href="/author/SAPER">SAPER</a>
+</strong>
+<span title="Sebastien Aperghis-Tramoni">Sébastien Aperghis-Tramoni</span>
+</div>
+
+  
+
+<div id="contributors">
+    <div class="contributors-header">and 1 contributors</div>
+    <div align="right">
+        <button class="btn-link"
+            onclick="$(this).hide(); $('#contributors ul').slideDown(); return false;"
+        >show them</button>
+    </div>
+    <ul class="nav nav-list box-right" style="display: none">
+    
+        <li class="contributor" data-contrib-email="sebastien@aperghis.net">
+        Sebastien Aperghis-Tramoni
+        
+        </li>
+    
+    </ul>
+</div>
+
+
+
+  </div>
+  <ul class="nav-list box-right hidden-phone dependencies">
+    <li class="nav-header">Dependencies</li>
+    <li><a href="/pod/Carp" title="Carp" class="ellipsis">Carp</a></li>
+    <li><a href="/pod/Socket" title="Socket" class="ellipsis">Socket</a></li>
+    <li><a href="/pod/Sys::Hostname" title="Sys::Hostname" class="ellipsis">Sys::Hostname</a></li>
+    <li><a href="/pod/Test::More" title="Test::More" class="ellipsis">Test::More</a></li>
+    <li><a href="/pod/XSLoader" title="XSLoader" class="ellipsis">XSLoader</a></li>
+    <li><i class="ttip" title="dynamic_config enabled">and possibly others</i></li>
+    <li><hr /></li>
+    <li>
+        <a href="http://deps.cpantesters.org/?module=Net::Pcap">
+        <i class="fa fa-retweet fa-fw black"></i>CPAN Testers List</a>
+    </li>
+    <li>        <a href="/requires/module/Net::Pcap">        <i class="fa fa-share fa-fw black"></i>Reverse dependencies</a>
+    </li>
+    <li>
+        <a href="https://cpandeps.grinnz.com/?dist=Net-Pcap">
+        <i class="fa fa-asterisk fa-fw black"></i>Dependency graph</a>
+    </li>
+</ul>
+
+  </div>
+  <a name="___pod"></a>
+  <div class="pod content anchors">
+
+  
+  <ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#VERSION">VERSION</a></li>
+  <li><a href="#SYNOPSIS">SYNOPSIS</a></li>
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#NOTES">NOTES</a>
+    <ul>
+      <li><a href="#Signals-handling">Signals handling</a></li>
+    </ul>
+  </li>
+  <li><a href="#EXPORTS">EXPORTS</a></li>
+  <li><a href="#FUNCTIONS">FUNCTIONS</a>
+    <ul>
+      <li><a href="#Lookup-functions">Lookup functions</a></li>
+      <li><a href="#Packet-capture-functions">Packet capture functions</a></li>
+      <li><a href="#Savefile-commands">Savefile commands</a></li>
+      <li><a href="#Status-functions">Status functions</a></li>
+      <li><a href="#Error-handling">Error handling</a></li>
+      <li><a href="#Information">Information</a></li>
+      <li><a href="#Perl-specific-functions">Perl specific functions</a></li>
+      <li><a href="#WinPcap-specific-functions">WinPcap specific functions</a></li>
+    </ul>
+  </li>
+  <li><a href="#CONSTANTS">CONSTANTS</a></li>
+  <li><a href="#DIAGNOSTICS">DIAGNOSTICS</a></li>
+  <li><a href="#BUGS">BUGS</a></li>
+  <li><a href="#EXAMPLES">EXAMPLES</a></li>
+  <li><a href="#SEE-ALSO">SEE ALSO</a>
+    <ul>
+      <li><a href="#Perl-Modules">Perl Modules</a></li>
+      <li><a href="#Base-Libraries">Base Libraries</a></li>
+      <li><a href="#Articles">Articles</a></li>
+    </ul>
+  </li>
+  <li><a href="#AUTHORS">AUTHORS</a></li>
+  <li><a href="#HISTORY">HISTORY</a></li>
+  <li><a href="#ACKNOWLEDGEMENTS">ACKNOWLEDGEMENTS</a></li>
+  <li><a href="#COPYRIGHT-&amp;-LICENSE">COPYRIGHT &amp; LICENSE</a></li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>Net::Pcap - Interface to the pcap(3) LBL packet capture library</p>
+
+<h1 id="VERSION">VERSION</h1>
+
+<p>Version 0.18</p>
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>    use Net::Pcap;
+
+    my $err = &#39;&#39;;
+    my $dev = pcap_lookupdev(\$err);  # find a device
+
+    # open the device for live listening
+    my $pcap = pcap_open_live($dev, 1024, 1, 0, \$err);
+
+    # loop over next 10 packets
+    pcap_loop($pcap, 10, \&amp;process_packet, &quot;just for the demo&quot;);
+
+    # close the device
+    pcap_close($pcap);
+
+    sub process_packet {
+        my ($user_data, $header, $packet) = @_;
+        # do something ...
+    }</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p><code>Net::Pcap</code> is a Perl binding to the LBL pcap(3) library and its Win32 counterpart, the WinPcap library. Pcap (packet capture) is a portable API to capture network packet: it allows applications to capture packets at link-layer, bypassing the normal protocol stack. It also provides features like kernel-level packet filtering and access to internal statistics.</p>
+
+<p>Common applications include network statistics collection, security monitoring, network debugging, etc.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<h2 id="Signals-handling"><a id="Signals"></a>Signals handling</h2>
+
+<p>Since version 5.7.3, Perl uses a mechanism called &quot;deferred signals&quot; to delay signals delivery until &quot;safe&quot; points in the interpreter. See <a href="/pod/perlipc#Deferred-Signals-(Safe-Signals)">&quot;Deferred Signals (Safe Signals)&quot; in perlipc</a> for a detailled explanation.</p>
+
+<p>Since <code>Net::Pcap</code> version 0.08, released in October 2005, the module modified the internal variable <code>PL_signals</code> to re-enable immediate signals delivery in Perl 5.8 and later within some XS functions (CPAN-RT #6320). However, it can create situations where the Perl interpreter is less stable and can crash (CPAN-RT #43308). Therefore, as of version 0.17, <code>Net::Pcap</code> no longer modifies <code>PL_signals</code> by itself, but provides facilities so the user has full control of how signals are delivered.</p>
+
+<p>First, the <code>pcap_perl_settings()</code> function allows one to select how signals are handled:</p>
+
+<pre><code>    pcap_perl_settings(PERL_SIGNALS_UNSAFE);
+    pcap_loop($pcap, 10, \&amp;process_packet, &quot;&quot;);
+    pcap_perl_settings(PERL_SIGNALS_SAFE);</code></pre>
+
+<p>Then, to easily make code interruptable, <code>Net::Pcap</code> provides the <code>UNSAFE_SIGNALS</code> pseudo-bloc:</p>
+
+<pre><code>    UNSAFE_SIGNALS {
+        pcap_loop($pcap, 10, \&amp;process_packet, &quot;&quot;);
+    };</code></pre>
+
+<p>(Stolen from Rafael Garcia-Suarez&#39;s <code>Perl::Unsafe::Signals</code>)</p>
+
+<h1 id="EXPORTS">EXPORTS</h1>
+
+<p><code>Net::Pcap</code> supports the following <code>Exporter</code> tags:</p>
+
+<ul>
+
+<li><p><code>:bpf</code> exports a few BPF related constants:</p>
+
+<pre><code>    BPF_ALIGNMENT  BPF_MAJOR_VERSION  BPF_MAXBUFSIZE  BPF_MAXINSNS
+    BPF_MEMWORDS  BPF_MINBUFSIZE  BPF_MINOR_VERSION  BPF_RELEASE</code></pre>
+
+</li>
+<li><p><code>:datalink</code> exports the data link types macros:</p>
+
+<pre><code>    DLT_AIRONET_HEADER  DLT_APPLE_IP_OVER_IEEE1394  DLT_ARCNET
+    DLT_ARCNET_LINUX  DLT_ATM_CLIP  DLT_ATM_RFC1483  DLT_AURORA
+    DLT_AX25  DLT_CHAOS  DLT_CHDLC  DLT_CISCO_IOS  DLT_C_HDLC
+    DLT_DOCSIS  DLT_ECONET  DLT_EN10MB  DLT_EN3MB  DLT_ENC  DLT_FDDI
+    DLT_FRELAY  DLT_HHDLC  DLT_IBM_SN  DLT_IBM_SP  DLT_IEEE802
+    DLT_IEEE802_11  DLT_IEEE802_11_RADIO DLT_IEEE802_11_RADIO_AVS
+    DLT_IPFILTER  DLT_IP_OVER_FC  DLT_JUNIPER_ATM1 DLT_JUNIPER_ATM2
+    DLT_JUNIPER_ES  DLT_JUNIPER_GGSN  DLT_JUNIPER_MFR DLT_JUNIPER_MLFR
+    DLT_JUNIPER_MLPPP  DLT_JUNIPER_MONITOR  DLT_JUNIPER_SERVICES
+    DLT_LINUX_IRDA  DLT_LINUX_SLL  DLT_LOOP  DLT_LTALK  DLT_NULL
+    DLT_OLD_PFLOG  DLT_PCI_EXP  DLT_PFLOG  DLT_PFSYNC  DLT_PPP
+    DLT_PPP_BSDOS  DLT_PPP_ETHER  DLT_PPP_SERIAL  DLT_PRISM_HEADER
+    DLT_PRONET  DLT_RAW  DLT_RIO  DLT_SLIP  DLT_SLIP_BSDOS  DLT_SUNATM
+    DLT_SYMANTEC_FIREWALL  DLT_TZSP  DLT_USER0  DLT_USER1  DLT_USER2
+    DLT_USER3  DLT_USER4  DLT_USER5  DLT_USER6  DLT_USER7  DLT_USER8
+    DLT_USER9  DLT_USER10  DLT_USER11  DLT_USER12  DLT_USER13
+    DLT_USER14  DLT_USER15</code></pre>
+
+</li>
+<li><p><code>:pcap</code> exports the following <code>pcap</code> constants:</p>
+
+<pre><code>    PCAP_ERRBUF_SIZE    PCAP_IF_LOOPBACK
+    PCAP_VERSION_MAJOR  PCAP_VERSION_MINOR</code></pre>
+
+</li>
+<li><p><code>:mode</code> exports the following constants:</p>
+
+<pre><code>    MODE_CAPT  MODE_MON  MODE_STAT</code></pre>
+
+</li>
+<li><p><code>:openflag</code> exports the following constants:</p>
+
+<pre><code>    OPENFLAG_PROMISCUOUS  OPENFLAG_DATATX_UDP  OPENFLAG_NOCAPTURE_RPCAP</code></pre>
+
+</li>
+<li><p><code>:source</code> exports the following constants:</p>
+
+<pre><code>    PCAP_SRC_FILE  PCAP_SRC_IFLOCAL  PCAP_SRC_IFREMOTE</code></pre>
+
+</li>
+<li><p><code>:sample</code> exports the following constants:</p>
+
+<pre><code>    PCAP_SAMP_NOSAMP  PCAP_SAMP_1_EVERY_N  PCAP_SAMP_FIRST_AFTER_N_MS</code></pre>
+
+</li>
+<li><p><code>:rpcap</code> exports the following constants:</p>
+
+<pre><code>    RMTAUTH_NULL  RMTAUTH_PWD</code></pre>
+
+</li>
+<li><p><code>:functions</code> short names of the functions (without the <code>&quot;pcap_&quot;</code> prefix) for those which would not cause a clash with an already defined name. Namely, the following functions are not available in short form: <code>open()</code>, <code>close()</code>, <code>next()</code>, <code>dump()</code>, <code>file()</code>, <code>fileno()</code>. Using these short names is now discouraged, and may be removed in the future.</p>
+
+</li>
+</ul>
+
+<p>By default, this module exports the symbols from the <code>:datalink</code> and <code>:pcap</code> tags, and all the functions, with the same names as the C library.</p>
+
+<h1 id="FUNCTIONS">FUNCTIONS</h1>
+
+<p>All functions defined by <code>Net::Pcap</code> are direct mappings to the libpcap functions. Consult the pcap(3) documentation and source code for more information.</p>
+
+<p>Arguments that change a parameter, for example <code>pcap_lookupdev()</code>, are passed that parameter as a reference. This is to retain compatibility with previous versions of <code>Net::Pcap</code>.</p>
+
+<h2 id="Lookup-functions"><a id="Lookup"></a>Lookup functions</h2>
+
+<dl>
+
+<dt id="pcap_lookupdev(\$err)"><a id="pcap_lookupdev"></a><a id="pcap_lookupdev-err"></a><b>pcap_lookupdev(\$err)</b></dt>
+<dd>
+
+<p>Returns the name of a network device that can be used with <code>pcap_open_live()</code> function. On error, the <code>$err</code> parameter is filled with an appropriate error message else it is undefined.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    $dev = pcap_lookupdev();</code></pre>
+
+</dd>
+<dt id="pcap_findalldevs(\%devinfo,-\$err)"><a id="pcap_findalldevs"></a><a id="pcap_findalldevs-devinfo---err"></a><b>pcap_findalldevs(\%devinfo, \$err)</b></dt>
+<dd>
+
+<p>Returns a list of all network device names that can be used with <code>pcap_open_live()</code> function. On error, the <code>$err</code> parameter is filled with an appropriate error message else it is undefined.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    @devs = pcap_findalldevs(\%devinfo, \$err);
+    for my $dev (@devs) {
+        print &quot;$dev : $devinfo{$dev}\n&quot;
+    }</code></pre>
+
+<dl>
+
+<dt id="Note"><b>Note</b></dt>
+<dd>
+
+<p>For backward compatibility reasons, this function can also be called using the following signatures:</p>
+
+<pre><code>    @devs = pcap_findalldevs(\$err);
+
+    @devs = pcap_findalldevs(\$err, \%devinfo);</code></pre>
+
+<p>The first form was introduced by Marco Carnut in <code>Net::Pcap</code> version 0.05 and kept intact in versions 0.06 and 0.07. The second form was introduced by Jean-Louis Morel for the Windows only, ActivePerl port of <code>Net::Pcap</code>, in versions 0.04.01 and 0.04.02.</p>
+
+<p>The new syntax has been introduced for consistency with the rest of the Perl API and the C API of <code>libpcap(3)</code>, where <code>$err</code> is always the last argument.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt id="pcap_lookupnet($dev,-\$net,-\$mask,-\$err)"><a id="pcap_lookupnet"></a><a id="pcap_lookupnet-dev---net---mask---err"></a><b>pcap_lookupnet($dev, \$net, \$mask, \$err)</b></dt>
+<dd>
+
+<p>Determine the network number and netmask for the device specified in <code>$dev</code>. The function returns 0 on success and sets the <code>$net</code> and <code>$mask</code> parameters with values. On failure it returns -1 and the <code>$err</code> parameter is filled with an appropriate error message.</p>
+
+</dd>
+</dl>
+
+<h2 id="Packet-capture-functions"><a id="Packet"></a>Packet capture functions</h2>
+
+<dl>
+
+<dt id="pcap_open_live($dev,-$snaplen,-$promisc,-$to_ms,-\$err)"><a id="pcap_open_live"></a><a id="pcap_open_live-dev---snaplen---promisc---to_ms---err"></a><b>pcap_open_live($dev, $snaplen, $promisc, $to_ms, \$err)</b></dt>
+<dd>
+
+<p>Returns a packet capture descriptor for looking at packets on the network. The <code>$dev</code> parameter specifies which network interface to capture packets from. The <code>$snaplen</code> and <code>$promisc</code> parameters specify the maximum number of bytes to capture from each packet, and whether to put the interface into promiscuous mode, respectively. The <code>$to_ms</code> parameter specifies a read timeout in milliseconds. The packet descriptor will be undefined if an error occurs, and the <code>$err</code> parameter will be set with an appropriate error message.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    $dev = pcap_lookupdev();
+    $pcap = pcap_open_live($dev, 1024, 1, 0, \$err)
+        or die &quot;Can&#39;t open device $dev: $err\n&quot;;</code></pre>
+
+</dd>
+<dt id="pcap_open_dead($linktype,-$snaplen)"><a id="pcap_open_dead"></a><a id="pcap_open_dead-linktype---snaplen"></a><b>pcap_open_dead($linktype, $snaplen)</b></dt>
+<dd>
+
+<p>Creates and returns a new packet descriptor to use when calling the other functions in <code>libpcap</code>. It is typically used when just using <code>libpcap</code> for compiling BPF code.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    $pcap = pcap_open_dead(0, 1024);</code></pre>
+
+</dd>
+<dt id="pcap_open_offline($filename,-\$err)"><a id="pcap_open_offline"></a><a id="pcap_open_offline-filename---err"></a><b>pcap_open_offline($filename, \$err)</b></dt>
+<dd>
+
+<p>Return a packet capture descriptor to read from a previously created &quot;savefile&quot;. The returned descriptor is undefined if there was an error and in this case the <code>$err</code> parameter will be filled. Savefiles are created using the <code>pcap_dump_*</code> commands.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    $pcap = pcap_open_offline($dump, \$err)
+        or die &quot;Can&#39;t read &#39;$dump&#39;: $err\n&quot;;</code></pre>
+
+</dd>
+<dt id="pcap_loop($pcap,-$count,-\&amp;callback,-$user_data)"><a id="pcap_loop"></a><a id="pcap_loop-pcap---count---callback---user_data"></a><b>pcap_loop($pcap, $count, \&amp;callback, $user_data)</b></dt>
+<dd>
+
+<p>Read <code>$count</code> packets from the packet capture descriptor <code>$pcap</code> and call the perl function <code>&amp;callback</code> with an argument of <code>$user_data</code>. If <code>$count</code> is negative, then the function loops forever or until an error occurs. Returns 0 if <code>$count</code> is exhausted, -1 on error, and -2 if the loop terminated due to a call to pcap_breakloop() before any packets were processed.</p>
+
+<p>The callback function is also passed packet header information and packet data like so:</p>
+
+<pre><code>    sub process_packet {
+        my ($user_data, $header, $packet) = @_;
+
+        ...
+    }</code></pre>
+
+<p>The header information is a reference to a hash containing the following fields.</p>
+
+<ul>
+
+<li><p><code>len</code> - the total length of the packet.</p>
+
+</li>
+<li><p><code>caplen</code> - the actual captured length of the packet data. This corresponds to the snapshot length parameter passed to <code>open_live()</code>.</p>
+
+</li>
+<li><p><code>tv_sec</code> - seconds value of the packet timestamp.</p>
+
+</li>
+<li><p><code>tv_usec</code> - microseconds value of the packet timestamp.</p>
+
+</li>
+</ul>
+
+<p><b>Example</b></p>
+
+<pre><code>    pcap_loop($pcap, 10, \&amp;process_packet, &quot;user data&quot;);
+
+    sub process_packet {
+        my ($user_data, $header, $packet) = @_;
+        # ...
+    }</code></pre>
+
+</dd>
+<dt id="pcap_breakloop($pcap)"><a id="pcap_breakloop"></a><a id="pcap_breakloop-pcap"></a><b>pcap_breakloop($pcap)</b></dt>
+<dd>
+
+<p>Sets a flag that will force <code>pcap_dispatch()</code> or <code>pcap_loop()</code> to return rather than looping; they will return the number of packets that have been processed so far, or -2 if no packets have been processed so far.</p>
+
+<p>This routine is safe to use inside a signal handler on UNIX or a console control handler on Windows, as it merely sets a flag that is checked within the loop.</p>
+
+<p>Please see the section on <code>pcap_breakloop()</code> in <a href="http://man.he.net/man3/pcap">pcap(3)</a> for more information.</p>
+
+</dd>
+<dt id="pcap_close($pcap)"><a id="pcap_close"></a><a id="pcap_close-pcap"></a><b>pcap_close($pcap)</b></dt>
+<dd>
+
+<p>Close the packet capture device associated with the descriptor <code>$pcap</code>.</p>
+
+</dd>
+<dt id="pcap_dispatch($pcap,-$count,-\&amp;callback,-$user_data)"><a id="pcap_dispatch"></a><a id="pcap_dispatch-pcap---count---callback---user_data"></a><b>pcap_dispatch($pcap, $count, \&amp;callback, $user_data)</b></dt>
+<dd>
+
+<p>Collect <code>$count</code> packets and process them with callback function <code>&amp;callback</code>. if <code>$count</code> is -1, all packets currently buffered are processed. If <code>$count</code> is 0, process all packets until an error occurs.</p>
+
+</dd>
+<dt id="pcap_next($pcap,-\%header)"><a id="pcap_next"></a><a id="pcap_next-pcap---header"></a><b>pcap_next($pcap, \%header)</b></dt>
+<dd>
+
+<p>Return the next available packet on the interface associated with packet descriptor <code>$pcap</code>. Into the <code>%header</code> hash is stored the received packet header. If not packet is available, the return value and header is undefined.</p>
+
+</dd>
+<dt id="pcap_next_ex($pcap,-\%header,-\$packet)"><a id="pcap_next_ex"></a><a id="pcap_next_ex-pcap---header---packet"></a><b>pcap_next_ex($pcap, \%header, \$packet)</b></dt>
+<dd>
+
+<p>Reads the next available packet on the interface associated with packet descriptor <code>$pcap</code>, stores its header in <code>\%header</code> and its data in <code>\$packet</code> and returns a success/failure indication:</p>
+
+<ul>
+
+<li><p><code>1</code> means that the packet was read without problems;</p>
+
+</li>
+<li><p><code>0</code> means that packets are being read from a live capture, and the timeout expired;</p>
+
+</li>
+<li><p><code>-1</code> means that an error occurred while reading the packet;</p>
+
+</li>
+<li><p><code>-2</code> packets are being read from a dump file, and there are no more packets to read from the savefile.</p>
+
+</li>
+</ul>
+
+</dd>
+<dt id="pcap_compile($pcap,-\$filter,-$filter_str,-$optimize,-$netmask)"><a id="pcap_compile"></a><a id="pcap_compile-pcap---filter---filter_str---optimize---netmask"></a><b>pcap_compile($pcap, \$filter, $filter_str, $optimize, $netmask)</b></dt>
+<dd>
+
+<p>Compile the filter string contained in <code>$filter_str</code> and store it in <code>$filter</code>. A description of the filter language can be found in the libpcap source code, or the manual page for tcpdump(8) . The filter is optimized if the <code>$optimize</code> variable is true. The netmask of the network device must be specified in the <code>$netmask</code> parameter. The function returns 0 if the compilation was successful, or -1 if there was a problem.</p>
+
+</dd>
+<dt id="pcap_compile_nopcap($snaplen,-$linktype,-\$filter,-$filter_str,-$optimize,-$netmask)"><a id="pcap_compile_nopcap"></a><a id="pcap_compile_nopcap-snaplen---linktype---filter---filter_str---optimize---netmask"></a><b>pcap_compile_nopcap($snaplen, $linktype, \$filter, $filter_str, $optimize, $netmask)</b></dt>
+<dd>
+
+<p>Similar to <code>compile()</code> except that instead of passing a <code>$pcap</code> descriptor, one passes <code>$snaplen</code> and <code>$linktype</code> directly. Returns -1 if there was an error, but the error message is not available.</p>
+
+</dd>
+<dt id="pcap_setfilter($pcap,-$filter)"><a id="pcap_setfilter"></a><a id="pcap_setfilter-pcap---filter"></a><b>pcap_setfilter($pcap, $filter)</b></dt>
+<dd>
+
+<p>Associate the compiled filter stored in <code>$filter</code> with the packet capture descriptor <code>$pcap</code>.</p>
+
+</dd>
+<dt id="pcap_freecode($filter)"><a id="pcap_freecode"></a><a id="pcap_freecode-filter"></a><b>pcap_freecode($filter)</b></dt>
+<dd>
+
+<p>Used to free the allocated memory used by a compiled filter, as created by <code>pcap_compile()</code>.</p>
+
+</dd>
+<dt id="pcap_offline_filter($filter,-\%header,-$packet)"><a id="pcap_offline_filter"></a><a id="pcap_offline_filter-filter---header---packet"></a><b>pcap_offline_filter($filter, \%header, $packet)</b></dt>
+<dd>
+
+<p>Check whether <code>$filter</code> matches the packet described by header <code>%header</code> and packet data <code>$packet</code>. Returns true if the packet matches.</p>
+
+</dd>
+<dt id="pcap_setnonblock($pcap,-$mode,-\$err)"><a id="pcap_setnonblock"></a><a id="pcap_setnonblock-pcap---mode---err"></a><b>pcap_setnonblock($pcap, $mode, \$err)</b></dt>
+<dd>
+
+<p>Set the <i>non-blocking</i> mode of a live capture descriptor, depending on the value of <code>$mode</code> (zero to activate and non-zero to deactivate). It has no effect on offline descriptors. If there is an error, it returns -1 and sets <code>$err</code>.</p>
+
+<p>In non-blocking mode, an attempt to read from the capture descriptor with <code>pcap_dispatch()</code> will, if no packets are currently available to be read, return 0 immediately rather than blocking waiting for packets to arrive. <code>pcap_loop()</code> and <code>pcap_next()</code> will not work in non-blocking mode.</p>
+
+</dd>
+<dt id="pcap_getnonblock($pcap,-\$err)"><a id="pcap_getnonblock"></a><a id="pcap_getnonblock-pcap---err"></a><b>pcap_getnonblock($pcap, \$err)</b></dt>
+<dd>
+
+<p>Returns the <i>non-blocking</i> state of the capture descriptor <code>$pcap</code>. Always returns 0 on savefiles. If there is an error, it returns -1 and sets <code>$err</code>.</p>
+
+</dd>
+</dl>
+
+<h2 id="Savefile-commands"><a id="Savefile"></a>Savefile commands</h2>
+
+<dl>
+
+<dt id="pcap_dump_open($pcap,-$filename)"><a id="pcap_dump_open"></a><a id="pcap_dump_open-pcap---filename"></a><b>pcap_dump_open($pcap, $filename)</b></dt>
+<dd>
+
+<p>Open a savefile for writing and return a descriptor for doing so. If <code>$filename</code> is <code>&quot;-&quot;</code> data is written to standard output. On error, the return value is undefined and <code>pcap_geterr()</code> can be used to retrieve the error text.</p>
+
+</dd>
+<dt id="pcap_dump($dumper,-\%header,-$packet)"><a id="pcap_dump"></a><a id="pcap_dump-dumper---header---packet"></a><b>pcap_dump($dumper, \%header, $packet)</b></dt>
+<dd>
+
+<p>Dump the packet described by header <code>%header</code> and packet data <code>$packet</code> to the savefile associated with <code>$dumper</code>. The packet header has the same format as that passed to the <code>pcap_loop()</code> callback.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    my $dump_file = &#39;network.dmp&#39;;
+    my $dev = pcap_lookupdev();
+    my $pcap = pcap_open_live($dev, 1024, 1, 0, \$err);
+
+    my $dumper = pcap_dump_open($pcap, $dump_file);
+    pcap_loop($pcap, 10, \&amp;process_packet, &#39;&#39;);
+    pcap_dump_close($dumper);
+
+    sub process_packet {
+        my ($user_data, $header, $packet) = @_;
+        pcap_dump($dumper, $header, $packet);
+    }</code></pre>
+
+</dd>
+<dt id="pcap_dump_file($dumper)"><a id="pcap_dump_file"></a><a id="pcap_dump_file-dumper"></a><b>pcap_dump_file($dumper)</b></dt>
+<dd>
+
+<p>Returns the filehandle associated with a savefile opened with <code>pcap_dump_open()</code>.</p>
+
+</dd>
+<dt id="pcap_dump_flush($dumper)"><a id="pcap_dump_flush"></a><a id="pcap_dump_flush-dumper"></a><b>pcap_dump_flush($dumper)</b></dt>
+<dd>
+
+<p>Flushes the output buffer to the corresponding save file, so that any packets written with <code>pcap_dump()</code> but not yet written to the save file will be written. Returns -1 on error, 0 on success.</p>
+
+</dd>
+<dt id="pcap_dump_close($dumper)"><a id="pcap_dump_close"></a><a id="pcap_dump_close-dumper"></a><b>pcap_dump_close($dumper)</b></dt>
+<dd>
+
+<p>Close the savefile associated with the descriptor <code>$dumper</code>.</p>
+
+</dd>
+</dl>
+
+<h2 id="Status-functions"><a id="Status"></a>Status functions</h2>
+
+<dl>
+
+<dt id="pcap_datalink($pcap)"><a id="pcap_datalink"></a><a id="pcap_datalink-pcap"></a><b>pcap_datalink($pcap)</b></dt>
+<dd>
+
+<p>Returns the link layer type associated with the given pcap descriptor.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    $linktype = pcap_datalink($pcap);</code></pre>
+
+</dd>
+<dt id="pcap_set_datalink($pcap,-$linktype)"><a id="pcap_set_datalink"></a><a id="pcap_set_datalink-pcap---linktype"></a><b>pcap_set_datalink($pcap, $linktype)</b></dt>
+<dd>
+
+<p>Sets the data link type of the given pcap descriptor to the type specified by <code>$linktype</code>. Returns -1 on failure.</p>
+
+</dd>
+<dt id="pcap_datalink_name_to_val($name)"><a id="pcap_datalink_name_to_val"></a><a id="pcap_datalink_name_to_val-name"></a><b>pcap_datalink_name_to_val($name)</b></dt>
+<dd>
+
+<p>Translates a data link type name, which is a <code>DLT_</code> name with the <code>DLT_</code> part removed, to the corresponding data link type value. The translation is case-insensitive. Returns -1 on failure.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    $linktype = pcap_datalink_name_to_val(&#39;LTalk&#39;);  # returns DLT_LTALK</code></pre>
+
+</dd>
+<dt id="pcap_datalink_val_to_name($linktype)"><a id="pcap_datalink_val_to_name"></a><a id="pcap_datalink_val_to_name-linktype"></a><b>pcap_datalink_val_to_name($linktype)</b></dt>
+<dd>
+
+<p>Translates a data link type value to the corresponding data link type name.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    $name = pcap_datalink_val_to_name(DLT_LTALK);  # returns &#39;LTALK&#39;</code></pre>
+
+</dd>
+<dt id="pcap_datalink_val_to_description($linktype)"><a id="pcap_datalink_val_to_description"></a><a id="pcap_datalink_val_to_description-linktype"></a><b>pcap_datalink_val_to_description($linktype)</b></dt>
+<dd>
+
+<p>Translates a data link type value to a short description of that data link type.</p>
+
+<p><b>Example</b></p>
+
+<pre><code>    $descr = pcap_datalink_val_to_description(DLT_LTALK);  # returns &#39;Localtalk&#39;</code></pre>
+
+</dd>
+<dt id="pcap_snapshot($pcap)"><a id="pcap_snapshot"></a><a id="pcap_snapshot-pcap"></a><b>pcap_snapshot($pcap)</b></dt>
+<dd>
+
+<p>Returns the snapshot length (snaplen) specified in the call to <code>pcap_open_live()</code>.</p>
+
+</dd>
+<dt id="pcap_is_swapped($pcap)"><a id="pcap_is_swapped"></a><a id="pcap_is_swapped-pcap"></a><b>pcap_is_swapped($pcap)</b></dt>
+<dd>
+
+<p>This function returns true if the endianness of the currently open savefile is different from the endianness of the machine.</p>
+
+</dd>
+<dt id="pcap_major_version($pcap)"><a id="pcap_major_version"></a><a id="pcap_major_version-pcap"></a><b>pcap_major_version($pcap)</b></dt>
+<dd>
+
+<p>Return the major version number of the pcap library used to write the currently open savefile.</p>
+
+</dd>
+<dt id="pcap_minor_version($pcap)"><a id="pcap_minor_version"></a><a id="pcap_minor_version-pcap"></a><b>pcap_minor_version($pcap)</b></dt>
+<dd>
+
+<p>Return the minor version of the pcap library used to write the currently open savefile.</p>
+
+</dd>
+<dt id="pcap_stats($pcap,-\%stats)"><a id="pcap_stats"></a><a id="pcap_stats-pcap---stats"></a><b>pcap_stats($pcap, \%stats)</b></dt>
+<dd>
+
+<p>Returns a hash containing information about the status of packet capture device <code>$pcap</code>. The hash contains the following fields.</p>
+
+<p>This function is supported only on live captures, not on savefiles; no statistics are stored in savefiles, so no statistics are available when reading from a savefile.</p>
+
+<ul>
+
+<li><p><code>ps_recv</code> - the number of packets received by the packet capture software.</p>
+
+</li>
+<li><p><code>ps_drop</code> - the number of packets dropped by the packet capture software.</p>
+
+</li>
+<li><p><code>ps_ifdrop</code> - the number of packets dropped by the network interface.</p>
+
+</li>
+</ul>
+
+</dd>
+<dt id="pcap_file($pcap)"><a id="pcap_file"></a><a id="pcap_file-pcap"></a><b>pcap_file($pcap)</b></dt>
+<dd>
+
+<p>Returns the filehandle associated with a savefile opened with <code>pcap_open_offline()</code> or <code>undef</code> if the device was opened with <code>pcap_open_live()</code>.</p>
+
+</dd>
+<dt id="pcap_fileno($pcap)"><a id="pcap_fileno"></a><a id="pcap_fileno-pcap"></a><b>pcap_fileno($pcap)</b></dt>
+<dd>
+
+<p>Returns the file number of the network device opened with <code>pcap_open_live()</code>.</p>
+
+</dd>
+<dt id="pcap_get_selectable_fd($pcap)"><a id="pcap_get_selectable_fd"></a><a id="pcap_get_selectable_fd-pcap"></a><b>pcap_get_selectable_fd($pcap)</b></dt>
+<dd>
+
+<p>Returns, on Unix, a file descriptor number for a file descriptor on which one can do a <code>select()</code> or <code>poll()</code> to wait for it to be possible to read packets without blocking, if such a descriptor exists, or -1, if no such descriptor exists. Some network devices opened with <code>pcap_open_live()</code> do not support <code>select()</code> or <code>poll()</code>, so -1 is returned for those devices. See <a href="http://man.he.net/man3/pcap">pcap(3)</a> for more details.</p>
+
+</dd>
+</dl>
+
+<h2 id="Error-handling"><a id="Error"></a>Error handling</h2>
+
+<dl>
+
+<dt id="pcap_geterr($pcap)"><a id="pcap_geterr"></a><a id="pcap_geterr-pcap"></a><b>pcap_geterr($pcap)</b></dt>
+<dd>
+
+<p>Returns an error message for the last error associated with the packet capture device <code>$pcap</code>.</p>
+
+</dd>
+<dt id="pcap_strerror($errno)"><a id="pcap_strerror"></a><a id="pcap_strerror-errno"></a><b>pcap_strerror($errno)</b></dt>
+<dd>
+
+<p>Returns a string describing error number <code>$errno</code>.</p>
+
+</dd>
+<dt id="pcap_perror($pcap,-$prefix)"><a id="pcap_perror"></a><a id="pcap_perror-pcap---prefix"></a><b>pcap_perror($pcap, $prefix)</b></dt>
+<dd>
+
+<p>Prints the text of the last error associated with descriptor <code>$pcap</code> on standard error, prefixed by <code>$prefix</code>.</p>
+
+</dd>
+</dl>
+
+<h2 id="Information">Information</h2>
+
+<dl>
+
+<dt id="pcap_lib_version()"><a id="pcap_lib_version"></a><b>pcap_lib_version()</b></dt>
+<dd>
+
+<p>Returns the name and version of the <code>pcap</code> library the module was linked against.</p>
+
+</dd>
+</dl>
+
+<h2 id="Perl-specific-functions"><a id="Perl"></a>Perl specific functions</h2>
+
+<p>The following functions are specific to the Perl binding of libpcap.</p>
+
+<dl>
+
+<dt id="pcap_perl_settings($setting)"><a id="pcap_perl_settings"></a><a id="pcap_perl_settings-setting"></a><b>pcap_perl_settings($setting)</b></dt>
+<dd>
+
+<p>Modify internal behaviour of the Perl interpreter.</p>
+
+<ul>
+
+<li><p><code>PERL_SIGNALS_SAFE</code>, <code>PERL_SIGNALS_UNSAFE</code> respectively enable safe or unsafe signals delivery. Returns the previous value of <code>PL_signals</code>. See <a href="#Signals-handling">&quot;Signals handling&quot;</a>.</p>
+
+<p><b>Example:</b></p>
+
+<pre><code>    local $SIG{ALRM} = sub { pcap_breakloop() };
+    alarm 60;
+
+    pcap_perl_settings(PERL_SIGNALS_UNSAFE);
+    pcap_loop($pcap, 10, \&amp;process_packet, &quot;&quot;);
+    pcap_perl_settings(PERL_SIGNALS_SAFE);</code></pre>
+
+</li>
+</ul>
+
+</dd>
+</dl>
+
+<h2 id="WinPcap-specific-functions"><a id="WinPcap"></a>WinPcap specific functions</h2>
+
+<p>The following functions are only available with WinPcap, the Win32 port of the Pcap library. If a called function is not available, it will cleanly <code>croak()</code>.</p>
+
+<dl>
+
+<dt id="pcap_createsrcstr(\$source,-$type,-$host,-$port,-$name,-\$err)"><a id="pcap_createsrcstr"></a><a id="pcap_createsrcstr-source---type---host---port---name---err"></a><b>pcap_createsrcstr(\$source, $type, $host, $port, $name, \$err)</b></dt>
+<dd>
+
+<p>Accepts a set of strings (host name, port, ...), and stores the complete source string according to the new format (e.g. <code>&quot;rpcap://1.2.3.4/eth0&quot;</code>) in <code>$source</code>.</p>
+
+<p>This function is provided in order to help the user creating the source string according to the new format. An unique source string is used in order to make easy for old applications to use the remote facilities. Think about <b>tcpdump(1)</b>, for example, which has only one way to specify the interface on which the capture has to be started. However, GUI-based programs can find more useful to specify hostname, port and interface name separately. In that case, they can use this function to create the source string before passing it to the <code>pcap_open()</code> function.</p>
+
+<p>Returns 0 if everything is fine, -1 if some errors occurred. The string containing the complete source is returned in the <code>$source</code> variable.</p>
+
+</dd>
+<dt id="pcap_parsesrcstr($source,-\$type,-\$host,-\$port,-\$name,-\$err)"><a id="pcap_parsesrcstr"></a><a id="pcap_parsesrcstr-source---type---host---port---name---err"></a><b>pcap_parsesrcstr($source, \$type, \$host, \$port, \$name, \$err)</b></dt>
+<dd>
+
+<p>Parse the source string and stores the pieces in which the source can be split in the corresponding variables.</p>
+
+<p>This call is the other way round of <code>pcap_createsrcstr()</code>. It accepts a null-terminated string and it returns the parameters related to the source. This includes:</p>
+
+<ul>
+
+<li><p>the type of the source (file, WinPcap on a remote adapter, WinPcap on local adapter), which is determined by the source prefix (<code>PCAP_SRC_IF_STRING</code> and so on);</p>
+
+</li>
+<li><p>the host on which the capture has to be started (only for remote captures);</p>
+
+</li>
+<li><p>the raw name of the source (file name, name of the remote adapter, name of the local adapter), without the source prefix. The string returned does not include the type of the source itself (i.e. the string returned does not include <code>&quot;file://&quot;</code> or <code>&quot;rpcap://&quot;</code> or such).</p>
+
+</li>
+</ul>
+
+<p>The user can omit some parameters in case it is not interested in them.</p>
+
+<p>Returns 0 if everything is fine, -1 if some errors occurred. The requested values (host name, network port, type of the source) are returned into the proper variables passed by reference.</p>
+
+</dd>
+<dt id="pcap_open($source,-$snaplen,-$flags,-$read_timeout,-\$auth,-\$err)"><a id="pcap_open"></a><a id="pcap_open-source---snaplen---flags---read_timeout---auth---err"></a><b>pcap_open($source, $snaplen, $flags, $read_timeout, \$auth, \$err)</b></dt>
+<dd>
+
+<p>Open a generic source in order to capture / send (WinPcap only) traffic.</p>
+
+<p>The <code>pcap_open()</code> replaces all the <code>pcap_open_xxx()</code> functions with a single call.</p>
+
+<p>This function hides the differences between the different <code>pcap_open_xxx()</code> functions so that the programmer does not have to manage different opening function. In this way, the <i>true</i> <code>open()</code> function is decided according to the source type, which is included into the source string (in the form of source prefix).</p>
+
+<p>Returns a pointer to a pcap descriptor which can be used as a parameter to the following calls (<code>compile()</code> and so on) and that specifies an opened WinPcap session. In case of problems, it returns <code>undef</code> and the <code>$err</code> variable keeps the error message.</p>
+
+</dd>
+<dt id="pcap_setbuff($pcap,-$dim)"><a id="pcap_setbuff"></a><a id="pcap_setbuff-pcap---dim"></a><b>pcap_setbuff($pcap, $dim)</b></dt>
+<dd>
+
+<p>Sets the size of the kernel buffer associated with an adapter. <code>$dim</code> specifies the size of the buffer in bytes. The return value is 0 when the call succeeds, -1 otherwise.</p>
+
+<p>If an old buffer was already created with a previous call to <code>setbuff()</code>, it is deleted and its content is discarded. <code>open_live()</code> creates a <span style="white-space: nowrap;">1 MB</span> buffer by default.</p>
+
+</dd>
+<dt id="pcap_setmode($pcap,-$mode)"><a id="pcap_setmode"></a><a id="pcap_setmode-pcap---mode"></a><b>pcap_setmode($pcap, $mode)</b></dt>
+<dd>
+
+<p>Sets the working mode of the interface <code>$pcap</code> to <code>$mode</code>. Valid values for <code>$mode</code> are <code>MODE_CAPT</code> (default capture mode) and <code>MODE_STAT</code> (statistical mode).</p>
+
+</dd>
+<dt id="pcap_setmintocopy($pcap_t,-$size)"><a id="pcap_setmintocopy"></a><a id="pcap_setmintocopy-pcap_t---size"></a><b>pcap_setmintocopy($pcap_t, $size)</b></dt>
+<dd>
+
+<p>Changes the minimum amount of data in the kernel buffer that causes a read from the application to return (unless the timeout expires).</p>
+
+</dd>
+<dt id="pcap_getevent($pcap)"><a id="pcap_getevent"></a><a id="pcap_getevent-pcap"></a><b>pcap_getevent($pcap)</b></dt>
+<dd>
+
+<p>Returns the <code>Win32::Event</code> object associated with the interface <code>$pcap</code>. Can be used to wait until the driver&#39;s buffer contains some data without performing a read. See <a href="/pod/Win32::Event">Win32::Event</a>.</p>
+
+</dd>
+<dt id="pcap_sendpacket($pcap,-$packet)"><a id="pcap_sendpacket"></a><a id="pcap_sendpacket-pcap---packet"></a><b>pcap_sendpacket($pcap, $packet)</b></dt>
+<dd>
+
+<p>Send a raw packet to the network. <code>$pcap</code> is the interface that will be used to send the packet, <code>$packet</code> contains the data of the packet to send (including the various protocol headers). The MAC CRC doesn&#39;t need to be included, because it is transparently calculated and added by the network interface driver. The return value is 0 if the packet is successfully sent, -1 otherwise.</p>
+
+</dd>
+<dt id="pcap_sendqueue_alloc($memsize)"><a id="pcap_sendqueue_alloc"></a><a id="pcap_sendqueue_alloc-memsize"></a><b>pcap_sendqueue_alloc($memsize)</b></dt>
+<dd>
+
+<p>This function allocates and returns a send queue, i.e. a buffer containing a set of raw packets that will be transmitted on the network with <code>sendqueue_transmit()</code>.</p>
+
+<p><code>$memsize</code> is the size, in bytes, of the queue, therefore it determines the maximum amount of data that the queue will contain. This memory is automatically deallocated when the queue ceases to exist.</p>
+
+</dd>
+<dt id="pcap_sendqueue_queue($queue,-\%header,-$packet)"><a id="pcap_sendqueue_queue"></a><a id="pcap_sendqueue_queue-queue---header---packet"></a><b>pcap_sendqueue_queue($queue, \%header, $packet)</b></dt>
+<dd>
+
+<p>Adds a packet at the end of the send queue pointed by <code>$queue</code>. The packet header <code>%header</code> has the same format as that passed to the <code>loop()</code> callback. <code>$ackekt</code> is a buffer with the data of the packet.</p>
+
+<p>The <code>%headerr</code> header structure is the same used by WinPcap and libpcap to store the packets in a file, therefore sending a capture file is straightforward. &quot;Raw packet&quot; means that the sending application will have to include the protocol headers, since every packet is sent to the network <i>as is</i>. The CRC of the packets needs not to be calculated, because it will be transparently added by the network interface.</p>
+
+</dd>
+<dt id="pcap_sendqueue_transmit($pcap,-$queue,-$sync)"><a id="pcap_sendqueue_transmit"></a><a id="pcap_sendqueue_transmit-pcap---queue---sync"></a><b>pcap_sendqueue_transmit($pcap, $queue, $sync)</b></dt>
+<dd>
+
+<p>This function transmits the content of a queue to the wire. <code>$pcapt</code> is the interface on which the packets will be sent, <code>$queue</code> is to a <code>send_queue</code> containing the packets to send, <code>$sync</code> determines if the send operation must be synchronized: if it is non-zero, the packets are sent respecting the timestamps, otherwise they are sent as fast as possible.</p>
+
+<p>The return value is the amount of bytes actually sent. If it is smaller than the size parameter, an error occurred during the send. The error can be caused by a driver/adapter problem or by an inconsistent/bogus send queue.</p>
+
+</dd>
+</dl>
+
+<h1 id="CONSTANTS">CONSTANTS</h1>
+
+<p><code>Net::Pcap</code> exports by default the names of several constants in order to ease the development of programs. See <a href="#EXPORTS">&quot;EXPORTS&quot;</a> for details about which constants are exported.</p>
+
+<p>Here are the descriptions of a few data link types. See <a href="http://man.he.net/man3/pcap">pcap(3)</a> for a more complete description and semantics associated with each data link.</p>
+
+<ul>
+
+<li><p><code>DLT_NULL</code> - BSD loopback encapsulation</p>
+
+</li>
+<li><p><code>DLT_EN10MB</code> - Ethernet (10Mb, 100Mb, 1000Mb, and up)</p>
+
+</li>
+<li><p><code>DLT_RAW</code> - raw IP</p>
+
+</li>
+<li><p><code>DLT_IEEE802</code> - IEEE 802.5 Token Ring</p>
+
+</li>
+<li><p><code>DLT_IEEE802_11</code> - IEEE 802.11 wireless LAN</p>
+
+</li>
+<li><p><code>DLT_FRELAY</code> - Frame Relay</p>
+
+</li>
+<li><p><code>DLT_FDDI</code> - FDDI</p>
+
+</li>
+<li><p><code>DLT_SLIP</code> - Serial Line IP</p>
+
+</li>
+<li><p><code>DLT_PPP</code> - PPP (Point-to-point Protocol)</p>
+
+</li>
+<li><p><code>DLT_PPP_SERIAL</code> - PPP over serial with HDLC encapsulation</p>
+
+</li>
+<li><p><code>DLT_PPP_ETHER</code> - PPP over Ethernet</p>
+
+</li>
+<li><p><code>DLT_IP_OVER_FC</code> - RFC 2625 IP-over-Fibre Channel</p>
+
+</li>
+<li><p><code>DLT_AX25</code> - Amateur Radio AX.25</p>
+
+</li>
+<li><p><code>DLT_LINUX_IRDA</code> - Linux-IrDA</p>
+
+</li>
+<li><p><code>DLT_LTALK</code> - Apple LocalTalk</p>
+
+</li>
+<li><p><code>DLT_APPLE_IP_OVER_IEEE1394</code> - Apple IP-over-IEEE 1394 (a.k.a. Firewire)</p>
+
+</li>
+</ul>
+
+<h1 id="DIAGNOSTICS">DIAGNOSTICS</h1>
+
+<dl>
+
+<dt id="arg%d-not-a-scalar-ref"><a id="arg"></a><a id="arg-d-not-a-scalar-ref"></a><code>arg%d not a scalar ref</code></dt>
+<dd>
+
+</dd>
+<dt id="arg%d-not-a-hash-ref"><a id="arg1"></a><a id="arg-d-not-a-hash-ref"></a><code>arg%d not a hash ref</code></dt>
+<dd>
+
+</dd>
+<dt id="arg%d-not-a-reference"><a id="arg2"></a><a id="arg-d-not-a-reference"></a><code>arg%d not a reference</code></dt>
+<dd>
+
+<p><b>(F)</b> These errors occur if you forgot to give a reference to a function which expect one or more of its arguments to be references.</p>
+
+</dd>
+</dl>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Please report any bugs or feature requests to <code>bug-Net-Pcap@rt.cpan.org</code>, or through the web interface at <a href="http://rt.cpan.org/Dist/Display.html?Queue=Net-Pcap">http://rt.cpan.org/Dist/Display.html?Queue=Net-Pcap</a>. I will be notified, and then you&#39;ll automatically be notified of progress on your bug as I make changes.</p>
+
+<p>Currently known bugs:</p>
+
+<ul>
+
+<li><p>the <code>ps_recv</code> field is not correctly set; see <i>t/07-stats.t</i></p>
+
+</li>
+<li><p><code>pcap_file()</code> seems to always returns <code>undef</code> for live connection and causes segmentation fault for dump files; see <i>t/10-fileno.t</i></p>
+
+</li>
+<li><p><code>pcap_fileno()</code> is documented to return -1 when called on save file, but seems to always return an actual file number. See <i>t/10-fileno.t</i></p>
+
+</li>
+<li><p><code>pcap_dump_file()</code> seems to corrupt something somewhere, and makes scripts dump core. See <i>t/05-dump.t</i></p>
+
+</li>
+</ul>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>See the <i>eg/</i> and <i>t/</i> directories of the <code>Net::Pcap</code> distribution for examples on using this module.</p>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<h2 id="Perl-Modules"><a id="Perl1"></a>Perl Modules</h2>
+
+<p>the <a href="/pod/NetPacket">NetPacket</a> or <a href="/pod/Net::Frame">Net::Frame</a> modules to assemble and disassemble packets.</p>
+
+<p><a href="/pod/Net::Pcap::Reassemble">Net::Pcap::Reassemble</a> for reassembly of TCP/IP fragments.</p>
+
+<p><a href="/pod/POE::Component::Pcap">POE::Component::Pcap</a> for using <code>Net::Pcap</code> within POE-based programs.</p>
+
+<p><a href="/pod/AnyEvent::Pcap">AnyEvent::Pcap</a> for using <code>Net::Pcap</code> within AnyEvent-based programs.</p>
+
+<p><a href="/pod/Net::Packet">Net::Packet</a> or <a href="/pod/NetPacket">NetPacket</a> for decoding and creating network packets.</p>
+
+<p><a href="/pod/Net::Pcap::Easy">Net::Pcap::Easy</a> is a module which provides an easier, more Perl-ish API than <code>Net::Pcap</code> and integrates some facilities from <a href="/pod/Net::Netmask">Net::Netmask</a> and <a href="/pod/NetPacket">NetPacket</a>.</p>
+
+<h2 id="Base-Libraries"><a id="Base"></a>Base Libraries</h2>
+
+<p><a href="http://man.he.net/man3/pcap">pcap(3)</a>, <a href="http://man.he.net/man8/tcpdump">tcpdump(8)</a></p>
+
+<p>The source code for the <code>pcap(3)</code> library is available from <a href="http://www.tcpdump.org/">http://www.tcpdump.org/</a></p>
+
+<p>The source code and binary for the Win32 version of the pcap library, WinPcap, is available from <a href="http://www.winpcap.org/">http://www.winpcap.org/</a></p>
+
+<h2 id="Articles">Articles</h2>
+
+<p><i>Hacking Linux Exposed: Sniffing with Net::Pcap to stealthily managing iptables rules remotely</i>, <a href="http://www.hackinglinuxexposed.com/articles/20030730.html">http://www.hackinglinuxexposed.com/articles/20030730.html</a></p>
+
+<p><i>PerlMonks node about Net::Pcap</i>, <a href="http://perlmonks.org/?node_id=170648">http://perlmonks.org/?node_id=170648</a></p>
+
+<h1 id="AUTHORS">AUTHORS</h1>
+
+<p>Current maintainer is S&eacute;bastien Aperghis-Tramoni (SAPER) with the help of Tim Wilde (TWILDE).</p>
+
+<p>Complete list of authors &amp; contributors:</p>
+
+<ul>
+
+<li><p>Bo Adler (BOADLER) &lt;thumper (at) alumni.caltech.edu&gt;</p>
+
+</li>
+<li><p>Craig Davison</p>
+
+</li>
+<li><p>David Farrell</p>
+
+</li>
+<li><p>David N. Blank-Edelman &lt;dnb (at) ccs.neu.edu&gt;</p>
+
+</li>
+<li><p>James Rouzier (ROUZIER)</p>
+
+</li>
+<li><p>Jean-Louis Morel (JLMOREL) &lt;jl_morel (at) bribes.org&gt;</p>
+
+</li>
+<li><p>Marco Carnut (KCARNUT) &lt;kiko (at) tempest.com.br&gt;</p>
+
+</li>
+<li><p>Patrice Auffret (GOMOR)</p>
+
+</li>
+<li><p>Peter Lister (PLISTER) &lt;p.lister (at) cranfield.ac.uk&gt;</p>
+
+</li>
+<li><p>Rafa&euml;l Garcia-Suarez (RGARCIA)</p>
+
+</li>
+<li><p>S&eacute;bastien Aperghis-Tramoni (SAPER) &lt;sebastien (at) aperghis.net&gt;</p>
+
+</li>
+<li><p>Tim Potter (TIMPOTTER) &lt;tpot (at) frungy.org&gt;</p>
+
+</li>
+<li><p>Tim Wilde (TWILDE)</p>
+
+</li>
+</ul>
+
+<h1 id="HISTORY">HISTORY</h1>
+
+<p>The original version of <code>Net::Pcap</code>, version 0.01, was written by Peter Lister using SWIG.</p>
+
+<p>Version 0.02 was created by Bo Adler with a few bugfixes but not uploaded to CPAN. It could be found at: <a href="http://www.buttsoft.com/~thumper/software/perl/Net-Pcap/">http://www.buttsoft.com/~thumper/software/perl/Net-Pcap/</a></p>
+
+<p>Versions 0.03 and 0.04 were created by Tim Potter who entirely rewrote <code>Net::Pcap</code> using XS and wrote the documentation, with the help of David N. Blank-Edelman for testing and general polishing.</p>
+
+<p>Version 0.05 was released by Marco Carnut with fixes to make it work with Cygwin and WinPcap.</p>
+
+<p>Version 0.04.02 was independantly created by Jean-Louis Morel but not uploaded on the CPAN. It can be found here: <a href="http://www.bribes.org/perl/wnetpcap.html">http://www.bribes.org/perl/wnetpcap.html</a></p>
+
+<p>Based on Tim Potter&#39;s version 0.04, it included fixes for WinPcap and added wrappers for several new libpcap functions as well as WinPcap specific functions.</p>
+
+<h1 id="ACKNOWLEDGEMENTS">ACKNOWLEDGEMENTS</h1>
+
+<p>To Paul Johnson for his module <a href="/pod/Devel::Cover">Devel::Cover</a> and his patience for helping me using it with XS code, which revealed very useful for writing more tests.</p>
+
+<p>To the beta-testers: Jean-Louis Morel, Max Maischen, Philippe Bruhat, David Morel, Scott Lanning, Rafael Garcia-Suarez, Karl Y. Pradene.</p>
+
+<h1 id="COPYRIGHT-&amp;-LICENSE"><a id="COPYRIGHT"></a><a id="COPYRIGHT---LICENSE"></a>COPYRIGHT &amp; LICENSE</h1>
+
+<p>Copyright (C) 2005-2016 S&eacute;bastien Aperghis-Tramoni and contributors. All rights reserved.</p>
+
+<p>Copyright (C) 2003 Marco Carnut. All rights reserved.</p>
+
+<p>Copyright (C) 1999, 2000 Tim Potter. All rights reserved.</p>
+
+<p>Copyright (C) 1998 Bo Adler. All rights reserved.</p>
+
+<p>Copyright (C) 1997 Peter Lister. All rights reserved.</p>
+
+<p>This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::Pcap, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::Pcap
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::Pcap
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+  </div>
+</div>
+
+                </div>
+            </div>
+
+            <div class="row footer">
+                <div class="hidden-xs hidden-sm col-md-2">&nbsp;</div>
+                <div class="col-xs-2 col-sm-1 col-md-1" style="text-align: center">
+                    <a href="https://fastapi.metacpan.org">API</a>
+                </div>
+                <div class="col-xs-5 col-sm-3 col-md-2" style="text-align: center">
+                    <a href="/about">About MetaCPAN</a>
+                </div>
+                <div class="hidden-xs col-sm-2 col-md-2" style="text-align: center">
+                    <a href="/mirrors">CPAN Mirrors</a>
+                </div>
+                <div class="hidden-xs col-sm-3 col-md-2" style="text-align: center">
+                    <a href="https://github.com/metacpan/metacpan-web">Fork metacpan.org</a>
+                </div>
+                <div class="hidden-xs col-sm-1 col-md-1" style="text-align: center">
+                    <a href="https://www.perl.org/">Perl.org</a>
+                </div>
+            </div>
+
+            <div class="row" style="padding: 50px 15px 30px">
+              <div class="col-xs-9 col-md-3" style="padding:25px">
+                <a href="https://www.bytemark.co.uk/r/metacpan.org/" target="_blank" rel="noopener">
+                  <img width="170" src="/static/images/sponsors/bytemark_logo.png" alt="Bytemark logo">
+                </a>
+              </div>
+              <div class="col-xs-9 col-md-3" style="padding:15px">
+                <a target="_blank" href="https://www.liquidweb.com/" rel="noopener">
+                  <img width="170" src="/static/images/sponsors/liquidweb_color.png" alt="liquidweb logo">
+                </a>
+              </div>
+              <div class="col-xs-9 col-md-3" style="padding:15px">
+                <a target="_blank" href="https://www.yellowbot.com/" rel="noopener">
+                  <img width="170" src="/static/images/sponsors/yellowbot-small.png" alt="YellowBot logo">
+                </a>
+              </div>
+              <div class="col-xs-9 col-md-3" style="padding:15px">
+                <a href="https://www.fastly.com/" target="_blank" rel="noopener">
+                  <img src="/static/images/sponsors/fastly_logo.png" width=110 height=51 alt="Fastly logo">
+                </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-18 col-xs-offset-3 col-md-6" style="padding-bottom: 20px">
+                As a valued partner and proud supporter of MetaCPAN, StickerYou is
+                happy to offer a 10% discount on all <a href="https://www.stickeryou.com/products/custom-stickers/335/" target="_blank" rel="noopener">Custom Stickers</a>,
+                <a href="https://www.stickeryou.com/products/business-labels/655" target="_blank" rel="noopener">Business Labels</a>, Roll Labels,
+                Vinyl Lettering or Custom Decals.  <a href="http://StickerYou.com" target="_blank" rel="noopener">StickerYou.com</a>
+                is your one-stop shop to make your business stick.
+                Use code <strong>METACPAN10</strong> at checkout to apply your discount.
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="keyboard-shortcuts">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Keyboard Shortcuts</h4>
+              </div>
+              <div class="modal-body row">
+                <div class="col-md-6">
+  <table class="table keyboard-shortcuts">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Global</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="keys">
+          <kbd>s</kbd>
+        </td>
+        <td>Focus search bar</td>
+      </tr>
+      <tr>
+        <td class="keys">
+          <kbd>?</kbd>
+        </td>
+        <td>Bring up this help dialog</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="table keyboard-shortcuts">
+    <thead>
+      <tr>
+        <th></th>
+        <th>GitHub</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="keys">
+          <kbd>g</kbd> <kbd>p</kbd>
+        </td>
+        <td>Go to pull requests</td>
+      </tr>
+      <tr>
+        <td class="keys">
+          <kbd>g</kbd> <kbd>i</kbd>
+        </td>
+        <td>go to github issues (only if github is preferred repository)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="col-md-6">
+  <table class="table keyboard-shortcuts">
+    <thead>
+      <tr>
+        <th></th>
+        <th>POD</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="keys">
+          <kbd>g</kbd> <kbd>a</kbd>
+        </td>
+        <td>Go to author</td>
+      </tr>
+      <tr>
+        <td class="keys">
+          <kbd>g</kbd> <kbd>c</kbd>
+        </td>
+        <td>Go to changes</td>
+      </tr>
+      <tr>
+        <td class="keys">
+          <kbd>g</kbd> <kbd>i</kbd>
+        </td>
+        <td>Go to issues</td>
+      </tr>
+      <tr>
+        <td class="keys">
+          <kbd>g</kbd> <kbd>d</kbd>
+        </td>
+        <td>Go to dist</td>
+      </tr>
+      <tr>
+        <td class="keys">
+          <kbd>g</kbd> <kbd>r</kbd>
+        </td>
+        <td>Go to repository/SCM</td>
+      </tr>
+      <tr>
+        <td class="keys">
+          <kbd>g</kbd> <kbd>s</kbd>
+        </td>
+        <td>Go to source</td>
+      </tr>
+      <tr>
+        <td class="keys">
+          <kbd>g</kbd> <kbd>b</kbd>
+        </td>
+        <td>Go to file browse</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+              </div>
+              <div class="modal-footer"></div>
+            </div>
+          </div>
+        </div>
+    </body>
+</html>

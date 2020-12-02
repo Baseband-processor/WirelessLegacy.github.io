@@ -1,0 +1,370 @@
+---
+layout: default
+home_btn: true
+btn_text: true
+footer: true
+toc: false
+footer: false
+---
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>  use Net::Ncap;
+  use Net::DNS::Packet;
+  use FileHandle;
+
+  # output file
+  my $fh = FileHandle-&gt;new(&#39;swag.ncap&#39;, &#39;&gt;&#39;);
+
+  # create ncap object
+  my $nc = Net::Ncap-&gt;new;
+
+  # add a filter specification
+  $ncap-&gt;filter(&#39;dns&#39;);
+
+  # add a network interface for live listening
+  $ncap-&gt;add_if(shift || &#39;eth0&#39;);
+
+  # define the callback
+  sub cb {
+    my $m = shift;
+
+    # save to ncap file
+    $ncap-&gt;write($m, $fh);
+
+    # example of parsing packet
+    my $pkt = Net::DNS::Packet-&gt;new($m-&gt;payload_ref) || return;
+    my $q = ($pkt-&gt;question)[0];
+    my @answers = $pkt-&gt;answer;
+    print join(&#39;,&#39;,
+      $m-&gt;sec,   $m-&gt;nsec,
+      $m-&gt;sip,   $m-&gt;dip,
+      $m-&gt;sport, $m-&gt;dport,
+      $q-&gt;qtype, $q-&gt;qname,
+      @answers ? join(&#39; -- &#39;, map { $_-&gt;string } @answers) : ()
+    ), &quot;\n&quot;;
+  }
+
+  # collect the data
+  $nc-&gt;collect(\&amp;cb);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Net::Ncap is a Perl binding to the ncap(3) network data capture library. The ncap documentation describes itself thusly:</p>
+
+<pre><code>      The ncap library is a high level interface for network
+      data capture. The source of network data can be either
+      live traffic or files containing previously captured or
+      generated data. Files can be in ncap format or in pcap(3)
+      format, and can be either normal binary files or network
+      sockets.</code></pre>
+
+<h1 id="CONSTRUCTOR">CONSTRUCTOR</h1>
+
+<dl>
+
+<dt id="new([maxmsg])"><a id="new"></a><a id="new-maxmsg"></a>new([maxmsg])</dt>
+<dd>
+
+<p>Creates a new Net::Ncap object. Methods are dispatched to their corresponding functions provided by the ncap library.</p>
+
+<p>The optional parameter <i>maxmsg</i> determines the maximum size of an ncap payload that the library is willing to process (default 70000).</p>
+
+</dd>
+</dl>
+
+<h1 id="METHODS">METHODS</h1>
+
+<p>The following methods, for the most part, directly correspond to the functions provided by the ncap library. See <a href="http://man.he.net/man3/ncap">ncap(3)</a> for more details on what these functions do.</p>
+
+<dl>
+
+<dt id="add_if($name,-[$bpf],-[$promisc],-[$vlans])"><a id="add_if"></a><a id="add_if-name---bpf---promisc---vlans"></a>add_if($name, [$bpf], [$promisc], [$vlans])</dt>
+<dd>
+
+<p>Adds a network interface as a data source. The <i>name</i> of the interface is required (e.g. &#39;eth0&#39;). A BPF program can be provided as a string with the <i>bpf</i> parameter (unless an NCAP filter has been provided via the filter() method). <i>promisc</i> determines whether or not the interface is opened in promiscuous mode (default 0). An optional array refererence to VLANs may also be provided for filtering based on tagged 802.1Q frames.</p>
+
+</dd>
+<dt id="drop_if($name)"><a id="drop_if"></a><a id="drop_if-name"></a>drop_if($name)</dt>
+<dd>
+
+<p>Removes the given network interface from the collection pool.</p>
+
+</dd>
+<dt id="add_nf($file,-[$label])"><a id="add_nf"></a><a id="add_nf-file---label"></a>add_nf($file, [$label])</dt>
+<dd>
+
+<p>Adds the given NCAP file as a data source. If <i>file</i> is a reference, it is assumed to be an open file handle and is used directly. Otherwise it is assumed to be a file name and is opened for reading. An optional <i>label</i> can be provided for this source; by default the label is either the filename or file number, depending on what was provided in <i>file</i>.</p>
+
+</dd>
+<dt id="drop_nf($file)"><a id="drop_nf"></a><a id="drop_nf-file"></a>drop_nf($file)</dt>
+<dd>
+
+<p>Removes the given NCAP file as a data source. The provided <i>file</i> can either be the file name, handle, or label (if one was provided).</p>
+
+</dd>
+<dt id="add_pf($file,-[$label])"><a id="add_pf"></a><a id="add_pf-file---label"></a>add_pf($file, [$label])</dt>
+<dd>
+
+<p>Adds the given PCAP file as a data source. <i>file</i> can either be a file name or a file handle. Otherwise identical to add_nf(), including accepting an optional <i>label</i>.</p>
+
+</dd>
+<dt id="drop_pf($file)"><a id="drop_pf"></a><a id="drop_pf-file"></a>drop_pf($file)</dt>
+<dd>
+
+<p>Removes the given PCAP file as a data source. The provided <i>file</i> can either be the file name, handle, or label (if one was provided).</p>
+
+</dd>
+<dt id="add_dg($socket)"><a id="add_dg"></a><a id="add_dg-socket"></a>add_dg($socket)</dt>
+<dd>
+
+<p>Adds the given socket handle as a data source.</p>
+
+</dd>
+<dt id="drop_dg($socket)"><a id="drop_dg"></a><a id="drop_dg-socket"></a>drop_dg($socket)</dt>
+<dd>
+
+<p>Removes the given socket handle as a data source.</p>
+
+</dd>
+<dt id="filter($filter)"><a id="filter"></a><a id="filter-filter"></a>filter($filter)</dt>
+<dd>
+
+<p>Installs an NCAP filter described by the given string. If any BPFs (berkely packet filters) have been installed, this will fail.</p>
+
+</dd>
+<dt id="collect($callback,-[%opts])"><a id="collect"></a><a id="collect-callback---opts"></a>collect($callback, [%opts])</dt>
+<dd>
+
+<p>Collect data from the collection pool, invoking the subroutine referenced by <i>callback</i> for each matching ncap message. There are several named options available:</p>
+
+<dl>
+
+<dt id="polling">polling</dt>
+<dd>
+
+<p>Controls whether collection happens continuously (the default) or once.</p>
+
+</dd>
+<dt id="sigwrap">sigwrap</dt>
+<dd>
+
+<p>Disabled by default. Controls whether signal handlers are installed for SIGHUP, SIGINT, and SIGTERM prior to passing control to the collection loop. Perl only sees these events when it is in context (i.e. during the callback). Until then they are queued by default, until perl can handle them. If you are polling on an interface that is not very busy, or if your filters only occasionally pass an interesting message, it might be a while before perl gets a chance to handle signals. With this option enabled, the program is interruptable. Whatever signal handlers were in place prior to invoking collect are restored once complete.</p>
+
+</dd>
+<dt id="timeout">timeout</dt>
+<dd>
+
+<p>Disabled by default. Specifies a time window for which your callback will be invoked, regardless of whether any messages have matched your filters. In such a case, the message provided to the callback will be undef. Enabling <i>timeout</i> automatically enables <i>sigwrap</i> as described above.</p>
+
+</dd>
+<dt id="timeout_cb">timeout_cb</dt>
+<dd>
+
+<p>Specifies an optional alternate callback reference for <i>timeout</i> induced callbacks, rather than sending undef to the primary callback.</p>
+
+</dd>
+</dl>
+
+</dd>
+<dt id="stop()"><a id="stop"></a>stop()</dt>
+<dd>
+
+<p>Halts the collection loop. There might be a few stray callbacks before the loop actually exits, depending on the granularity configured into the ncap library.</p>
+
+</dd>
+<dt id="write($fh,-[$msg])"><a id="write"></a><a id="write-fh---msg"></a>write($fh, [$msg])</dt>
+<dd>
+
+<p>Writes the given ncap message to the provided file handle in the ncap portable binary format. If no message is provided, a proper file header is written instead.</p>
+
+</dd>
+<dt id="send($socket,-[$msg,-$flags])"><a id="send"></a><a id="send-socket---msg---flags"></a>send($socket, [$msg, $flags])</dt>
+<dd>
+
+<p>Writes the given ncap message to the provided socket handle in the ncap portable binary format. If no Net::Ncap::ncap_msg object is provided, an NCAP file header is written instead. &lt;em&gt;flags&lt;em&gt; are an integer representation of any flags as would be provided to the send(2) function from the socket library (default MSG_DONTROUTE).</p>
+
+</dd>
+</dl>
+
+<h1 id="CALLBACK">CALLBACK</h1>
+
+<dl>
+
+<dt id="callback($msg)"><a id="callback"></a><a id="callback-msg"></a>callback($msg)</dt>
+<dd>
+
+<p>The callback function is handed a single parameter, a reference to a message object. See below for more information. If collection was invoked with either <i>sigwrap</i> or <i>timeout</i> enabled, the callback might be invoked with <code>undef</code>, depending on whether <i>timeout_cb</i> was provided.</p>
+
+<p>The callback can abort the collection loop by invoking the stop() method on the Net::Ncap object.</p>
+
+</dd>
+</dl>
+
+<h1 id="MESSAGE-OBJECTS"><a id="MESSAGE"></a>MESSAGE OBJECTS</h1>
+
+<p>The callback receives references to Net::Ncap::ncap_msg objects. The following accessors, for the most part, correspond to the the information available from the structs comprising an ncap message. See ncap(3) for more information on the low level format.</p>
+
+<dl>
+
+<dt id="label()"><a id="label"></a>label()</dt>
+<dd>
+
+<p>The label associated with this data source. By default this will be the file name or interface name, unless an alternate label was associated with the source.</p>
+
+</dd>
+<dt id="src_packed()"><a id="src_packed"></a>src_packed()</dt>
+<dd>
+
+<p>The source IP address in packed (network byte order) form. (i.e. either either a ip_addr or ip6_addr struct).</p>
+
+</dd>
+<dt id="dst_packed()"><a id="dst_packed"></a>dst_packed()</dt>
+<dd>
+
+<p>The destination IP address in packed (network byte order) form.</p>
+
+</dd>
+<dt id="src()"><a id="src"></a>src()</dt>
+<dd>
+
+<p>Returns an array reference containing the components of the source IP address. For IPv4 these represent the four 32 bit quads, for IPv6 these represent the eight 16-bit components.</p>
+
+</dd>
+<dt id="dst()"><a id="dst"></a>dst()</dt>
+<dd>
+
+<p>Returns an array reference containing the components of the destination IP address, as above.</p>
+
+</dd>
+<dt id="sip()"><a id="sip"></a>sip()</dt>
+<dd>
+
+<p>The source IP address as a string. For IPv4 this is dotted-quad, for IPv6 this is colon-hexadecimal.</p>
+
+</dd>
+<dt id="dip()"><a id="dip"></a>dip()</dt>
+<dd>
+
+<p>The destination IP address as a string, as above.</p>
+
+</dd>
+<dt id="sport()"><a id="sport"></a>sport()</dt>
+<dd>
+
+<p>The source port of the datagram. (undef for icmp)</p>
+
+</dd>
+<dt id="dport()"><a id="dport"></a>dport()</dt>
+<dd>
+
+<p>The destination port of the datagram. (undef for icmp)</p>
+
+</dd>
+<dt id="sec()"><a id="sec"></a>sec()</dt>
+<dd>
+
+<p>The seconds component of the datagram timestamp.</p>
+
+</dd>
+<dt id="nsec()"><a id="nsec"></a>nsec()</dt>
+<dd>
+
+<p>The nanoseconds component of the datagram timestamp.</p>
+
+</dd>
+<dt id="nproto()"><a id="nproto"></a>nproto()</dt>
+<dd>
+
+<p>The numeric network protocol type (IP or IPV6)</p>
+
+</dd>
+<dt id="tproto()"><a id="tproto"></a>tproto()</dt>
+<dd>
+
+<p>The numeric transport protocol type (UDP, TCP, or ICMP)</p>
+
+</dd>
+<dt id="nname()"><a id="nname"></a>nname()</dt>
+<dd>
+
+<p>The network protocol name</p>
+
+</dd>
+<dt id="tname()"><a id="tname"></a>tname()</dt>
+<dd>
+
+<p>The transport protocol name</p>
+
+</dd>
+<dt id="payload()"><a id="payload"></a>payload()</dt>
+<dd>
+
+<p>The binary (network format) record (for example, the DNS record)</p>
+
+</dd>
+<dt id="payload_ref()"><a id="payload_ref"></a>payload_ref()</dt>
+<dd>
+
+<p>A scalar reference to the payload string.</p>
+
+</dd>
+<dt id="user1()"><a id="user1"></a>user1()</dt>
+<dd>
+
+<p>User defined value</p>
+
+</dd>
+<dt id="user2()"><a id="user2"></a>user2()</dt>
+<dd>
+
+<p>User defined value</p>
+
+</dd>
+<dt id="type()"><a id="type"></a>type()</dt>
+<dd>
+
+<p>The ICMP type of the datagram. (undef for udp/tcp)</p>
+
+</dd>
+<dt id="code()"><a id="code"></a>code()</dt>
+<dd>
+
+<p>The ICMP code of the datagram. (undef for udp/tcp)</p>
+
+</dd>
+<dt id="offset()"><a id="offset"></a>offset()</dt>
+<dd>
+
+<p>The TCP offset of the datagram. (undef for icmp/udp)</p>
+
+</dd>
+<dt id="flags()"><a id="flags"></a>flags()</dt>
+<dd>
+
+<p>The TCP flags of the datagram. (undef for icmp/udp)</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p><a href="http://man.he.net/man3/ncap">ncap(3)</a>, <a href="http://man.he.net/man3/pcap">pcap(3)</a>, <a href="/pod/Net::Pcap">Net::Pcap</a></p>
+
+<p>The <code>Net::Ncap</code> project page: <a href="http://tools.netsa.cert.org/wiki/display/tt/Net-Ncap">http://tools.netsa.cert.org/wiki/display/tt/Net-Ncap</a></p>
+
+<p>The ncap library can be downloaded from: <a>ftp://ftp.isc.org/isc/ncap/</a></p>
+
+<p>The pcap library can be downloaded from: <a href="http://www.tcpdump.org/">http://www.tcpdump.org/</a></p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>Matthew Sisk, &lt;sisk@cert.org&gt;</p>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (C) 2009 by Carnegie Mellon University</p>
+
+<p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License, as published by the Free Software Foundation, under the terms pursuant to Version 2, June 1991.</p>
+
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>

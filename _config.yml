@@ -23,7 +23,7 @@ collections:
   Gg:
     output          : true
     permalink       : /:collection/:title/
-    alias           : "Cryptography in Air::Legacy"
+    alias           : "Cryptology in Air::Legacy"
   Cc:
     output          : true
     permalink       : /:collection/:title/

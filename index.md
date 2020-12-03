@@ -16,6 +16,7 @@ permalink: /
 	<div id="loading"> LOADING</div>
 </html>
 
+<body>
 #body {
   background: #111;
   color: #411;
@@ -41,6 +42,7 @@ permalink: /
   display: inline-block;
   padding: 0 10px;
 }
+</body>
 
 <script>
 	alphabet = new Array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0");

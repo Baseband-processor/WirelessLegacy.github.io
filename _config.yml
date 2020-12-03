@@ -67,11 +67,6 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Frequently Asked Questions"
-    order:
-      - Why (not) Python?.html 
-      - Why "Legacy"?.html
-      - Why not stop to lorcon2?.html
-      - can I effectively break the latest wireless security protocols using this library?.html
   Ii:
     output          : true
     permalink       : /:collection/:title/

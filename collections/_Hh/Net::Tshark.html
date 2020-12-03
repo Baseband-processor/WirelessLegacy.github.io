@@ -1,0 +1,145 @@
+---
+layout: default
+home_btn: true
+btn_text: true
+footer: true
+toc: false
+footer: false
+---
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>  use Net::Tshark;
+
+  # Start the capture process, looking for packets containing HTTP requests and responses
+  my $tshark = Net::Tshark-&gt;new;
+  $tshark-&gt;start(interface =&gt; 2, display_filter =&gt; &#39;http&#39;);
+
+  # Do some stuff that would trigger HTTP requests/responses for 30 s
+  sleep 30;
+
+  # Get any packets captured
+  $tshark-&gt;stop;
+  my @packets = $tshark-&gt;get_packets;
+  
+  # Extract packet information by accessing each packet like a nested hash
+  my $src_ip = $packets[0]-&gt;{ip}-&gt;{src};
+  my $dst_ip = $packets[0]-&gt;{ip}-&gt;{dst};</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>A module that uses the command-line tshark utility to capture packets, parse the output, and format the results as perl hash-like structures.</p>
+
+<h2 id="CONSTRUCTOR">CONSTRUCTOR</h2>
+
+<dl>
+
+<dt id="$tshark-=-Net::Tshark-&gt;new()"><a id="tshark---Net::Tshark--new"></a>$tshark = Net::Tshark-&gt;new()</dt>
+<dd>
+
+<p>Returns a newly created <code>Net::Tshark</code> object.</p>
+
+</dd>
+</dl>
+
+<h2 id="METHODS">METHODS</h2>
+
+<dl>
+
+<dt id="$tshark-&gt;start(%options)"><a id="tshark--start-options"></a>$tshark-&gt;start(%options)</dt>
+<dd>
+
+<pre><code>  Parameters:
+  interface      - network interface to use (1, 2, etc)
+  capture_filter - capture filter, as used by tshark
+  display_filter - display filter, as used by tshark
+  duration       - maximum number of seconds to capture packets for
+  promiscuous    - set to 0 to disable promiscuous mode (necessary for some WiFi adapters)</code></pre>
+
+</dd>
+<dt id="$tshark-&gt;stop"><a id="tshark--stop"></a>$tshark-&gt;stop</dt>
+<dd>
+
+<p>Terminates the tshark process, stopping any further packet capture. You may still execute <code>get_packets</code> after the tshark process has terminated.</p>
+
+</dd>
+<dt id="$tshark-&gt;is_running"><a id="tshark--is_running"></a>$tshark-&gt;is_running</dt>
+<dd>
+
+<p>Returns a true value if the tshark process is running, or a false value if the tshark process is not running.</p>
+
+</dd>
+<dt id="$tshark-&gt;get_packet"><a id="tshark--get_packet"></a>$tshark-&gt;get_packet</dt>
+<dd>
+
+<p>Retrieves the next available captured packet, or returns undef if no packets are available. Packets are <code>Net::Tshark::Packet</code> objects, which implement much of the same interface as native hashes. Therefore, you can dereference <code>Net::Tshark::Packet</code> objects much as you would nested hashes. In fact, you can even cast a <code>Net::Tshark::Packet</code> object to a real hash:</p>
+
+<pre><code>  # Get a packet and access its fields directly
+  my $packet = $tshark-&gt;get_packet;
+  print &quot;The dst IP is $packet-&gt;{ip}-&gt;{dst}\n&quot;;
+
+  # Deep-copy the packet object and store its fields in a native hash
+  my %packet_hash = %{$packet-&gt;hash};
+  print &quot;The src IP is $packet_hash{ip}-&gt;{src}\n&quot;;</code></pre>
+
+</dd>
+<dt id="$tshark-&gt;get_packets"><a id="tshark--get_packets"></a>$tshark-&gt;get_packets</dt>
+<dd>
+
+<p>Retrieves all available captured packets, or returns an empty list if no packets are available.</p>
+
+<pre><code>  # Get a list of the source ips of all captured IP packets
+  my @packets = $tshark-&gt;get_packets;
+  my @src_ips = map { $_-&gt;{ip}-&gt;{src} } grep { defined $_-&gt;{ip} } @packets;
+ </code></pre>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p>Net::Pcap - Interface to pcap(3) LBL packet capture library</p>
+
+<p>Net::Sharktools - Use Wireshark&#39;s packet inspection capabilities in Perl</p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>Zachary Blair, &lt;zblair@cpan.org&gt;</p>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (C) 2012 by Zachary Blair</p>
+
+<p>This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself, either Perl version 5.8.8 or, at your option, any later version of Perl 5 you may have available.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::Tshark, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::Tshark
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::Tshark
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+  </div>
+</div>
+
+<img src="https://media3.giphy.com/media/ADiOs8AqeverrAuT4Q/giphy.gif" alt="drawing" width="2000"/>

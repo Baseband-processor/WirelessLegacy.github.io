@@ -12,8 +12,6 @@ encrypted_text: false
 permalink: /
 ---
 
-<div id="loading"> LOADING</div>
-
 <img src="https://static.wixstatic.com/media/d41190_4c5ebba9c3604c4a8947e3945dcd4d55~mv2.gif" alt="drawing" width="2000"/>
 
 *Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks*

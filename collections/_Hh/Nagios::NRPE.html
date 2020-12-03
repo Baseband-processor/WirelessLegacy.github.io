@@ -1,0 +1,91 @@
+---
+layout: default
+home_btn: true
+btn_text: true
+footer: true
+toc: false
+footer: false
+---
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> # Executing a check on an NRPE-Server
+ use Nagios::NRPE::Client;
+
+ my $client = Nagios::NRPE::Client-&gt;new( host =&gt; &quot;localhost&quot;, check =&gt; &#39;check_cpu&#39;);
+ my $response = $client-&gt;run();
+ if(defined $response-&gt;{error}) {
+   print &quot;ERROR: Couldn&#39;t run check &quot;.$client-&gt;check().&quot; because of: &quot;.$response-&gt;{reason}.&quot;\n&quot;;
+ } else {
+   print $response-&gt;{status}.&quot;\n&quot;;
+ }
+
+ # Reading and Writing Nagios NRPE Packets
+
+ use IO::Socket;
+ use IO::Socket::INET;
+ # Import necessary constants into Namespace
+ use Nagios::NRPE::Packet qw(NRPE_PACKET_VERSION_3
+                             NRPE_PACKET_QUERY
+                             STATE_UNKNOWN
+                             STATE_CRITICAL
+                             STATE_WARNING
+                             STATE_OK);
+
+ my $packet = Nagios::NRPE::Packet-&gt;new();
+
+ my $socket = IO::Socket::INET-&gt;new(
+                    PeerAddr =&gt; $host,
+                    PeerPort =&gt; $port,
+                    Proto    =&gt; &#39;tcp&#39;,
+                    Type     =&gt; SOCK_STREAM) or die &quot;ERROR: $@ \n&quot;;
+
+ print $socket $packet-&gt;assemble(type =&gt; NRPE_PACKET_QUERY,
+                              buffer =&gt; &quot;check_load 1 2 3&quot;,
+                              version =&gt; NRPE_PACKET_VERSION_3 );
+
+ my $data = &lt;$socket&gt;;
+ my $response = $packet-&gt;disassemble($data);
+
+ print $response-&gt;{buffer};</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This file currently only serves as a stub so Build.PL will find it. For more information on the submodules please read <a href="/pod/Nagios::NRPE::Client">Nagios::NRPE::Client</a> or <a href="/pod/Nagios::NRPE::Packet">Nagios::NRPE::Packet</a> or <a href="/pod/Nagios::NRPE::Daemon">Nagios::NRPE::Daemon</a>.</p>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>This software is copyright (c) 2013-2018 by the authors (see <a href="https://github.com/stockholmuniversity/Nagios-NRPE/blob/master/AUTHORS">AUTHORS</a> file).</p>
+
+<p>This is free software; you can redistribute it and/or modify it under the same terms as the Perl 5 programming language system itself.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Nagios::NRPE, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Nagios::NRPE
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Nagios::NRPE
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+  </div>
+</div>
+<img src="https://media3.giphy.com/media/ADiOs8AqeverrAuT4Q/giphy.gif" alt="drawing" width="2000"/>

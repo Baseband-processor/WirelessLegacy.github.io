@@ -24,41 +24,41 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     alias           : "AirPwn in Air::Legacy"
-  Gg:
+  Hh:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Cryptology in Air::Legacy"
-  Cc:
-    output          : true
-    permalink       : /:collection/:title/
-    sort_by         : date
-    alias           : "Reaver in Air::Legacy"
-  Ee:
-    output          : true
-    permalink       : /:collection/:title/
-    sort_by         : date
-    alias           : "Wireless-Tools in Air::Legacy" 
-  Aa:
-    output          : true
-    permalink       : /:collection/:title/
-    sort_by         : date
-    alias           : "Lorcon2 in Air::Legacy"
   Dd:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
-    alias           : "Formal methods in Air::Legacy"
-  Bb:
-    output          : true
-    permalink       : /:collection/:title/
-    sort_by         : date
-    alias           : "Airpcap in Air::Legacy"
+    alias           : "Reaver in Air::Legacy"
   Ff:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
+    alias           : "Wireless-Tools in Air::Legacy" 
+  Bb:
+    output          : true
+    permalink       : /:collection/:title/
+    sort_by         : date
+    alias           : "Lorcon2 in Air::Legacy"
+  Ee:
+    output          : true
+    permalink       : /:collection/:title/
+    sort_by         : date
+    alias           : "Formal methods in Air::Legacy"
+  Cc:
+    output          : true
+    permalink       : /:collection/:title/
+    sort_by         : date
+    alias           : "Airpcap in Air::Legacy"
+  Gg:
+    output          : true
+    permalink       : /:collection/:title/
+    sort_by         : date
     alias           : "OSdep in Air::Legacy"
-  Hh:
+  Ii:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date

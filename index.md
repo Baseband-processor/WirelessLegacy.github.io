@@ -16,34 +16,8 @@ permalink: /
 	<div id="loading"> LOADING</div>
 </html>
 
-<body>
-#body {
-  background: #111;
-  color: #411;
-  font-family: Consolas, Courier, monospace;
-  font-size: 60px;
-  text-shadow: 0 0 15px #411;
-  height: 100%;
-}
 
-#div {
-  position: relative;
-  top: 50%;
-  margin: -30px auto;
-  text-align: center;
-}
-
-#.glow {
-  color: #f00;
-  text-shadow: 0px 0px 10px #f00;
-}
-
-#span {
-  display: inline-block;
-  padding: 0 10px;
-}
-</body>
-
+<html>
 <script>
 	alphabet = new Array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
 letter_count = 0;
@@ -89,6 +63,7 @@ function reset() {
   $("span").removeClass("glow");
 }
 </script>
+</html>
 
 <img src="https://static.wixstatic.com/media/d41190_4c5ebba9c3604c4a8947e3945dcd4d55~mv2.gif" alt="drawing" width="2000"/>
 

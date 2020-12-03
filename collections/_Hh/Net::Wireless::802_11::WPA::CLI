@@ -1,0 +1,516 @@
+ ---
+layout: default
+home_btn: true
+btn_text: true
+footer: true
+toc: false
+footer: false
+---
+
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>    use Net::Wireless::802_11::WPA::CLI;
+
+    my $foo = Net::Wireless::802_11::WPA::CLI-&gt;new();
+    ...</code></pre>
+
+<h1 id="FUNCTIONS">FUNCTIONS</h1>
+
+<h2 id="new">new</h2>
+
+<p>This initializes the object to be used for making use of wpa_cli.</p>
+
+<pre><code>    my $foo-&gt;Net::Wireless::802_11::WPA::CLI-&gt;new();
+    if( $foo-&gt;error ){
+            warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="add_network">add_network</h2>
+
+<p>This adds a network.</p>
+
+<p>No arguments are taken.</p>
+
+<p>The returned value is a the new network ID.</p>
+
+<pre><code>        $newNetworkID=$foo-&gt;add_network;
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="bss">bss</h2>
+
+<p>This requests additional information about a AP found in scan_results.</p>
+
+<p>A single argument is required and it is the BSSID.</p>
+
+<p>The returned value is a hash.</p>
+
+<h3 id="returned-hash"><a id="returned"></a>returned hash</h3>
+
+<h4 id="bssid">bssid</h4>
+
+<p>This is the BSSID in for the base station ID.</p>
+
+<h4 id="freq">freq</h4>
+
+<p>This is the frequency in Mhz.</p>
+
+<h4 id="beacon_int">beacon_int</h4>
+
+<p>This is the beacon interval.</p>
+
+<h4 id="capabilities">capabilities</h4>
+
+<p>This is the AP capabilities.</p>
+
+<h4 id="qual">qual</h4>
+
+<p>This is the signal quality.</p>
+
+<h4 id="noise">noise</h4>
+
+<p>This is the signal noise level.</p>
+
+<h4 id="level">level</h4>
+
+<p>This is the RSSI.</p>
+
+<h4 id="tsf">tsf</h4>
+
+<p>This is the timing syncronization function.</p>
+
+<h4 id="ie">ie</h4>
+
+<p>This is what ever the ie value is.</p>
+
+<h4 id="flags">flags</h4>
+
+<p>This is the flags for the AP.</p>
+
+<h4 id="ssid">ssid</h4>
+
+<p>This is the SSID for the for AP in question.</p>
+
+<pre><code>    my %status=$foo-&gt;bss($bssid);
+    if( $foo-&gt;error ){
+            warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }
+    </code></pre>
+
+<h2 id="disconnect">disconnect</h2>
+
+<p>Disconnect and wait for a reassosiate command.</p>
+
+<p>No arguments are taken.</p>
+
+<pre><code>        $return=$foo-&gt;disconnect;
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="disable_network">disable_network</h2>
+
+<p>This disables a network ID.</p>
+
+<p>One argument is required and that is the network ID in question.</p>
+
+<pre><code>        $foo-&gt;disable_network($networkID)
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="enable_network">enable_network</h2>
+
+<p>This enables a network ID.</p>
+
+<p>One argument is required and that is the network ID to enable.</p>
+
+<pre><code>        $foo-&gt;enable_network($networkID)
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="get_capability">get_capability</h2>
+
+<p>This returns the capabilities for the requested item. The capabilities that can be requested are as below.</p>
+
+<pre><code>    eap
+    pairwise
+    group
+    key_mgmt
+    proto
+    auth_alg</code></pre>
+
+<p>No arguments are taken.</p>
+
+<pre><code>        my @capabilities=$foo-&gt;get_capability(&#39;eap&#39;);
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="get_network">get_network</h2>
+
+<p>This gets a variable for for a specific network ID.</p>
+
+<p>Two arguments are taken and that is the network ID and variable.</p>
+
+<pre><code>        $value=$foo-&gt;get_network($networkID, $variable);
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="list_networks">list_networks</h2>
+
+<p>This lists the configured networks.</p>
+
+<p>No arguments are taken.</p>
+
+<p>The returned value is a hash.</p>
+
+<h3 id="returned-hash."><a id="returned1"></a><a id="returned-hash1"></a>returned hash.</h3>
+
+<p>The keys for the hash is the numeric network ID. Each item in the hash is a hash. The keys are listed below.</p>
+
+<h4 id="ssid1">ssid</h4>
+
+<p>This is the SSID of the network in question.</p>
+
+<h4 id="bssid1">bssid</h4>
+
+<p>This is the BSSID of the network in question. If not specified, it will be set to &#39;any&#39;.</p>
+
+<h4 id="flags1">flags</h4>
+
+<p>This is the flags for the network. This key may not be defined.</p>
+
+<pre><code>        %return=$foo-&gt;list_networks;
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="new_password">new_password</h2>
+
+<p>This sets a new password for a network.</p>
+
+<p>Two arguments are taken. The first is the network ID and the second is the new password.</p>
+
+<pre><code>        $return=$foo-&gt;new_password($networkID, $newpass);
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="pin">pin</h2>
+
+<p>This sets the pin for a network.</p>
+
+<p>Two arguments are taken. The first is the network ID and the second is the pin.</p>
+
+<pre><code>        $foo-&gt;pin($networkID, $newpin);
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="preauthenticate">preauthenticate</h2>
+
+<p>Force preauthentication for a BSSID.</p>
+
+<p>One argument is accepted and the is the BSSID in question.</p>
+
+<pre><code>        $foo-&gt;preauthenticate($BSSID);
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="reassociate">reassociate</h2>
+
+<p>This saves the current configuration. The user requesting this does not need write permissions to file being used</p>
+
+<p>It takes no arguments.</p>
+
+<pre><code>    $foo-&gt;reassociate;
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="reconfigure">reconfigure</h2>
+
+<p>This causes wpa_supplicant to reread it&#39;s configuration file.</p>
+
+<p>No arguments are taken.</p>
+
+<pre><code>        $return=$obj-&gt;reconfigure;
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="remove_network">remove_network</h2>
+
+<p>This removes the specified network.</p>
+
+<p>One argument is accepted and it the network ID.</p>
+
+<pre><code>        $return=$foo-&gt;remove_network($networkID)
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="save_config">save_config</h2>
+
+<p>This saves the current configuration. The user requesting this does not need write permissions to file being used</p>
+
+<p>No arguments are taken.</p>
+
+<pre><code>        my $returned=$foo-&gt;save_config;
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="scan">scan</h2>
+
+<p>This requests a new BSS scan.</p>
+
+<p>No arguments are taken.</p>
+
+<pre><code>        my $returned=$foo-&gt;scan;
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="scan_results">scan_results</h2>
+
+<p>This returns the scan results.</p>
+
+<p>No arguments are taken.</p>
+
+<p>The returned value is a hash.</p>
+
+<h3 id="returned-hash2"><a id="returned2"></a>returned hash</h3>
+
+<p>Each keys of the hash is a BSSID. It&#39;s value is another hash with the keys listed below.</p>
+
+<h4 id="ssid2">ssid</h4>
+
+<p>This is the SSID for the AP.</p>
+
+<h4 id="frequency">frequency</h4>
+
+<p>This is the frequency of the AP. The value is in Mhz.</p>
+
+<h4 id="signallevel">signallevel</h4>
+
+<p>This is the signal level of the seen AP.</p>
+
+<h4 id="flags2">flags</h4>
+
+<p>This is the flags for the AP.</p>
+
+<pre><code>        my %scan=$foo-&gt;scan_results;
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }else{
+        
+        print &quot;BSSID, SSID, FREQ, SIGNAL, FLAGS\n&quot;;
+        
+        my @keys=keys(%scan);
+        my $int=0;
+        while( defined( $keys[$int] ) ){
+            print $keys[$int].&#39;, &#39;.$scan{$keys[$int]}{ssid}.&#39;, &#39;.
+                $scan{$keys[$int]}{frequency}.&#39;, &#39;
+                .$scan{$keys[$int]}{signal}.&#39;, &#39;
+                .$scan{$keys[$int]}{flags};
+            
+            $int++;
+        }
+    }</code></pre>
+
+<h2 id="select_network">select_network</h2>
+
+<p>This is the network ID to select, while disabling the others.</p>
+
+<p>One argument is accepted and it is the network ID to select.</p>
+
+<pre><code>        $return=$foo-&gt;select_network($networkID)
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="set_network">set_network</h2>
+
+<p>This sets a variable for for a specific network ID.</p>
+
+<p>Three arguments are taken. The first is the network ID, the second is the variable to set, and the third is the value to set it to.</p>
+
+<pre><code>        $foo-&gt;set_network($networkID, $variable, $value);
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="status">status</h2>
+
+<p>This function gets the current status from wpa_cli.</p>
+
+<p>No arguments are taken.</p>
+
+<pre><code>    my %status=$foo-&gt;status;
+    if( $foo-&gt;error ){
+            warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }
+    </code></pre>
+
+<h2 id="mib">mib</h2>
+
+<p>This gets the MIB variables (dot1x, dot11).</p>
+
+<pre><code>        %return=$foo-&gt;mib;
+    if( $foo-&gt;error ){
+            warn(&#39;error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+        }</code></pre>
+
+<h2 id="run_TF_command">run_TF_command</h2>
+
+<p>This runs a arbirary command in which the expected values are either &#39;FAIL&#39; or &#39;OK&#39;. This function is largely intended for internal use by this module.</p>
+
+<p>It takes two argument. The first is string containing the command and any arguments for it. The second is what to return on a unknown return.</p>
+
+<p>A status of &#39;FAIL&#39; will also set a error of 5.</p>
+
+<p>A unknown status will also set a error of 6.</p>
+
+<pre><code>        $returned=$foo-&gt;run_TF_command($command, 0);
+    if( $foo-&gt;error ){
+            warn(&#39;error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+        }</code></pre>
+
+<h2 id="run_command">run_command</h2>
+
+<p>This runs a arbirary command in which. This function is largely intended for internal use by this module.</p>
+
+<p>It takes argument, which is string containing the command and any arguments for it.</p>
+
+<p>UNDEF is returned upon with running wpa_cli. Otherwise the return is the return from executed command.</p>
+
+<pre><code>        $returned=$foo-&gt;run_command($command)
+    if( $foo-&gt;error ){
+        warn(&#39;Error:&#39;.$foo-&gt;error.&#39;: &#39;.$foo-&gt;errorString);
+    }</code></pre>
+
+<h2 id="status_breakdown">status_breakdown</h2>
+
+<p>This is a internal function.</p>
+
+<h1 id="NOTES">NOTES</h1>
+
+<p>This makes use of wpa_cli in a non-interactive form. This means that interface and otp are not usable.</p>
+
+<p>Better documentation and etc shall be coming shortly. Publishing this and starting work on something that uses it in it&#39;s current form.</p>
+
+<h1 id="ERROR-CODES"><a id="ERROR"></a>ERROR CODES</h1>
+
+<h2 id="1"><a id="pod"></a>1</h2>
+
+<p>Unable to to initialize the object. A wpa_cli status check failed.</p>
+
+<p>This error is permanent.</p>
+
+<h2 id="2"><a id="pod1"></a>2</h2>
+
+<p>Status breakdown failed because of a unexpected return.</p>
+
+<h2 id="3"><a id="pod2"></a>3</h2>
+
+<p>Command failed and exited with a non-zero.</p>
+
+<h2 id="4"><a id="pod3"></a>4</h2>
+
+<p>Invalid argument supplies.</p>
+
+<h2 id="5"><a id="pod4"></a>5</h2>
+
+<p>The executed command exited with zero, but still failed.</p>
+
+<p>This error code is not warned for.</p>
+
+<h2 id="6"><a id="pod5"></a>6</h2>
+
+<p>Unknown return.</p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>Zane C. Bowers-Hadley, <code>&lt;vvelox at vvelox.net&gt;</code></p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Please report any bugs or feature requests to <code>bug-net-wireless-802_11--wpa-cli at rt.cpan.org</code>, or through the web interface at <a href="http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Net-Wireless-802_11-WPA-CLI">http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Net-Wireless-802_11-WPA-CLI</a>. I will be notified, and then you&#39;ll automatically be notified of progress on your bug as I make changes.</p>
+
+<h1 id="SUPPORT">SUPPORT</h1>
+
+<p>You can find documentation for this module with the perldoc command.</p>
+
+<pre><code>    perldoc Net::Wireless::802_11::WPA::CLI</code></pre>
+
+<p>You can also look for information at:</p>
+
+<ul>
+
+<li><p>RT: CPAN&#39;s request tracker</p>
+
+<p><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-Wireless-802_11-WPA-CLI">http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-Wireless-802_11-WPA-CLI</a></p>
+
+</li>
+<li><p>AnnoCPAN: Annotated CPAN documentation</p>
+
+<p><a href="http://annocpan.org/dist/Net-Wireless-802_11-WPA-CLI">http://annocpan.org/dist/Net-Wireless-802_11-WPA-CLI</a></p>
+
+</li>
+<li><p>CPAN Ratings</p>
+
+<p><a href="http://cpanratings.perl.org/d/Net-Wireless-802_11-WPA-CLI">http://cpanratings.perl.org/d/Net-Wireless-802_11-WPA-CLI</a></p>
+
+</li>
+<li><p>Search CPAN</p>
+
+<p><a href="http://search.cpan.org/dist/Net-Wireless-802_11-WPA-CLI">http://search.cpan.org/dist/Net-Wireless-802_11-WPA-CLI</a></p>
+
+</li>
+</ul>
+
+<h1 id="ACKNOWLEDGEMENTS">ACKNOWLEDGEMENTS</h1>
+
+<h1 id="COPYRIGHT-&amp;-LICENSE"><a id="COPYRIGHT"></a><a id="COPYRIGHT---LICENSE"></a>COPYRIGHT &amp; LICENSE</h1>
+
+<p>Copyright 2011 Zane C. Bowers-Hadley, all rights reserved.</p>
+
+<p>This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::Wireless::802_11::WPA::CLI, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::Wireless::802_11::WPA::CLI
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::Wireless::802_11::WPA::CLI
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+  </div>
+</div>
+<img src="https://media3.giphy.com/media/ADiOs8AqeverrAuT4Q/giphy.gif" alt="drawing" width="2000"/>

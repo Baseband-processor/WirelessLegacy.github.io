@@ -61,17 +61,21 @@ collections:
   Ii:
     output          : true
     permalink       : /:collection/:title/
-    sort_by         : date
-    alias           : "Suggested perl libraries"
+    alias           : "Fuzzing in Air::Legacy"
   Jj:
     output          : true
     permalink       : /:collection/:title/
-    alias           : "Frequently Asked Questions"
+    sort_by         : date
+    alias           : "Suggested perl libraries"
   Ll:
     output          : true
     permalink       : /:collection/:title/
-    alias           : "Air::Legacy updates"
+    alias           : "Frequently Asked Questions"
   Kk:
+    output          : true
+    permalink       : /:collection/:title/
+    alias           : "Air::Legacy updates"
+  Nn:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Download"

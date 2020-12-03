@@ -1,0 +1,172 @@
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>    use Net::Sharktools qw(perlshark_read);
+
+    my $frames = perlshark_read(
+        filename =&gt; &#39;capture1.pcap&#39;,
+        fieldnames =&gt; [qw( 
+            frame.number 
+            ip.version
+            tcp.seq
+            udp.dstport
+            frame.len
+        )],
+        dfilter =&gt; &#39;ip.version eq 4&#39;
+        # optional decode_as
+    );</code></pre>
+
+<p>or</p>
+
+<pre><code>    use Net::Sharktools qw(perlshark_read_xs);
+
+    my $frames = perlshark_read_xs(
+        &#39;capture1.pcap&#39;,
+        [qw( 
+            frame.number 
+            ip.version
+            tcp.seq
+            udp.dstport
+            frame.len
+        )],
+        &#39;ip.version eq 4&#39;
+        # optional decode_as
+    );</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p><code>Net::Sharktools</code> is an adaptation of the Python interface provided with the <code>Sharktools</code> package which is a &quot;small set of tools that allow use of Wireshark&#39;s deep packet inspection capabilities in interpreted programming languages.&quot;</p>
+
+<p>Sharktools can be obtained obtained Armen Babikyan&#39;s web site at <a href="http://www.mit.edu/~armenb/sharktools/">http://www.mit.edu/~armenb/sharktools/</a>. To use <code>Net::Sharktools</code>, you must first build the Sharktools C library successfully as described in the README for the Sharktools package (the version of this file bundled with Sharktools v.0.1.5 is included in this module for your reference).</p>
+
+<p><code>Net::Sharktools</code> is almost a direct translation of the Python interface <code>pyshark</code> included with Sharktools.</p>
+
+<h1 id="BUILD-and-INSTALLATION"><a id="BUILD"></a>BUILD and INSTALLATION</h1>
+
+<p>Sharktools is closely coupled with the internals of Wireshark. Before attempting to build <code>Net::Sharktools</code>, you should ensure that you are able to build and run the Python module <code>pyshark</code> distributed with Sharktools. Note that you should use <code>python2</code> to test <code>pyshark</code>.</p>
+
+<p>The build process for Sharktools requires you to install Wireshark and also have the full source tree for Wireshark accessible. You will need the same to build Sharktools as well.</p>
+
+<p>Currently, the <code>Makefile.PL</code> for <code>Net::Sharktools</code> makes no attempt to automatically deduce the locations for your WireShark and Sharktools distributions. You will need to provide that information.</p>
+
+<p>You can do that by specifying command line options when you generate the Makefile:</p>
+
+<pre><code>    perl Makefile.PL --PREFIX=/install/path \
+        --sharktools-src /home/user/sharktools-0.1.5/src \
+        --wireshark-src /home/user/shark/wireshark-1.4.3 \
+        [ --lib-path /additional/library/paths ] \
+        [ --inc-path /additional/include/paths ]</code></pre>
+
+<p><code>--inc-path</code> and <code>--lib-path</code> are array valued options, so they can be specified multiple times on the command line.</p>
+
+<p>You should definitely specify those (in addition to the Sharktools and Wireshark source directories) if you encounter any difficulties related to locating glib headers and/or glib and Wireshark libraries on your system.</p>
+
+<p>I used <code>Devel::CheckLib</code> to perform a sanity check prior to WriteMakefile using a select few headers and libraries. If the checks fail, no Makefile will be generated. Ensure that you have the requisite libraries installed, make sure you have built Sharktools according to its instructions prior to attempting to build Net::Sharktools, and specified the correct paths when invoking Makefile.PL.</p>
+
+<p>Once a Makefile is generated, you can do:</p>
+
+<pre><code>    make
+    make test
+    make install</code></pre>
+
+<h1 id="EXPORT">EXPORT</h1>
+
+<p>The module does not export any functions by default. You can request either <code>perlshark_read</code> which accepts arguments in a hash ref or as a flattened hash or <code>perlshark_read_xs</code> which expects positional arguments.</p>
+
+<h2 id="perlshark_read">perlshark_read</h2>
+
+<p>You can either pass the arguments to this function in a hashref or as a flattened hash. The function does some argument checking and passes the arguments in the correct order to <code>perlshark_read_xs</code> which uses positional arguments.</p>
+
+<p>The arguments are:</p>
+
+<dl>
+
+<dt id="filename">filename</dt>
+<dd>
+
+<p>The name of the capture file to be analyzed.</p>
+
+</dd>
+<dt id="fieldnames">fieldnames</dt>
+<dd>
+
+<p>The names of the fields to be extracted.</p>
+
+</dd>
+<dt id="dfilter">dfilter</dt>
+<dd>
+
+<p>Filter expressions to apply.</p>
+
+</dd>
+<dt id="decode_as">decode_as</dt>
+<dd>
+
+<p>From Sharktools README:</p>
+
+<p>Wireshark&#39;s packet dissection engine uses a combination of heuristics and convention to determine what dissector to use for a particular packet. For example, IP packets with TCP port 80 are, by default, parsed as HTTP packets. If you wish to have TCP port 800 packets parsed as HTTP packets, you need to tell the Wireshark engine your explicit intent.</p>
+
+<p>Wireshark adds a &quot;decode as&quot; feature in its GUI that allows for users to specify this mapping (Analyze Menu -&gt; Decode As...). Sharktools attempts to provide a basic interface to this feature as well. By adding a 4th (optional) argument to both the matshark and pyshark commands, a user can achieve the desired effect. For example, the following &quot;decode as&quot; string will parse TCP port 60000 packets as HTTP packets: &#39;tcp.port==60000,http</p>
+
+</dd>
+</dl>
+
+<h2 id="perlshark_read_xs">perlshark_read_xs</h2>
+
+<p>This is the XS routine. It expects 3 or 4 positional arguments.</p>
+
+<pre><code>    perlshark_read_xs(
+        $filename, 
+        [qw( field1 ... fieldn )],
+        $dfilter,
+        $decode_as, # optional
+    );</code></pre>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p>Sharktools <a href="http://www.mit.edu/~armenb/sharktools/">http://www.mit.edu/~armenb/sharktools/</a> and Wireshark <a href="http://www.wireshark.org">http://www.wireshark.org</a>.</p>
+
+<h1 id="ACKNOWLEDGEMENTS">ACKNOWLEDGEMENTS</h1>
+
+<p>The XS code is a straightforward translation of the Python interface provided in pyshark.c</p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>A. Sinan Unur, &lt;nanis@cpan.org&gt;</p>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (C) 2011 by The Perl Review, LLC</p>
+
+<p>This work was sponsored by brian d foy and The Perl Review.</p>
+
+<p>This module is free software. You can redistribute it and/or modify it under the terms of GNU General Public License, version 2. See <a href="http://www.gnu.org/licenses/gpl-2.0.html">http://www.gnu.org/licenses/gpl-2.0.html</a></p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::Sharktools, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::Sharktools
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::Sharktools
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+  </div>
+</div>

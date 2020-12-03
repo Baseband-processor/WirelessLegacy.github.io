@@ -17,7 +17,7 @@ permalink: /
 <head>
 <link rel="stylesheet" href="mystyle.css">
 </head>
-<body>
+</html>
 
 <img src="https://static.wixstatic.com/media/d41190_4c5ebba9c3604c4a8947e3945dcd4d55~mv2.gif" alt="drawing" width="2000"/>
 

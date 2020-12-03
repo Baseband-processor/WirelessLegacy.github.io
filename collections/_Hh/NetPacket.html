@@ -1,0 +1,123 @@
+---
+layout: default
+home_btn: true
+btn_text: true
+footer: true
+toc: false
+footer: false
+---
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>    # NetPacket is a base class only</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p><code>NetPacket</code> provides a base class for a cluster of modules related to decoding and encoding of network protocols. Each <code>NetPacket</code> descendent module knows how to encode and decode packets for the network protocol it implements. Consult the documentation for the module in question for protocol-specific implementation.</p>
+
+<p>Note that there is no inheritance in the <code>NetPacket::</code> cluster of modules other than each protocol module being a <code>NetPacket</code>. This was seen to be too restrictive as imposing inheritance relationships (for example between the IP, UDP and TCP protocols) would make things like tunneling or other unusual situations difficult.</p>
+
+<h1 id="WRITING-YOUR-OWN-NetPacket::-MODULE"><a id="WRITING"></a>WRITING YOUR OWN <code>NetPacket::</code> MODULE</h1>
+
+<p>You are encouraged to write additional <code>NetPacket::</code> modules as well as improve existing ones. Contact the maintainer of the module in question with your suggestions or changes.</p>
+
+<p>The following sections are a list of suggestions and conventions for writing a <code>NetPacket::</code> module.</p>
+
+<h2 id="Naming-Conventions"><a id="Naming"></a>Naming Conventions</h2>
+
+<p>When creating a module in the <code>NetPacket::</code> namespace, it is suggested that you stick to a couple of conventions when naming packet contents. This will hopefully lead to a consistent namespace making the <code>NetPacket::</code> easier to use.</p>
+
+<p>Content names are all lowercase, with underscores separating multiple words. The following abbreviations are recommended:</p>
+
+<pre><code>            Word                Abbreviation
+            --------------------------------
+            source              src
+            destination         dest
+            checksum            cksum
+            identifier          id
+            version             ver
+            protocol            proto          </code></pre>
+
+<h2 id="Required-Methods"><a id="Required"></a>Required Methods</h2>
+
+<p>encode(), decode(), strip()</p>
+
+<h2 id="Required-Fields"><a id="Required1"></a>Required Fields</h2>
+
+<p>Every NetPacket:: object should have the following fields.</p>
+
+<dl>
+
+<dt id="_parent"><a id="parent"></a>_parent</dt>
+<dd>
+
+<p>A link to the parent <code>NetPacket::</code> object in which this <code>NetPacket::</code> object is encaulated. This field is undefined if there is no parent object.</p>
+
+</dd>
+<dt id="_frame"><a id="frame"></a>_frame</dt>
+<dd>
+
+<p>A copy of the raw data of the packet.</p>
+
+</dd>
+<dt id="data">data</dt>
+<dd>
+
+<p>This field should contain the data encapsulated in the packet (i.e any headers or trailers stripped off) or undef if the packet contains no data. Note that in this sense, &quot;data&quot; is taken to mean information not relevant to the particular protocol being decoded. For example, an ARP packet contains many header fields but no data. A UDP datagram, however contains header fields and a payload.</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p>Joel Knight has a patch for NetPacket for IPv6 support available at http://www.packetmischief.ca/code/netpacket/.</p>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (c) 2001 Tim Potter and Stephanie Wehner.</p>
+
+<p>Copyright (c) 1995,1996,1997,1998,1999 ANU and CSIRO on behalf of the participants in the CRC for Advanced Computational Systems (&#39;ACSys&#39;).</p>
+
+<p>This module is free software. You can redistribute it and/or modify it under the terms of the Artistic License 2.0.</p>
+
+<p>This program is distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability or fitness for a particular purpose.</p>
+
+<h1 id="AUTHORS">AUTHORS</h1>
+
+<p>Tim Potter &lt;tpot@samba.org&gt;</p>
+
+<p>Stephanie Wehner &lt;atrak@itsx.com&gt;</p>
+
+<p>Yanick Champoux &lt;yanick@cpan.org&gt;</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install NetPacket, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm NetPacket
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install NetPacket
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+  </div>
+</div>
+
+<img src="https://media3.giphy.com/media/ADiOs8AqeverrAuT4Q/giphy.gif" alt="drawing" width="2000"/>

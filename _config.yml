@@ -54,28 +54,28 @@ Gg:
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "OSdep in Air::Legacy"
-  Hh:
+Hh:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Cryptology in Air::Legacy"
-  Ii:
+Ii:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Suggested perl libraries"
-  Jj:
+Jj:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Frequently Asked Questions"
-  Ll:
+Ll:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Air::Legacy updates"
-  Kk:
+Kk:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Download"
-  Zz:
+Zz:
     output          : true
     permalink       : /:collection/:title/
     alias           : "About the Authors"

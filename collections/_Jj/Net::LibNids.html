@@ -1,0 +1,288 @@
+---
+layout: default
+home_btn: true
+btn_text: true
+footer: true
+toc: false
+footer: false
+---
+
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>  use Net::LibNIDS;
+  Net::LibNIDS::param::set_device(&#39;en1&#39;);  #set which device to use, see pcap documentation
+  Net::LibNIDS::init();                    # processes all parameters
+  Net::LibNIDS::tcp_callback(\&amp;collector ); # a callback to be called for each packet
+  Net::LibNIDS::run();                      # start the collection
+  sub collector {
+    my $connection = shift;
+    if($connection-&gt;state == Net::LibNIDS::NIDS_JUST_EST()) {
+       $connection-&gt;server-&gt;collect_on;  #start tracing data from server     
+       $connection-&gt;client-&gt;collect_on;  #start tracing data from server     
+    }
+    if($connect-&gt;state == Net::LibNIDS::NIDS_DATA()) {
+       if($connection-&gt;client-&gt;count_new) {
+         print &quot;&gt;&quot; . $connection-&gt;client-&gt;data;
+       } else {
+         print &quot;&lt;&quot; . $connection-&gt;server-&gt;data;
+       }
+    }
+  }</code></pre>
+
+<h1 id="ABSTRACT">ABSTRACT</h1>
+
+<pre><code>  This module embeds the libnids C library written by Rafal Wojtczuk E&lt;lt&gt;nergal@avet.com.plE&lt;gt&gt;.
+  libnids is designed to do all lowlevel network code required by a network intrusion detection 
+  system (whichis what NIDS stands for). This module uses libnids to allow you to read 
+  the reassembled tcp stream without any duplicates or incorrect order. That is, like a normal 
+  host would have seen the stream.</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>The workflow of using libnids is to set all parameters, then call init, set up a callback then run.</p>
+
+<h1 id="Net::LibNIDS::init(-)"><a id="Net"></a><a id="Net::LibNIDS::init"></a>Net::LibNIDS::init( )</h1>
+
+<p>Must be called once before run() is called, will return 1 if successful, will croak with a message if it fails.</p>
+
+<h1 id="Net::LibNIDS::tcp_callback(-collector_callback-)"><a id="Net1"></a><a id="Net::LibNIDS::tcp_callback--collector_callback"></a>Net::LibNIDS::tcp_callback( collector_callback )</h1>
+
+<p>This registers the tcp_callback function that will be invoked with each packet. The callback function is called with an object of Net::LibNIDS::tcp_stream</p>
+
+<h1 id="Net::LibNIDS::run(-)"><a id="Net2"></a><a id="Net::LibNIDS::run"></a>Net::LibNIDS::run( )</h1>
+
+<p>This starts the NIDS collector, it will not finish until you call exit() or the packet file you are processing is finished</p>
+
+<h1 id="Net::LibNIDS::checksum_off(-)"><a id="Net3"></a><a id="Net::LibNIDS::checksum_off"></a>Net::LibNIDS::checksum_off( )</h1>
+
+<p>Disables libnids internal checksumming for all packets by setting NIDS_DONT_CHKSUM.</p>
+
+<h1 id="Net::LibNIDS::nids_discard($tcp_stream,-$num_bytes)"><a id="Net4"></a><a id="Net::LibNIDS::nids_discard-tcp_stream---num_bytes"></a>Net::LibNIDS::nids_discard($tcp_stream, $num_bytes)</h1>
+
+<p>Exports the nids_discard function, which may be called from within your TCP callback. See the libnids documentation for further information on how to use this function.</p>
+
+<h1 id="Net::LibNIDS::tcp_stream"><a id="Net5"></a>Net::LibNIDS::tcp_stream</h1>
+
+<p>This object is called as the first argument to tcp_callback function. It has the following methods</p>
+
+<h2 id="$tcp_stream-&gt;state(-)"><a id="tcp_stream--state"></a>$tcp_stream-&gt;state( )</h2>
+
+<p>Returns the state of this connection. It can be one of the following:</p>
+
+<dl>
+
+<dt id="NIDS_JUST_EST">NIDS_JUST_EST</dt>
+<dd>
+
+<p>Set when a connection is just established, if you don&#39;t register your interest in it, you will not see this connection again.</p>
+
+</dd>
+<dt id="NIDS_DATA">NIDS_DATA</dt>
+<dd>
+
+<p>Set when there is more data on the connection</p>
+
+</dd>
+<dt id="NIDS_CLOSE">NIDS_CLOSE</dt>
+<dd>
+
+<p>Set when the connection has been closed normally</p>
+
+</dd>
+<dt id="NIDS_RESET">NIDS_RESET</dt>
+<dd>
+
+<p>Set when the connection has been closed by a reset</p>
+
+</dd>
+<dt id="NIDS_TIMEOUT">NIDS_TIMEOUT</dt>
+<dd>
+
+<p>Set when the connection has been closed by a timeout</p>
+
+</dd>
+<dt id="NIDS_EXITING">NIDS_EXITING</dt>
+<dd>
+
+<p>Set when NIDS is exiting, this is the last time you will get this callback, so if you want to save any data you have to do it now.</p>
+
+</dd>
+</dl>
+
+<h2 id="$tcp_stream-&gt;state_string"><a id="tcp_stream--state_string"></a>$tcp_stream-&gt;state_string</h2>
+
+<p>Returns the state as a string instead of an integer, easier for debugging.</p>
+
+<h2 id="$tcp_stream-&gt;server_ip-$tcp_stream-&gt;client_ip"><a id="tcp_stream--server_ip--tcp_stream--client_ip"></a>$tcp_stream-&gt;server_ip $tcp_stream-&gt;client_ip</h2>
+
+<p>Returns the IP address of the server and client. Client is the initiator of the connection. Returned as a string.</p>
+
+<h2 id="$tcp_stream-&gt;server_port-$tcp_stream-&gt;client_port"><a id="tcp_stream--server_port--tcp_stream--client_port"></a>$tcp_stream-&gt;server_port $tcp_stream-&gt;client_port</h2>
+
+<p>Returns the port of the server and client. Client is the initiator of the connection.</p>
+
+<h2 id="$tcp_stream-&gt;lastpacket_sec"><a id="tcp_stream--lastpacket_sec"></a>$tcp_stream-&gt;lastpacket_sec</h2>
+
+<p>Returns the seconds from epoch that this packet was recorded. Only available with libnids version &gt;= 1.19.</p>
+
+<h2 id="$tcp_stream-&gt;lastpacket_usec"><a id="tcp_stream--lastpacket_usec"></a>$tcp_stream-&gt;lastpacket_usec</h2>
+
+<p>Returns the microsecond fraction that this packet was recorded. Used together with $tcp_stream-&gt;lastpacket to get the most correct timestamp possible. Only available with libnids version &gt;= 1.19.</p>
+
+<h2 id="$tcp_stream-&gt;server-$tcp_stream-&gt;client"><a id="tcp_stream--server--tcp_stream--client"></a>$tcp_stream-&gt;server $tcp_stream-&gt;client</h2>
+
+<p>Returns a Net::LibNIDS::tcp_stream::half object, corresponding to the client half and the server half.</p>
+
+<h1 id="Net::LibNIDS::tcp_stream::half"><a id="Net6"></a>Net::LibNIDS::tcp_stream::half</h1>
+
+<h2 id="$tcp_stream-&gt;server-&gt;collect(-)-$tcp_stream-&gt;client-&gt;collect(-)"><a id="tcp_stream--server--collect-----tcp_stream--client--collect"></a>$tcp_stream-&gt;server-&gt;collect( ) $tcp_stream-&gt;client-&gt;collect( )</h2>
+
+<p>Returns a boolean, 1 if it is collecting, 0 if it is not</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;collect_on(-)-$tcp_stream-&gt;client-&gt;collect_on(-)"><a id="tcp_stream--server--collect_on-----tcp_stream--client--collect_on"></a>$tcp_stream-&gt;server-&gt;collect_on( ) $tcp_stream-&gt;client-&gt;collect_on( )</h2>
+
+<p>Turns on collection for selected half_stream.</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;collect_off(-)-$tcp_stream-&gt;client-&gt;collect_off(-)"><a id="tcp_stream--server--collect_off-----tcp_stream--client--collect_off"></a>$tcp_stream-&gt;server-&gt;collect_off( ) $tcp_stream-&gt;client-&gt;collect_off( )</h2>
+
+<p>Turns off collection for selected half_stream.</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;collect_urg(-)-$tcp_stream-&gt;client-&gt;collect_urg(-)"><a id="tcp_stream--server--collect_urg-----tcp_stream--client--collect_urg"></a>$tcp_stream-&gt;server-&gt;collect_urg( ) $tcp_stream-&gt;client-&gt;collect_urg( )</h2>
+
+<p>Returns a boolean, 1 if it is collecting urgent data, 0 if it is not</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;collect_urg_on(-)-$tcp_stream-&gt;client-&gt;collect_urg_on(-)"><a id="tcp_stream--server--collect_urg_on-----tcp_stream--client--collect_urg_on"></a>$tcp_stream-&gt;server-&gt;collect_urg_on( ) $tcp_stream-&gt;client-&gt;collect_urg_on( )</h2>
+
+<p>Turns on collection for urgent data on selected half_stream.</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;collect_urg_off(-)-$tcp_stream-&gt;client-&gt;collect_urg_off(-)"><a id="tcp_stream--server--collect_urg_off-----tcp_stream--client--collect_urg_off"></a>$tcp_stream-&gt;server-&gt;collect_urg_off( ) $tcp_stream-&gt;client-&gt;collect_urg_off( )</h2>
+
+<p>Turns off collection for urgent data on selected half_stream.</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;count(-)-$tcp_stream-&gt;client-&gt;count(-)"><a id="tcp_stream--server--count-----tcp_stream--client--count"></a>$tcp_stream-&gt;server-&gt;count( ) $tcp_stream-&gt;client-&gt;count( )</h2>
+
+<p>Length of all data recieved on the respective half_stream since start of connection.</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;count_new(-)-$tcp_stream-&gt;client-&gt;count_new(-)"><a id="tcp_stream--server--count_new-----tcp_stream--client--count_new"></a>$tcp_stream-&gt;server-&gt;count_new( ) $tcp_stream-&gt;client-&gt;count_new( )</h2>
+
+<p>Amount of data that has been added since the last time the callback has been invoked. As far as I can tell from libnids documentation, count_new can only be set in client or server half_stream for a given callback. This is the best way to check which side is active.</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;count_urg_new(-)-$tcp_stream-&gt;client-&gt;count_urg_new(-)"><a id="tcp_stream--server--count_urg_new-----tcp_stream--client--count_urg_new"></a>$tcp_stream-&gt;server-&gt;count_urg_new( ) $tcp_stream-&gt;client-&gt;count_urg_new( )</h2>
+
+<p>Same as above, but for URGent data.</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;offset(-)-$tcp_stream-&gt;client-&gt;offset(-)"><a id="tcp_stream--server--offset-----tcp_stream--client--offset"></a>$tcp_stream-&gt;server-&gt;offset( ) $tcp_stream-&gt;client-&gt;offset( )</h2>
+
+<p>See libnids documentation, this maps directly down to its&#39; underlying data structures.</p>
+
+<h2 id="$tcp_stream-&gt;server-&gt;data(-)-$tcp_stream-&gt;client-&gt;data(-)"><a id="tcp_stream--server--data-----tcp_stream--client--data"></a>$tcp_stream-&gt;server-&gt;data( ) $tcp_stream-&gt;client-&gt;data( )</h2>
+
+<p>The new data that has arrived since the last the callback was called. Should match the count_new field in length.</p>
+
+<h1 id="Net::LibNIDS::param"><a id="Net7"></a>Net::LibNIDS::param</h1>
+
+<p>This maps down the libnids nids.params configuration structure, there is a get and a set function for each parameter. Some of them are not certain they work yet.</p>
+
+<h2 id="device-(Net::LibNIDS::param::set_device(dev)-Net::LibNIDS::param::get_device)"><a id="device"></a><a id="device--Net::LibNIDS::param::set_device-dev--Net::LibNIDS::param::get_device"></a>device (Net::LibNIDS::param::set_device(dev) Net::LibNIDS::param::get_device)</h2>
+
+<p>Sets the device libnids uses</p>
+
+<h2 id="filename-(Net::LibNIDS::param::set_filename(filename)-Net::LibNIDS::param::get_filename)"><a id="filename"></a><a id="filename--Net::LibNIDS::param::set_filename-filename--Net::LibNIDS::param::get_filename"></a>filename (Net::LibNIDS::param::set_filename(filename) Net::LibNIDS::param::get_filename)</h2>
+
+<p>Sets the filename to read packets from (tcpdump file), if this is set, then libnids will process that filename.</p>
+
+<h2 id="pcap_filter-(Net::LibNIDS::param::set_pcap_filter(pcap_filter)-Net::LibNIDS::param::get_pcap_filter)"><a id="pcap_filter"></a><a id="pcap_filter--Net::LibNIDS::param::set_pcap_filter-pcap_filter--Net::LibNIDS::param::get_pcap_filter"></a>pcap_filter (Net::LibNIDS::param::set_pcap_filter(pcap_filter) Net::LibNIDS::param::get_pcap_filter)</h2>
+
+<p>The pcap filter to apply on the packets. Note however that if you have fragmented packets you cannot use the pcap filter on for example ports, since fragmented IP packets might not contain enough tcp information to determine port.</p>
+
+<p>See the note in the libnids manpage for a workaround, or check the code in example.pl.</p>
+
+<h2 id="n_tcp_streams-(Net::LibNIDS::param::set_n_tcp_streams(numbers)-Net::LibNIDS::param::get_n_tcp_streams)"><a id="n_tcp_streams"></a><a id="n_tcp_streams--Net::LibNIDS::param::set_n_tcp_streams-numbers--Net::LibNIDS::param::get_n_tcp_streams"></a>n_tcp_streams (Net::LibNIDS::param::set_n_tcp_streams(numbers) Net::LibNIDS::param::get_n_tcp_streams)</h2>
+
+<p>From libnids documentation: &quot;size of the hash table used for storing structures tcp_stream; libnis will follow no more than 3/4 * n_tcp_streams connections simultaneously default value: 1040. If set to 0, libnids will not assemble TCP streams.&quot;</p>
+
+<h2 id="n_hosts-(Net::LibNIDS::param::set_n_hosts(numbers)-Net::LibNIDS::param::get_n_hosts)"><a id="n_hosts"></a><a id="n_hosts--Net::LibNIDS::param::set_n_hosts-numbers--Net::LibNIDS::param::get_n_hosts"></a>n_hosts (Net::LibNIDS::param::set_n_hosts(numbers) Net::LibNIDS::param::get_n_hosts)</h2>
+
+<p>From libnids documentation: &quot;size of the hash table used for storing info on IP defragmentation; default value: 256&quot;</p>
+
+<h2 id="sk_buff_size-(Net::LibNIDS::param::set_sk_buff_size(numbers)-Net::LibNIDS::param::get_sk_buff_size)"><a id="sk_buff_size"></a><a id="sk_buff_size--Net::LibNIDS::param::set_sk_buff_size-numbers--Net::LibNIDS::param::get_sk_buff_size"></a>sk_buff_size (Net::LibNIDS::param::set_sk_buff_size(numbers) Net::LibNIDS::param::get_sk_buff_size)</h2>
+
+<p>From libnids documentation: &quot; size of struct sk_buff, a structure defined by Linux kernel, used by kernel for packets queuing. If this parameter has different value from sizeof(struct sk_buff), libnids can be bypassed by attacking resource managing of libnis (see TEST file). If you are paranoid, check sizeof(sk_buff) on the hosts on your network, and correct this parameter. Default value: 168&quot;</p>
+
+<h2 id="dev_addon-(Net::LibNIDS::param::set_dev_addon(numbers)-Net::LibNIDS::param::get_dev_addon)"><a id="dev_addon"></a><a id="dev_addon--Net::LibNIDS::param::set_dev_addon-numbers--Net::LibNIDS::param::get_dev_addon"></a>dev_addon (Net::LibNIDS::param::set_dev_addon(numbers) Net::LibNIDS::param::get_dev_addon)</h2>
+
+<p>From libnids documentation: &quot;how many bytes in structure sk_buff is reserved for information on net interface; if dev_addon==-1, it will be corrected during nids_init() according to type of the interface libnids will listen on. Default value: -1.&quot;</p>
+
+<h2 id="syslog">syslog</h2>
+
+<p>Not supported by this extension</p>
+
+<h2 id="syslog_level-(Net::LibNIDS::param::set_syslog_level(numbers)-Net::LibNIDS::param::get_syslog_level)"><a id="syslog_level"></a><a id="syslog_level--Net::LibNIDS::param::set_syslog_level-numbers--Net::LibNIDS::param::get_syslog_level"></a>syslog_level (Net::LibNIDS::param::set_syslog_level(numbers) Net::LibNIDS::param::get_syslog_level)</h2>
+
+<p>From libnids documentation: &quot;if nids_params.syslog==nids_syslog, then this field determines loglevel used by reporting events by system daemon syslogd; default value: LOG_ALERT&quot;</p>
+
+<h2 id="scan_num_hosts-(Net::LibNIDS::param::set_scan_num_hosts(numbers)-Net::LibNIDS::param::get_scan_num_hosts)"><a id="scan_num_hosts"></a><a id="scan_num_hosts--Net::LibNIDS::param::set_scan_num_hosts-numbers--Net::LibNIDS::param::get_scan_num_hosts"></a>scan_num_hosts (Net::LibNIDS::param::set_scan_num_hosts(numbers) Net::LibNIDS::param::get_scan_num_hosts)</h2>
+
+<p>From libnids documentation: &quot; size of hash table used for storing info on port scanning; the number of simultaneuos port scan attempts libnids will detect. if set to 0, port scanning detection will be turned off. Default value: 256.&quot;</p>
+
+<h2 id="scan_num_ports-(Net::LibNIDS::param::set_scan_num_ports(numbers)-Net::LibNIDS::param::get_scan_num_ports)"><a id="scan_num_ports"></a><a id="scan_num_ports--Net::LibNIDS::param::set_scan_num_ports-numbers--Net::LibNIDS::param::get_scan_num_ports"></a>scan_num_ports (Net::LibNIDS::param::set_scan_num_ports(numbers) Net::LibNIDS::param::get_scan_num_ports)</h2>
+
+<p>From libnids documentation: &quot; how many TCP ports has to be scanned from the same source. Default value: 10.&quot;</p>
+
+<h2 id="scan_delay-(Net::LibNIDS::param::set_scan_delay(numbers)-Net::LibNIDS::param::get_scan_delay)-From-libnids-documentation:-&quot;-with-no-more-than-scan_delay-milisecond-pause-between-two-ports,-in-order-to-make-libnids-report-portscan-attempt.-Default-value:-3000&quot;"><a id="scan_delay"></a><a id="scan_delay--Net::LibNIDS::param::set_scan_delay-numbers--Net::LibNIDS::param::get_scan_delay--From-libnids-documentation:---with-no-more-than-scan_delay-milisecond-pause-between-two-ports--in-order-to-make-libnids-report-portscan-attempt.-Default-value:-3000"></a>scan_delay (Net::LibNIDS::param::set_scan_delay(numbers) Net::LibNIDS::param::get_scan_delay) From libnids documentation: &quot; with no more than scan_delay milisecond pause between two ports, in order to make libnids report portscan attempt. Default value: 3000&quot;</h2>
+
+<h2 id="promisc-(Net::LibNIDS::param::set_promisc(numbers)-Net::LibNIDS::param::get_promisc)"><a id="promisc"></a><a id="promisc--Net::LibNIDS::param::set_promisc-numbers--Net::LibNIDS::param::get_promisc"></a>promisc (Net::LibNIDS::param::set_promisc(numbers) Net::LibNIDS::param::get_promisc)</h2>
+
+<p>From libnids documentation: &quot;if non-zero, the device(s) libnids reads packets from will be put in promiscuous mode. Default: 1&quot;</p>
+
+<h2 id="one_loop_less-(Net::LibNIDS::param::set_one_loop_less(numbers)-Net::LibNIDS::param::get_one_loop_less)"><a id="one_loop_less"></a><a id="one_loop_less--Net::LibNIDS::param::set_one_loop_less-numbers--Net::LibNIDS::param::get_one_loop_less"></a>one_loop_less (Net::LibNIDS::param::set_one_loop_less(numbers) Net::LibNIDS::param::get_one_loop_less)</h2>
+
+<p>Set libnids API.txt documentation on how to use.</p>
+
+<h2 id="ip_filter">ip_filter</h2>
+
+<p>Not currently supported by this extension</p>
+
+<h2 id="no_mem">no_mem</h2>
+
+<p>Not currently supported by this extension</p>
+
+<h2 id="Note">Note</h2>
+
+<p>Previous versions of Net::LibNIDS included a patch against libnids in order to obtain packet timings. This is no longer necessary as long as libnids-1.19 or greater is used.</p>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p>libnids man page libpcap man page API.txt documentation from libnids distributions example.pl and performance.pl</p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>Arthur Bergman, &lt;sky@nanisky.com&gt; Modified for libnids &gt;= 1.19 by David Cannings, &lt;david@edeca.net&gt;</p>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright 2004 by Arthur Bergman</p>
+
+<p>This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::LibNIDS, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::LibNIDS
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::LibNIDS
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+ <img src="https://media3.giphy.com/media/ADiOs8AqeverrAuT4Q/giphy.gif" alt="drawing" width="2000"/>

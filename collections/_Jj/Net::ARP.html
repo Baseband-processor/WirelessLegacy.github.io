@@ -1,0 +1,106 @@
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>  use Net::ARP;
+  Net::ARP::send_packet(&#39;lo&#39;,                 # Device
+                        &#39;127.0.0.1&#39;,          # Source IP
+                        &#39;127.0.0.1&#39;,          # Destination IP
+                        &#39;aa:bb:cc:aa:bb:cc&#39;,  # Source MAC
+                        &#39;aa:bb:cc:aa:bb:cc&#39;,  # Destinaton MAC
+                        &#39;reply&#39;);             # ARP operation</code></pre>
+
+<p>$mac = Net::ARP::get_mac(&quot;enp3s0f1&quot;);</p>
+
+<p>print &quot;$mac\n&quot;;</p>
+
+<p>$mac = Net::ARP::arp_lookup($dev,&quot;192.168.1.1&quot;);</p>
+
+<p>print &quot;192.168.1.1 has got mac $mac\n&quot;;</p>
+
+<h2 id="IMPORTANT">IMPORTANT</h2>
+
+<p>Version 1.0 will break with the API of PRE-1.0 versions, because the return value of arp_lookup() and get_mac() will no longer be passed as parameter, but returned! I hope this decision is ok as long as we get a cleaner and more perlish API.</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p>This module can be used to create and send ARP packets and to get the mac address of an ethernet interface or ip address.</p>
+
+<dl>
+
+<dt id="send_packet()"><a id="send_packet"></a><b>send_packet()</b></dt>
+<dd>
+
+<pre><code>  Net::ARP::send_packet(&#39;lo&#39;,                 # Device
+                        &#39;127.0.0.1&#39;,          # Source IP
+                        &#39;127.0.0.1&#39;,          # Destination IP
+                        &#39;aa:bb:cc:aa:bb:cc&#39;,  # Source MAC
+                        &#39;aa:bb:cc:aa:bb:cc&#39;,  # Destinaton MAC
+                        &#39;reply&#39;);             # ARP operation
+
+  I think this is self documentating.
+  ARP operation can be one of the following values:
+  request, reply, revrequest, revreply, invrequest, invreply.</code></pre>
+
+</dd>
+<dt id="get_mac()"><a id="get_mac"></a><b>get_mac()</b></dt>
+<dd>
+
+<pre><code>  $mac = Net::ARP::get_mac(&quot;eth0&quot;);
+
+  This gets the MAC address of the eth0 interface and stores 
+  it in the variable $mac. The return value is &quot;unknown&quot; if
+  the mac cannot be looked up.</code></pre>
+
+</dd>
+<dt id="arp_lookup()"><a id="arp_lookup"></a><b>arp_lookup()</b></dt>
+<dd>
+
+<pre><code>  $mac = Net::ARP::arp_lookup($dev,&quot;192.168.1.1&quot;);
+
+  This looks up the MAC address for the ip address 192.168.1.1
+  and stores it in the variable $mac. The return value is 
+  &quot;unknown&quot; if the mac cannot be looked up.</code></pre>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<pre><code> man -a arp</code></pre>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<pre><code> Bastian Ballmann [ balle@codekid.net ]
+ http://www.codekid.net</code></pre>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (C) 2004-2020 by Bastian Ballmann</p>
+
+<p>License: GPLv2</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::ARP, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::ARP
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::ARP
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>

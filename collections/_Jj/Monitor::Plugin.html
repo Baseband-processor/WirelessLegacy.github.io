@@ -1,0 +1,514 @@
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>   # Constants OK, WARNING, CRITICAL, and UNKNOWN are exported by default
+   # See also Monitoring::Plugin::Functions for a functional interface
+   use Monitoring::Plugin;
+
+   # Constructor
+   $np = Monitoring::Plugin-&gt;new;                               # OR
+   $np = Monitoring::Plugin-&gt;new( shortname =&gt; &quot;PAGESIZE&quot; );    # OR
+
+
+   # use Monitoring::Plugin::Getopt to process the @ARGV command line options:
+   #   --verbose, --help, --usage, --timeout and --host are defined automatically.
+   $np = Monitoring::Plugin-&gt;new(
+     usage =&gt; &quot;Usage: %s [ -v|--verbose ]  [-H &lt;host&gt;] [-t &lt;timeout&gt;] &quot;
+       . &quot;[ -c|--critical=&lt;threshold&gt; ] [ -w|--warning=&lt;threshold&gt; ]&quot;,
+   );
+
+   # add valid command line options and build them into your usage/help documentation.
+   $np-&gt;add_arg(
+     spec =&gt; &#39;warning|w=s&#39;,
+     help =&gt; &#39;-w, --warning=INTEGER:INTEGER .  See &#39;
+       . &#39;https://www.monitoring-plugins.org/doc/guidelines.html#THRESHOLDFORMAT &#39;
+       . &#39;for the threshold format. &#39;,
+   );
+
+   # Parse @ARGV and process standard arguments (e.g. usage, help, version)
+   $np-&gt;getopts;
+
+
+   # Exit/return value methods - plugin_exit( CODE, MESSAGE ),
+   #                             plugin_die( MESSAGE, [CODE])
+   $page = retrieve_page($page1)
+       or $np-&gt;plugin_exit( UNKNOWN, &quot;Could not retrieve page&quot; );
+       # Return code: 3;
+       #   output: PAGESIZE UNKNOWN - Could not retrieve page
+   test_page($page)
+       or $np-&gt;plugin_exit( CRITICAL, &quot;Bad page found&quot; );
+
+   # plugin_die() is just like plugin_exit(), but return code defaults
+   #   to UNKNOWN
+   $page = retrieve_page($page2)
+     or $np-&gt;plugin_die( &quot;Could not retrieve page&quot; );
+     # Return code: 3;
+     #   output: PAGESIZE UNKNOWN - Could not retrieve page
+
+   # Threshold methods
+   $code = $np-&gt;check_threshold(
+     check =&gt; $value,
+     warning =&gt; $warning_threshold,
+     critical =&gt; $critical_threshold,
+   );
+   $np-&gt;plugin_exit( $code, &quot;Threshold check failed&quot; ) if $code != OK;
+
+   # Message methods
+   #   add_message( CODE, $message ); check_messages()
+   for (@collection) {
+     if (m/Error/) {
+       $np-&gt;add_message( CRITICAL, $_ );
+     } else {
+       $np-&gt;add_message( OK, $_ );
+     }
+   }
+   ($code, $message) = $np-&gt;check_messages();
+   plugin_exit( $code, $message );
+   # If any items in collection matched m/Error/, returns CRITICAL and
+   #   the joined set of Error messages; otherwise returns OK and the
+   #   joined set of ok messages
+
+
+   # Perfdata methods
+   $np-&gt;add_perfdata(
+     label =&gt; &quot;size&quot;,
+     value =&gt; $value,
+     uom =&gt; &quot;kB&quot;,
+     threshold =&gt; $threshold,
+   );
+   $np-&gt;add_perfdata( label =&gt; &quot;time&quot;, ... );
+   $np-&gt;plugin_exit( OK, &quot;page size at http://... was ${value}kB&quot; );
+   # Return code: 0;
+   #   output: PAGESIZE OK - page size at http://... was 36kB \
+   #   | size=36kB;10:25;25: time=...</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>Monitoring::Plugin and its associated Monitoring::Plugin::* modules are a family of perl modules to streamline writing Monitoring plugins. The main end user modules are Monitoring::Plugin, providing an object-oriented interface to the entire Monitoring::Plugin::* collection, and Monitoring::Plugin::Functions, providing a simpler functional interface to a useful subset of the available functionality.</p>
+
+<p>The purpose of the collection is to make it as simple as possible for developers to create plugins that conform the Monitoring Plugin guidelines (https://www.monitoring-plugins.org/doc/guidelines.html).</p>
+
+<h2 id="EXPORTS">EXPORTS</h2>
+
+<p>Nagios status code constants are exported by default:</p>
+
+<pre><code>    OK
+    WARNING
+    CRITICAL
+    UNKNOWN
+    DEPENDENT</code></pre>
+
+<p>The following variables are also exported on request:</p>
+
+<dl>
+
+<dt id="%ERRORS"><a id="ERRORS"></a>%ERRORS</dt>
+<dd>
+
+<p>A hash mapping error strings (&quot;CRITICAL&quot;, &quot;UNKNOWN&quot;, etc.) to the corresponding status code.</p>
+
+</dd>
+<dt id="%STATUS_TEXT"><a id="STATUS_TEXT"></a>%STATUS_TEXT</dt>
+<dd>
+
+<p>A hash mapping status code constants (OK, WARNING, CRITICAL, etc.) to the corresponding error string (&quot;OK&quot;, &quot;WARNING, &quot;CRITICAL&quot;, etc.) i.e. the reverse of %ERRORS.</p>
+
+</dd>
+</dl>
+
+<h2 id="CONSTRUCTOR">CONSTRUCTOR</h2>
+
+<pre><code>        Monitoring::Plugin-&gt;new;
+
+        Monitoring::Plugin-&gt;new( shortname =&gt; &#39;PAGESIZE&#39; );
+
+        Monitoring::Plugin-&gt;new(
+                usage =&gt; &quot;Usage: %s [ -v|--verbose ]  [-H &lt;host&gt;] [-t &lt;timeout&gt;]
+                     [ -c|--critical=&lt;critical threshold&gt; ] [ -w|--warning=&lt;warning threshold&gt; ]  &quot;,
+                version =&gt; $VERSION,
+                blurb   =&gt; $blurb,
+                extra   =&gt; $extra,
+                url     =&gt; $url,
+                license =&gt; $license,
+                plugin  =&gt; basename $0,
+                timeout =&gt; 15,
+        );</code></pre>
+
+<p>Instantiates a new Monitoring::Plugin object. Accepts the following named arguments:</p>
+
+<dl>
+
+<dt id="shortname">shortname</dt>
+<dd>
+
+<p>The &#39;shortname&#39; for this plugin, used as the first token in the plugin output by the various exit methods. Default: uc basename $0.</p>
+
+</dd>
+<dt id="usage-(&quot;Usage:-%s-foo-bar&quot;)"><a id="usage"></a><a id="usage--Usage:--s-foo-bar"></a>usage (&quot;Usage: %s --foo --bar&quot;)</dt>
+<dd>
+
+<p>Passing a value for the usage() argument makes Monitoring::Plugin instantiate its own <code>Monitoring::Plugin::Getopt</code> object so you can start doing command line argument processing. See <a href="/pod/Monitoring::Plugin::Getopt#CONSTRUCTOR">&quot;CONSTRUCTOR&quot; in Monitoring::Plugin::Getopt</a> for more about &quot;usage&quot; and the following options:</p>
+
+</dd>
+<dt id="version">version</dt>
+<dd>
+
+</dd>
+<dt id="url">url</dt>
+<dd>
+
+</dd>
+<dt id="blurb">blurb</dt>
+<dd>
+
+</dd>
+<dt id="license">license</dt>
+<dd>
+
+</dd>
+<dt id="extra">extra</dt>
+<dd>
+
+</dd>
+<dt id="plugin">plugin</dt>
+<dd>
+
+</dd>
+<dt id="timeout">timeout</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="GETTER/SETTER"><a id="GETTER"></a><a id="GETTER-SETTER"></a>GETTER/SETTER</h2>
+
+<p>The following internal variables can be retrieved or set by calling a method with the respective name. Expect for <code>shortname</code>, don&#39;t change values unless you know what you&#39;re doing.</p>
+
+<p>Examples:</p>
+
+<pre><code>  use Data::Dumper;
+  print Dumper($plugin-&gt;perfdata);
+  $plugin-&gt;shortname(&#39;DifferentName&#39;);</code></pre>
+
+<dl>
+
+<dt id="shortname1">shortname</dt>
+<dd>
+
+</dd>
+<dt id="perfdata">perfdata</dt>
+<dd>
+
+</dd>
+<dt id="messages">messages</dt>
+<dd>
+
+</dd>
+<dt id="opts">opts</dt>
+<dd>
+
+</dd>
+<dt id="threshold">threshold</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="OPTION-HANDLING-METHODS"><a id="OPTION"></a>OPTION HANDLING METHODS</h2>
+
+<p><code>Monitoring::Plugin</code> provides these methods for accessing the functionality in <code>Monitoring::Plugin::Getopt</code>.</p>
+
+<dl>
+
+<dt id="add_arg">add_arg</dt>
+<dd>
+
+<p>Examples:</p>
+
+<pre><code>  # Define --hello argument (named parameters)
+  $plugin-&gt;add_arg(
+    spec =&gt; &#39;hello=s&#39;,
+    help =&gt; &quot;--hello\n   Hello string&quot;,
+    required =&gt; 1,
+  );
+
+  # Define --hello argument (positional parameters)
+  #   Parameter order is &#39;spec&#39;, &#39;help&#39;, &#39;default&#39;, &#39;required?&#39;
+  $plugin-&gt;add_arg(&#39;hello=s&#39;, &quot;--hello\n   Hello string&quot;, undef, 1);</code></pre>
+
+<p>See <a href="/pod/Monitoring::Plugin::Getopt#ARGUMENTS">&quot;ARGUMENTS&quot; in Monitoring::Plugin::Getopt</a> for more details.</p>
+
+</dd>
+<dt id="getopts()"><a id="getopts"></a>getopts()</dt>
+<dd>
+
+<p>Parses and processes the command line options you&#39;ve defined, automatically doing the right thing with help/usage/version arguments.</p>
+
+<p>See <a href="/pod/Monitoring::Plugin::Getopt#GETOPTS">&quot;GETOPTS&quot; in Monitoring::Plugin::Getopt</a> for more details.</p>
+
+</dd>
+<dt id="opts()"><a id="opts1"></a>opts()</dt>
+<dd>
+
+<p>Assuming you&#39;ve instantiated it by passing &#39;usage&#39; to new(), opts() returns the Monitoring::Plugin object&#39;s <code>Monitoring::Plugin::Getopt</code> object, with which you can do lots of great things.</p>
+
+<p>E.g.</p>
+
+<pre><code>  if ( $plugin-&gt;opts-&gt;verbose ) {
+          print &quot;yah yah YAH YAH YAH!!!&quot;;
+  }
+
+  # start counting down to timeout
+  alarm $plugin-&gt;opts-&gt;timeout;
+  your_long_check_step_that_might_time_out();
+
+  # access any of your custom command line options,
+  # assuming you&#39;ve done these steps above:
+  #   $plugin-&gt;add_arg(&#39;my_argument=s&#39;, &#39;--my_argument [STRING]&#39;);
+  #   $plugin-&gt;getopts;
+  print $plugin-&gt;opts-&gt;my_argument;</code></pre>
+
+<p>Again, see <a href="/pod/Monitoring::Plugin::Getopt">Monitoring::Plugin::Getopt</a>.</p>
+
+</dd>
+</dl>
+
+<h2 id="EXIT-METHODS"><a id="EXIT"></a>EXIT METHODS</h2>
+
+<dl>
+
+<dt id="plugin_exit(-&lt;CODE&gt;,-$message-)"><a id="plugin_exit"></a><a id="plugin_exit---CODE---message"></a>plugin_exit( &lt;CODE&gt;, $message )</dt>
+<dd>
+
+<p>Exit with return code CODE, and a standard nagios message of the form &quot;SHORTNAME CODE - $message&quot;.</p>
+
+</dd>
+<dt id="nagios_exit(-&lt;CODE&gt;,-$message-)"><a id="nagios_exit"></a><a id="nagios_exit---CODE---message"></a>nagios_exit( &lt;CODE&gt;, $message )</dt>
+<dd>
+
+<p>Alias for plugin_exit(). Deprecated.</p>
+
+</dd>
+<dt id="plugin_die(-$message,-[&lt;CODE&gt;]-)"><a id="plugin_die"></a><a id="plugin_die---message---CODE"></a>plugin_die( $message, [&lt;CODE&gt;] )</dt>
+<dd>
+
+<p>Same as plugin_exit(), except that CODE is optional, defaulting to UNKNOWN. NOTE: exceptions are not raised by default to calling code. Set <code>$_use_die</code> flag if this functionality is required (see test code).</p>
+
+</dd>
+<dt id="nagios_die(-$message,-[&lt;CODE&gt;]-)"><a id="nagios_die"></a><a id="nagios_die---message---CODE"></a>nagios_die( $message, [&lt;CODE&gt;] )</dt>
+<dd>
+
+<p>Alias for plugin_die(). Deprecated.</p>
+
+</dd>
+<dt id="die(-$message,-[&lt;CODE&gt;]-)"><a id="die"></a><a id="die---message---CODE"></a>die( $message, [&lt;CODE&gt;] )</dt>
+<dd>
+
+<p>Alias for plugin_die(). Deprecated.</p>
+
+</dd>
+<dt id="max_state,-max_state_alt"><a id="max_state"></a><a id="max_state--max_state_alt"></a>max_state, max_state_alt</dt>
+<dd>
+
+<p>These are wrapper function for Monitoring::Plugin::Functions::max_state and Monitoring::Plugin::Functions::max_state_alt.</p>
+
+</dd>
+</dl>
+
+<h2 id="THRESHOLD-METHODS"><a id="THRESHOLD"></a>THRESHOLD METHODS</h2>
+
+<p>These provide a top level interface to the <code>Monitoring::Plugin::Threshold</code> module; for more details, see <a href="/pod/Monitoring::Plugin::Threshold">Monitoring::Plugin::Threshold</a> and <a href="/pod/Monitoring::Plugin::Range">Monitoring::Plugin::Range</a>.</p>
+
+<dl>
+
+<dt id="check_threshold(-$value-)"><a id="check_threshold"></a><a id="check_threshold---value"></a>check_threshold( $value )</dt>
+<dd>
+
+</dd>
+<dt id="check_threshold(-check-=&gt;-$value,-warning-=&gt;-$warn,-critical-=&gt;-$crit-)"><a id="check_threshold1"></a><a id="check_threshold--check----value--warning----warn--critical----crit"></a>check_threshold( check =&gt; $value, warning =&gt; $warn, critical =&gt; $crit )</dt>
+<dd>
+
+<p>Evaluates $value against the thresholds and returns OK, CRITICAL, or WARNING constant. The thresholds may be:</p>
+
+<p>1. explicitly set by passing &#39;warning&#39; and/or &#39;critical&#39; parameters to <code>check_threshold()</code>, or,</p>
+
+<p>2. explicitly set by calling <code>set_thresholds()</code> before <code>check_threshold()</code>, or,</p>
+
+<p>3. implicitly set by command-line parameters -w, -c, --critical or --warning, if you have run <code>$plugin-&gt;getopts()</code>.</p>
+
+<p>You can specify $value as an array of values and each will be checked against the thresholds.</p>
+
+<p>The return value is ready to pass to C &lt;plugin_exit&gt;, e . g .,</p>
+
+<pre><code>  $p-&gt;plugin_exit(
+        return_code =&gt; $p-&gt;check_threshold($result),
+        message     =&gt; &quot; sample result was $result&quot;
+  );</code></pre>
+
+</dd>
+<dt id="set_thresholds(warning-=&gt;-&quot;10:25&quot;,-critical-=&gt;-&quot;~:25&quot;)"><a id="set_thresholds"></a><a id="set_thresholds-warning----10:25--critical----:25"></a>set_thresholds(warning =&gt; &quot;10:25&quot;, critical =&gt; &quot;~:25&quot;)</dt>
+<dd>
+
+<p>Sets the acceptable ranges and creates the plugin&#39;s Monitoring::Plugins::Threshold object. See https://www.monitoring-plugins.org/doc/guidelines.html#THRESHOLDFORMAT for details and examples of the threshold format.</p>
+
+</dd>
+<dt id="threshold()"><a id="threshold1"></a>threshold()</dt>
+<dd>
+
+<p>Returns the object&#39;s <code>Monitoring::Plugin::Threshold</code> object, if it has been defined by calling set_thresholds(). You can pass a new Threshold object to it to replace the old one too, but you shouldn&#39;t need to do that from a plugin script.</p>
+
+</dd>
+</dl>
+
+<h2 id="MESSAGE-METHODS"><a id="MESSAGE"></a>MESSAGE METHODS</h2>
+
+<p>add_messages and check_messages are higher-level convenience methods to add and then check a set of messages, returning an appropriate return code and/or result message. They are equivalent to maintaining a set of @critical, @warning, and and @ok message arrays (add_message), and then doing a final if test (check_messages) like this:</p>
+
+<pre><code>  if (@critical) {
+    plugin_exit( CRITICAL, join(&#39; &#39;, @critical) );
+  }
+  elsif (@warning) {
+    plugin_exit( WARNING, join(&#39; &#39;, @warning) );
+  }
+  else {
+    plugin_exit( OK, join(&#39; &#39;, @ok) );
+  }</code></pre>
+
+<dl>
+
+<dt id="add_message(-&lt;CODE&gt;,-$message-)"><a id="add_message"></a><a id="add_message---CODE---message"></a>add_message( &lt;CODE&gt;, $message )</dt>
+<dd>
+
+<p>Add a message with CODE status to the object. May be called multiple times. The messages added are checked by check_messages, following.</p>
+
+<p>Only CRITICAL, WARNING, and OK are accepted as valid codes.</p>
+
+</dd>
+<dt id="check_messages()"><a id="check_messages"></a>check_messages()</dt>
+<dd>
+
+<p>Check the current set of messages and return an appropriate nagios return code and/or a result message. In scalar context, returns only a return code; in list context returns both a return code and an output message, suitable for passing directly to plugin_exit() e.g.</p>
+
+<pre><code>    $code = $np-&gt;check_messages;
+    ($code, $message) = $np-&gt;check_messages;</code></pre>
+
+<p>check_messages returns CRITICAL if any critical messages are found, WARNING if any warning messages are found, and OK otherwise. The message returned in list context defaults to the joined set of error messages; this may be customised using the arguments below.</p>
+
+<p>check_messages accepts the following named arguments (none are required):</p>
+
+<dl>
+
+<dt id="join-=&gt;-SCALAR"><a id="join"></a><a id="join---SCALAR"></a>join =&gt; SCALAR</dt>
+<dd>
+
+<p>A string used to join the relevant array to generate the message string returned in list context i.e. if the &#39;critical&#39; array @crit is non-empty, check_messages would return:</p>
+
+<pre><code>    join( $join, @crit )</code></pre>
+
+<p>as the result message. Default: &#39; &#39; (space).</p>
+
+</dd>
+<dt id="join_all-=&gt;-SCALAR"><a id="join_all"></a><a id="join_all---SCALAR"></a>join_all =&gt; SCALAR</dt>
+<dd>
+
+<p>By default, only one set of messages are joined and returned in the result message i.e. if the result is CRITICAL, only the &#39;critical&#39; messages are included in the result; if WARNING, only the &#39;warning&#39; messages are included; if OK, the &#39;ok&#39; messages are included (if supplied) i.e. the default is to return an &#39;errors-only&#39; type message.</p>
+
+<p>If join_all is supplied, however, it will be used as a string to join the resultant critical, warning, and ok messages together i.e. all messages are joined and returned.</p>
+
+</dd>
+<dt id="critical-=&gt;-ARRAYREF"><a id="critical"></a><a id="critical---ARRAYREF"></a>critical =&gt; ARRAYREF</dt>
+<dd>
+
+<p>Additional critical messages to supplement any passed in via add_message().</p>
+
+</dd>
+<dt id="warning-=&gt;-ARRAYREF"><a id="warning"></a><a id="warning---ARRAYREF"></a>warning =&gt; ARRAYREF</dt>
+<dd>
+
+<p>Additional warning messages to supplement any passed in via add_message().</p>
+
+</dd>
+<dt id="ok-=&gt;-ARRAYREF-|-SCALAR"><a id="ok"></a><a id="ok---ARRAYREF---SCALAR"></a>ok =&gt; ARRAYREF | SCALAR</dt>
+<dd>
+
+<p>Additional ok messages to supplement any passed in via add_message().</p>
+
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+<h2 id="PERFORMANCE-DATA-METHODS"><a id="PERFORMANCE"></a>PERFORMANCE DATA METHODS</h2>
+
+<dl>
+
+<dt id="add_perfdata(-label-=&gt;-&quot;size&quot;,-value-=&gt;-$value,-uom-=&gt;-&quot;kB&quot;,-threshold-=&gt;-$threshold-)"><a id="add_perfdata"></a><a id="add_perfdata--label----size--value----value--uom----kB--threshold----threshold"></a>add_perfdata( label =&gt; &quot;size&quot;, value =&gt; $value, uom =&gt; &quot;kB&quot;, threshold =&gt; $threshold )</dt>
+<dd>
+
+<p>Add a set of performance data to the object. May be called multiple times. The performance data is included in the standard plugin output messages by the various exit methods.</p>
+
+<p>See the Monitoring::Plugin::Performance documentation for more information on performance data and the various field definitions, as well as the relevant section of the Monitoring Plugin guidelines (https://www.monitoring-plugins.org/doc/guidelines.html#AEN202).</p>
+
+</dd>
+</dl>
+
+<h1 id="EXAMPLES">EXAMPLES</h1>
+
+<p>&quot;Enough talk! Show me some examples!&quot;</p>
+
+<p>See the file &#39;check_stuff.pl&#39; in the &#39;t&#39; directory included with the Monitoring::Plugin distribution for a complete working example of a plugin script.</p>
+
+<h1 id="VERSIONING">VERSIONING</h1>
+
+<p>The Monitoring::Plugin::* modules are currently experimental and so the interfaces may change up until Monitoring::Plugin hits version 1.0, although every attempt will be made to keep them as backwards compatible as possible.</p>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p>See <a href="/pod/Monitoring::Plugin::Functions">Monitoring::Plugin::Functions</a> for a simple functional interface to a subset of the available Monitoring::Plugin functionality.</p>
+
+<p>See also <a href="/pod/Monitoring::Plugin::Getopt">Monitoring::Plugin::Getopt</a>, <a href="/pod/Monitoring::Plugin::Range">Monitoring::Plugin::Range</a>, <a href="/pod/Monitoring::Plugin::Performance">Monitoring::Plugin::Performance</a>, <a href="/pod/Monitoring::Plugin::Range">Monitoring::Plugin::Range</a>, and <a href="/pod/Monitoring::Plugin::Threshold">Monitoring::Plugin::Threshold</a>.</p>
+
+<p>The Monitoring Plugin project page is at http://monitoring-plugins.org.</p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Please report bugs in these modules to the Monitoring Plugin development team: devel@monitoring-plugins.org.</p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>Maintained by the Monitoring Plugin development team - https://www.monitoring-plugins.org.</p>
+
+<p>Originally by Ton Voon, &lt;ton.voon@altinity.com&gt;.</p>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (C) 2014 by Monitoring Plugin Team Copyright (C) 2006-2014 by Nagios Plugin Development Team</p>
+
+<p>This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself, either Perl version 5.8.4 or, at your option, any later version of Perl 5 you may have available.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Monitoring::Plugin, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Monitoring::Plugin
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Monitoring::Plugin
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>

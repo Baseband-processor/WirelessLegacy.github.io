@@ -1,0 +1,351 @@
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>    use Net::P0f;
+
+    my $p0f = Net::P0f-&gt;new(interface =&gt; &#39;eth0&#39;, promiscuous =&gt; 1);
+    $p0f-&gt;loop(callback =&gt; \&amp;process_packet);
+
+    sub process_packet {
+        # do stuff with packet information
+        # see the documentation for more details
+    }</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This module (and its associated helper modules) is a Perl interface to the P0f utility. P0f is a passive operating system fingerprinting: it identifies the operating system of network devices by <i>passively</i> looking at specific patterns in their TCP/IP packets. Therefore, contrary to others tools like Nmap, P0f does not send any packet and stays completly stealth. For more information on P0f, please see <a href="http://lcamtuf.coredump.cx/p0f.shtml">http://lcamtuf.coredump.cx/p0f.shtml</a></p>
+
+<h1 id="METHODS">METHODS</h1>
+
+<h2 id="Lookup-methods"><a id="Lookup"></a>Lookup methods</h2>
+
+<p>The following methods are class methods, which can of course also be used as object methods.</p>
+
+<dl>
+
+<dt id="lookupdev()"><a id="lookupdev"></a>lookupdev()</dt>
+<dd>
+
+<p>Returns the name of a network device that can be used for operating.</p>
+
+<p><b>Note:</b> this function may require administrator privileges on some operating systems.</p>
+
+</dd>
+<dt id="findalldevs()"><a id="findalldevs"></a>findalldevs()</dt>
+<dd>
+
+<p>Returns a list of all network devices that can be used for operating. If the corresponding fonction is not available in the version of <code>Net::Pcap</code> installed on the system (it appeared in version 0.05), it will print a warning and return the result of <code>lookupdev()</code>.</p>
+
+<p><b>Note:</b> this function may require administrator privileges on some operating systems.</p>
+
+</dd>
+</dl>
+
+<h2 id="Packet-analysis-methods"><a id="Packet"></a>Packet analysis methods</h2>
+
+<dl>
+
+<dt id="new()"><a id="new"></a>new()</dt>
+<dd>
+
+<p>Create and returns a new objects. The following options are accepted.</p>
+
+<p><b>Engine options</b></p>
+
+<ul>
+
+<li><p><code>backend</code> - selects the back-end. Accepted values are <code>&quot;cmd&quot;</code>, <code>&quot;socket&quot;</code> and <code>&quot;xs&quot;</code> to select, respectively, the command line front-end, the socket version and the XS version. If not specified, defaults to <code>&quot;cmd&quot;</code>.</p>
+
+</li>
+<li><p><code>chroot_as</code> - chroot and setuid to this user. Accepted value is any valid user name. Default is not to chroot.</p>
+
+</li>
+<li><p><code>fingerprints_file</code> - read fingerpints from the given file.</p>
+
+</li>
+</ul>
+
+<p><b>Input options</b></p>
+
+<p>Only one the following options must be used.</p>
+
+<ul>
+
+<li><p><code>interface</code> - selects the network device. Accepted values are any interface name that the system can recognize. Remember that such names are usualy not portable. For example, you can check if the interface name belongs to the list returned by <code>Net::P0f-</code>findalldevs&gt;.</p>
+
+</li>
+<li><p><code>dump_file</code> - reads from the given dump file, as created by <b>tcpdump(1)</b> with the <code>-w file</code> option.</p>
+
+</li>
+</ul>
+
+<p><b>Detection options</b></p>
+
+<ul>
+
+<li><p><code>detection_mode</code> - selects the detection mode. Accepted values are 0 for the SYN mode, 1 for the SYN+ACK mode, and 2 for the RST+ACK mode. Default value is 0.</p>
+
+</li>
+<li><p><code>fuzzy</code> - activates the fuzzy matching (do not combine with the RST+ACK detection mode). Value can be 0 (fuzzy matching disabled) or 1 (activated). Default value is 0.</p>
+
+</li>
+<li><p><code>promiscuous</code> - switches the network device to promiscuous mode. Value can be 0 (normal mode) or 1 (promiscuous mode activated). Default value is 0.</p>
+
+</li>
+<li><p><code>filter</code> - pcap-style BPF expression.</p>
+
+</li>
+<li><p><code>masquerade_detection</code> - activates the masquerade detection. Value can be 0 (masquerade detection disabled) or 1 (enabled). Default value is 0.</p>
+
+</li>
+<li><p><code>masquerade_detection_threshold</code> - sets the masquerade detection threshold. Value can be any integer between 1 and 200. Default value is 100.</p>
+
+</li>
+<li><p><code>resolve_names</code> - activates the IP to names resolution. Value can be 0 (do not resolve names) or 1 (resolve names). Default value is 0.</p>
+
+</li>
+</ul>
+
+<p><b>Example</b></p>
+
+<p>Common use under Linux:</p>
+
+<pre><code>    my $p0f = new Net::P0f interface =&gt; &#39;eth0&#39;;</code></pre>
+
+<p>The same, in a more portable way:</p>
+
+<pre><code>    my $p0f = new Net::P0f interface =&gt; Net::P0f-&gt;lookupdev;</code></pre>
+
+</dd>
+<dt id="loop()"><a id="loop"></a>loop()</dt>
+<dd>
+
+<p>This method launches the execution of the P0f engine.</p>
+
+<p><b>Options</b></p>
+
+<ul>
+
+<li><p><code>callback</code> - sets the callback function that will be called for each received packets. This option is required. See <a href="#CALLBACK">&quot;CALLBACK&quot;</a> for more information.</p>
+
+</li>
+<li><p><code>count</code> - wait for this number of packets, then stop. If set to zero, run until a <code>SIGINT</code> signal is received. This option is required.</p>
+
+</li>
+</ul>
+
+<p><b>Example</b></p>
+
+<pre><code>    # process 10 packets, giving them to the packet_handler() function
+    $p0f-&gt;loop(callback =&gt; \&amp;packet_handler, count =&gt; 10);</code></pre>
+
+</dd>
+</dl>
+
+<h1 id="CALLBACK">CALLBACK</h1>
+
+<p>A callback function has the following signature:</p>
+
+<pre><code>    sub callback {
+        my($self,$header,$os_info,$link_info) = @_;
+        # do something ...
+    }</code></pre>
+
+<p>where the parameters have the following meaning:</p>
+
+<ul>
+
+<li><p><code>$self</code> is the <code>Net::P0f</code> object</p>
+
+</li>
+<li><p><code>$header</code> is a hashref with the following keys:</p>
+
+<ul>
+
+<li><p><code>ip_src</code> is the source IP address</p>
+
+</li>
+<li><p><code>name_src</code> is the source DNS name (if any)</p>
+
+</li>
+<li><p><code>port_src</code> is the source port</p>
+
+</li>
+<li><p><code>ip_dest</code> is the destination IP address</p>
+
+</li>
+<li><p><code>name_dest</code> is the destination DNS name (if any)</p>
+
+</li>
+<li><p><code>port_dest</code> is the destination port</p>
+
+</li>
+</ul>
+
+</li>
+<li><p><code>$os_info</code> is a hashref with the following keys:</p>
+
+<ul>
+
+<li><p><code>genre</code> is the generic genre of the operating system (like <code>&quot;Linux&quot;</code> or <code>&quot;Windows&quot;</code>)</p>
+
+</li>
+<li><p><code>details</code> gives more information on the operating system, like its version</p>
+
+</li>
+<li><p><code>uptime</code> indicates the uptime of the host</p>
+
+</li>
+</ul>
+
+</li>
+<li><p><code>$link_info</code> is a hashref with the following keys:</p>
+
+<ul>
+
+<li><p><code>distance</code> is the distance to the host</p>
+
+</li>
+<li><p><code>link_type</code> is the type of the connection</p>
+
+</li>
+</ul>
+
+</li>
+</ul>
+
+<h1 id="SIGNALS">SIGNALS</h1>
+
+<dl>
+
+<dt id="sighandler()"><a id="sighandler"></a>sighandler()</dt>
+<dd>
+
+<p>This function is a signal handler for the <code>SIGINT</code>, <code>SIGTERM</code> and <code>SIGQUIT</code> signals. Its main purpose is to tell all the instancied <code>Net::P0f</code> objects to cleanly stop their engine.</p>
+
+</dd>
+</dl>
+
+<h1 id="BACKENDS">BACKENDS</h1>
+
+<h2 id="Command-line-version"><a id="Command"></a>Command-line version</h2>
+
+<p>XXX</p>
+
+<h2 id="Socket-version"><a id="Socket"></a>Socket version</h2>
+
+<p>XXX</p>
+
+<h2 id="XS-version"><a id="XS"></a>XS version</h2>
+
+<p>XXX</p>
+
+<h1 id="DIAGNOSTICS">DIAGNOSTICS</h1>
+
+<p>These messages are classified as follows (listed in increasing order of desperation):</p>
+
+<ul>
+
+<li><p><b>(W)</b> A warning, usually caused by bad user data.</p>
+
+</li>
+<li><p><b>(E)</b> An error caused by external code.</p>
+
+</li>
+<li><p><b>(F)</b> A fatal error caused by the code of this module.</p>
+
+</li>
+</ul>
+
+<dl>
+
+<dt id="Both-&#39;interface&#39;-and-&#39;dump_file&#39;-have-been-set.-&#39;dump_file&#39;-prevails."><a id="Both"></a><a id="Both--interface--and--dump_file--have-been-set.--dump_file--prevails"></a>Both &#39;interface&#39; and &#39;dump_file&#39; have been set. &#39;dump_file&#39; prevails.</dt>
+<dd>
+
+<p><b>(F)</b> As the message says, you defined two input sources by setting both <code>interface</code> and <code>dump_file</code>.</p>
+
+</dd>
+<dt id="Net::Pcap-error:-%s"><a id="Net"></a><a id="Net::Pcap-error:--s"></a>Net::Pcap error: %s</dt>
+<dd>
+
+<p><b>(E)</b> The Net::Pcap module returned the following error.</p>
+
+</dd>
+<dt id="No-input-source-was-defined.-Please-set-one-of-&#39;interface&#39;-or-&#39;dump_file&#39;."><a id="No"></a><a id="No-input-source-was-defined.-Please-set-one-of--interface--or--dump_file"></a>No input source was defined. Please set one of &#39;interface&#39; or &#39;dump_file&#39;.</dt>
+<dd>
+
+<p><b>(F)</b> As the message says, you didn&#39;t define an input source by setting one of <code>interface</code> or <code>dump_file</code> before calling <code>loop()</code>.</p>
+
+</dd>
+<dt id="Option-&#39;%s&#39;-was-not-set."><a id="Option"></a><a id="Option--s--was-not-set"></a>Option &#39;%s&#39; was not set.</dt>
+<dd>
+
+<p><b>(F)</b> A mandatory option wasn&#39;t set, hence preventing the program to work.</p>
+
+</dd>
+<dt id="This-function-is-not-available-with-this-version-of-Net::Pcap"><a id="This"></a>This function is not available with this version of Net::Pcap</dt>
+<dd>
+
+<p><b>(W)</b> As the message says, the function <code>findalldevs()</code> is not available. This is most probably because you have Net::Pcap version 0.04 or earlier, and Net::Pcap version 0.05 is needed.</p>
+
+</dd>
+<dt id="Unknown-option-&#39;%s&#39;"><a id="Unknown"></a><a id="Unknown-option--s"></a>Unknown option &#39;%s&#39;</dt>
+<dd>
+
+<p><b>(W)</b> You called an accesor which does not correspond to a known option.</p>
+
+</dd>
+<dt id="Unknown-value-for-option-&#39;backend&#39;:-%s"><a id="Unknown1"></a><a id="Unknown-value-for-option--backend-:--s"></a>Unknown value for option &#39;backend&#39;: %s</dt>
+<dd>
+
+<p><b>(F)</b> The value for the option <code>&quot;backend&quot;</code> was not given a valid value. This is a fatal error because this option is needed to build the object.</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p><a href="http://man.he.net/man1/p0f">p0f(1)</a></p>
+
+<p><a href="/pod/Net::P0f::Backend::CmdFE">Net::P0f::Backend::CmdFE</a>, <a href="/pod/Net::P0f::Backend::Socket">Net::P0f::Backend::Socket</a>, <a href="/pod/Net::P0f::Backend::XS">Net::P0f::Backend::XS</a> for backend specific details</p>
+
+<p><a href="/pod/Net::Pcap">Net::Pcap</a></p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>S&eacute;bastien Aperghis-Tramoni &lt;sebastien@aperghis.net&gt;</p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Please report any bugs or feature requests to <a href="/pod/bug-net-p0f@rt.cpan.org">bug-net-p0f@rt.cpan.org</a>, or through the web interface at <a href="https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Net-P0f">https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Net-P0f</a>. I will be notified, and then you&#39;ll automatically be notified of progress on your bug as I make changes.</p>
+
+<h1 id="COPYRIGHT-&amp;-LICENSE"><a id="COPYRIGHT"></a><a id="COPYRIGHT---LICENSE"></a>COPYRIGHT &amp; LICENSE</h1>
+
+<p>Copyright 2004 S&eacute;bastien Aperghis-Tramoni, All Rights Reserved.</p>
+
+<p>This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::P0f, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::P0f
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::P0f
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>

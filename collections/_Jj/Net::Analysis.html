@@ -1,0 +1,181 @@
+---
+layout: default
+home_btn: true
+btn_text: true
+footer: true
+toc: false
+footer: false
+---
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<p>Using an existing analyser on a tcpdump/wireshark capture file:</p>
+
+<pre><code> $ perl -MNet::Analysis -e main help
+ $ perl -MNet::Analysis -e main TCP,v=1            dump.tcp # basic TCP info
+ $ perl -MNet::Analysis -e main HTTP,v=1           dump.tcp # HTTP stuff
+ $ perl -MNet::Analysis -e main Example2,regex=img dump.tcp # run an example</code></pre>
+
+<p>Or trying live capture:</p>
+
+<pre><code> # perl -MNet::Analysis -e main TCP,v=1            &quot;port 80&quot;</code></pre>
+
+<p>Writing your own analyser:</p>
+
+<pre><code>  package MyExample;
+
+  use base qw(Net::Analysis::Listener::Base);
+
+  # Listen to events from other modules
+  sub tcp_monologue {
+      my ($self, $args) = @_;
+      my ($mono) = $args-&gt;{monologue};
+
+      my $t = $mono-&gt;t_elapsed()-&gt;as_number();
+      my $l = $mono-&gt;length();
+
+      # Emit your own event
+      $self-&gt;emit(name =&gt; &#39;example_event&#39;,
+                  args =&gt; { kb_sec =&gt; ($t) ? $l/($t*1024) : &#39;N/A&#39; }
+                 );
+  }
+
+  # Process your own event
+  sub example_event {
+      my ($self, $args) = @_;
+
+      printf &quot;Bandwidth: %10.2f KB/sec\n&quot;, $args-&gt;{kb_sec};
+  }
+
+  1;</code></pre>
+
+<h1 id="ABSTRACT">ABSTRACT</h1>
+
+<p>Net::Analysis is a suite of modules that parse tcpdump files, reconstruct TCP sessions from the packets, and provide a very lightweight framework for writing protocol anaylsers.</p>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>I wanted a batch version of Ethereal in Perl, so I could:</p>
+
+<ul>
+
+<li><p>sift through parsed protocols with structured filters</p>
+
+</li>
+<li><p>write custom reports that mixed events from multiple protocols</p>
+
+</li>
+</ul>
+
+<p>So here it is. Net::Analysis is a stack of protocol handlers that emit, and listen for, events.</p>
+
+<p>At the bottom level, a combination of <a href="/pod/Net::Pcap">Net::Pcap</a> and <a href="/pod/NetPacket">NetPacket</a> emit <code>_internal_tcp_packet</code> events as they are read from the input file (or live capture from a network device.)</p>
+
+<p>The TCP listener (<a href="/pod/Net::Analysis::Listener::TCP">Net::Analysis::Listener::TCP</a>) picks up these packets, and reconstructs TCP streams; in turn, it emits <code>tcp_monologue</code> events. A monologue is a series of bytes sent in one direction in a TCP stream; a TCP session will usually involve a number of monologues, back and forth.</p>
+
+<p>For example, a typical TCP session for HTTP will consist of two monologues; the request (client to server), and then the reponse (server to client). Although if you have HTTP KeepAlive/pipelining on, then you may see multiple requests in the same TCP session. A typical SMTP session will involve a rapid sequence of small monologues as the sender talks SMTP, before sending the bulk of the (hopefully not bulk) email.</p>
+
+<p>The protocol analysers tend to listen for the <code>tcp_monologue</code> event and build from there. For example, the HTTP listener (<a href="/pod/Net::Analysis::Listener::HTTP">Net::Analysis::Listener::HTTP</a>) listens for <code>tcp_monologue</code>s, pairs them up, creates <code>HTTP::Request</code> and <code>HTTP::Response</code> objects for them, and emits <code>http_transaction</code> events.</p>
+
+<p>If you wanted to sift for transactions to a certain website, this is the event you&#39;d listen for:</p>
+
+<pre><code>  package NoseyParker;
+
+  use base qw(Net::Analysis::Listener::Base);
+
+  # Listen for HTTP things
+  sub http_transaction {
+      my ($self, $args) = @_;
+      my ($http_req) = $args-&gt;{req}; # $args documented in Listener::HTTP.pm
+
+      # Check our HTTP::Request object ...
+      if ($http_req-&gt;uri() =~ /cpan.org/) {
+          print &quot;Perl fan !\n&quot;;
+      }
+  }</code></pre>
+
+<p>Each event can set up whichever arguments it wants to. These are documented in the module that emits the event. By convention, the event name is prefixed by the protocol name (e.g. <code>tcp_session_start</code>, <code>http_transaction</code>).</p>
+
+<p>The events emitted by this base distribution are:</p>
+
+<ul>
+
+<li><p><code>tcp_session_start</code> - session established, provides socketpair</p>
+
+</li>
+<li><p><code>tcp_session_end</code></p>
+
+</li>
+<li><p><code>_internal_tcp_packet</code> - might be out of order, or a duplicate</p>
+
+</li>
+<li><p><code>tcp_monologue</code> - the packets glued together</p>
+
+</li>
+<li><p><code>http_transaction</code> - a request and its response</p>
+
+</li>
+</ul>
+
+<h1 id="WHERE-NEXT"><a id="WHERE"></a>WHERE NEXT</h1>
+
+<p>To look at how to invoke the whole thing, to plug into your own script, see the <code>main()</code> method in <a href="/pod/Net::Analysis">Net::Analysis</a>.</p>
+
+<p>To see how to emit (and catch) your own events, look at <a href="/pod/Net::Analysis::Listener::Example1">Net::Analysis::Listener::Example1</a>.</p>
+
+<p>For a simple example that greps TCP monologue data, see <a href="/pod/Net::Analysis::Listener::Example2">Net::Analysis::Listener::Example2</a>.</p>
+
+<p>For a simple example that looks at the HTTP objects emitted for each HTTP transaction, see <a href="/pod/Net::Analysis::Listener::Example3">Net::Analysis::Listener::Example3</a>.</p>
+
+<p>To look at how to write a listener that maintains session state, see <a href="/pod/Net::Analysis::Listener::HTTP">Net::Analysis::Listener::HTTP</a>.</p>
+
+<h1 id="TODO">TODO</h1>
+
+<p>Performance - this may not be fast enough to handle busy servers in real time.</p>
+
+<p>More work on live capture, this is still experimental.</p>
+
+<p>UDP support</p>
+
+<p>Other handy protocols - DNS, SMTP, ...</p>
+
+<p>Move event loop and dispatching to POE ?</p>
+
+<p>Move TCP reassembly to Net::LibNIDS ?</p>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p><a href="/pod/Net::Analysis::Listener::Example1">Net::Analysis::Listener::Example1</a>, <a href="/pod/Net::Analysis::Listener::Example2">Net::Analysis::Listener::Example2</a>, <a href="/pod/Net::Analysis::Listener::Example3">Net::Analysis::Listener::Example3</a>, <a href="/pod/Net::Analysis::Listener::HTTPClientPerf">Net::Analysis::Listener::HTTPClientPerf</a>, <a href="/pod/Net::Pcap">Net::Pcap</a>, <a href="/pod/NetPacket">NetPacket</a>.</p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>A. B. Worrall, &lt;worrall@cpan.org&gt;</p>
+
+<p>Please report any bugs via http://rt.cpan.org.</p>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (C) 2005 by A. B. Worrall</p>
+
+<p>This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself, either Perl version 5.8.6 or, at your option, any later version of Perl 5 you may have available.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::Analysis, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::Analysis
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::Analysis
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation </p>
+<img src="https://media3.giphy.com/media/ADiOs8AqeverrAuT4Q/giphy.gif" alt="drawing" width="2000"/>

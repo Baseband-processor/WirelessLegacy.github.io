@@ -1,0 +1,327 @@
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>    use Parse::Snort;
+
+    my $rule = Parse::Snort-&gt;new(
+      action =&gt; &#39;alert&#39;,
+      proto =&gt; &#39;tcp&#39;,
+      src =&gt; &#39;$HOME_NET&#39;, src_port =&gt; &#39;any&#39;,
+      direction =&gt; &#39;-&gt;&#39;
+      dst =&gt; &#39;$EXTERNAL_NET&#39;, dst_port =&gt; &#39;any&#39;
+    );
+
+    $rule-&gt;action(&quot;pass&quot;);
+
+    $rule-&gt;opts(
+      [ &#39;depth&#39; =&gt; 50 ],
+      [ &#39;offset&#39; =&gt; 0 ],
+      [ &#39;content&#39; =&gt; &quot;perl6&quot; ],
+      [ &quot;nocase&quot; ]
+    );
+
+    my $rule = Parse::Snort-&gt;new();
+    $rule-&gt;parse(&#39;pass tcp $HOME_NET any -&gt; $EXTERNAL_NET 6667;&#39;);
+    $rule-&gt;msg(&quot;IRC server&quot;);
+    my $rule_string = $rule-&gt;as_string;
+);</code></pre>
+
+<h1 id="METHODS">METHODS</h1>
+
+<p>These are the object methods that can be used to read or modify any part of a Snort rule. <b>Please note: None of these methods provide any sort of input validation to make sure that the rule makes sense, or can be parsed at all by Snort.</b></p>
+
+<p>If input validation is required, check out the <a href="/pod/Parse::Snort::Strict">Parse::Snort::Strict</a> module.</p>
+
+<h2 id="new-()"><a id="new"></a>new ()</h2>
+
+<p>Create a new <code>Parse::Snort</code> object, and return it. There are a couple of options when creating the object:</p>
+
+<dl>
+
+<dt id="new-(-)"><a id="new1"></a>new ( )</dt>
+<dd>
+
+<p>Create an unpopulated object, that can be filled in using the individual rule element methods, or can be populated with the <a href="/pod/Parse::Snort#PARSE">parse</a> method.</p>
+
+</dd>
+<dt id="new-(-$rule_string-)"><a id="new2"></a><a id="new----rule_string"></a>new ( $rule_string )</dt>
+<dd>
+
+<p>Create an object based on a plain text Snort rule, all on one line. This module doesn&#39;t understand the UNIX style line continuations (a backslash at the end of the line) that Snort does.</p>
+
+<pre><code>  $rule_string = &#39;alert tcp $EXTERNAL_NET any -&gt; $HOME_NET any (msg:&quot;perl 6 download detected\; may the world rejoice!&quot;;depth:150; offset:0; content:&quot;perl-6.0.0&quot;; nocase;)&#39;</code></pre>
+
+</dd>
+<dt id="new-(-$rule_element_hashref-)"><a id="new3"></a><a id="new----rule_element_hashref"></a>new ( $rule_element_hashref )</dt>
+<dd>
+
+<p>Create an object baesd on a prepared hash reference similar to the internal strucutre of the <a href="/pod/Parse::Snort">Parse::Snort</a> object.</p>
+
+<pre><code>    $rule_element_hashref = {
+        action    =&gt; &#39;alert&#39;,
+        proto     =&gt; &#39;tcp&#39;,
+        src       =&gt; &#39;$EXTERNAL_NET&#39;,
+        src_port  =&gt; &#39;any&#39;,
+        direction =&gt; &#39;-&gt;&#39;,
+        dst       =&gt; &#39;$HOME_NET&#39;,
+        dst_port  =&gt; &#39;any&#39;,
+        opts      =&gt; [
+            [&#39;msg&#39;     =&gt; &#39;&quot;perl 6 download detected\; may the world rejoice!&quot;&#39;],
+            [&#39;depth&#39;   =&gt; 150],
+            [&#39;offset&#39;  =&gt; 0],
+            [&#39;content&#39; =&gt; &#39;perl-6.0.0&#39;],
+            [&#39;nocase&#39;],
+        ],
+    };</code></pre>
+
+</dd>
+</dl>
+
+<h2 id="parse(-$rule_string-)"><a id="parse"></a><a id="parse---rule_string"></a>parse( $rule_string )</h2>
+
+<p>The parse method is what interprets a plain text rule, and populates the rule object. Beacuse this module does not support the UNIX style line-continuations (backslash at the end of a line) the rule must be all on one line, otherwise the parse will fail in unpredictably interesting and confusing ways. The parse method tries to interpret the rule from left to right, calling the individual accessor methods for each rule element. This will overwrite the contents of the object (if any), so if you want to parse multiple rules at once, you will need multiple objects.</p>
+
+<pre><code>  $rule-&gt;parse($rule_string);</code></pre>
+
+<h2 id="state">state</h2>
+
+<p>The state of the rule: active (1) or commented (0)</p>
+
+<h2 id="METHODS-FOR-ACCESSING-RULE-ELEMENTS"><a id="METHODS1"></a>METHODS FOR ACCESSING RULE ELEMENTS</h2>
+
+<p>You can access the core parts of a rule (action, protocol, source IP, etc) with the method of their name. These are read/write <a href="/pod/Class::Accessor">Class::Accessor</a> accessors. If you want to read the value, don&#39;t pass an argument. If you want to set the value, pass in the new value. In either case it returns the current value, or undef if the value has not been set yet.</p>
+
+<dl>
+
+<dt id="action">action</dt>
+<dd>
+
+<p>The rule action. Generally one of the following: <code>alert</code>, <code>pass</code>, <code>drop</code>, <code>sdrop</code>, or <code>log</code>.</p>
+
+</dd>
+<dt id="proto">proto</dt>
+<dd>
+
+<p>The protocol of the rule. Generally one of the following: <code>tcp</code>, <code>udp</code>, <code>ip</code>, or <code>icmp</code>.</p>
+
+</dd>
+<dt id="src">src</dt>
+<dd>
+
+<p>The source IP address for the rule. Generally a dotted decimal IP address, Snort $HOME_NET variable, or CIDR block notation.</p>
+
+</dd>
+<dt id="src_port">src_port</dt>
+<dd>
+
+<p>The source port for the rule. Generally a static port, or a contigious range of ports.</p>
+
+</dd>
+<dt id="direction">direction</dt>
+<dd>
+
+<p>The direction of the rule. One of the following: <code>-&gt;</code> <code>&lt;&gt;</code> or <code>&lt;-</code>.</p>
+
+</dd>
+<dt id="dst">dst</dt>
+<dd>
+
+<p>The destination IP address for the rule. Same format as <code>src</code></p>
+
+</dd>
+<dt id="dst_port">dst_port</dt>
+<dd>
+
+<p>The destination port for the rule. Same format as <code>src</code></p>
+
+</dd>
+<dt id="opts-(-$opts_array_ref-)"><a id="opts"></a><a id="opts----opts_array_ref"></a>opts ( $opts_array_ref )</dt>
+<dd>
+
+</dd>
+<dt id="opts-(-$opts_string-)"><a id="opts1"></a><a id="opts----opts_string"></a>opts ( $opts_string )</dt>
+<dd>
+
+<p>The opts method can be used to read existing options of a parsed rule, or set them. The method takes two forms of arguments, either an Array of Arrays, or a rule string.</p>
+
+<dl>
+
+<dt id="$opts_array_ref"><a id="opts_array_ref"></a>$opts_array_ref</dt>
+<dd>
+
+<pre><code>  $opts_array_ref = [
+       [ &#39;msg&#39; =&gt; &#39;&quot;perl 6 download detected\; may the world rejoice!&quot;&#39; ],
+       [ &#39;depth&#39; =&gt; 150 ],
+       [ &#39;offset&#39; =&gt; 0 ],
+       [ &#39;content&#39; =&gt; &#39;perl-6.0.0&#39; ],
+       [ &#39;nocase&#39; ],
+  ]</code></pre>
+
+</dd>
+<dt id="$opts_string"><a id="opts_string"></a>$opts_string</dt>
+<dd>
+
+<pre><code>  $opts_string=&#39;(msg:&quot;perl 6 download detected\; may the world rejoice!&quot;;depth:150; offset:0; content:&quot;perl-6.0.0&quot;; nocase;)&#39;;</code></pre>
+
+<p>The parenthesis surround the series of <code>key:value;</code> pairs are optional.</p>
+
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+<h2 id="HELPER-METHODS-FOR-VARIOUS-OPTIONS"><a id="HELPER"></a>HELPER METHODS FOR VARIOUS OPTIONS</h2>
+
+<dl>
+
+<dt id="sid">sid</dt>
+<dd>
+
+</dd>
+<dt id="rev">rev</dt>
+<dd>
+
+</dd>
+<dt id="msg">msg</dt>
+<dd>
+
+</dd>
+<dt id="classtype">classtype</dt>
+<dd>
+
+</dd>
+<dt id="gid">gid</dt>
+<dd>
+
+</dd>
+<dt id="metadata">metadata</dt>
+<dd>
+
+</dd>
+<dt id="flow">flow</dt>
+<dd>
+
+</dd>
+<dt id="priority">priority</dt>
+<dd>
+
+<p>The these methods allow direct access to the rule option of the same name</p>
+
+<pre><code>  my $sid = $rule_obj-&gt;sid(); # reads the sid of the rule
+  $rule_obj-&gt;sid($sid); # sets the sid of the rule
+  ... etc ...</code></pre>
+
+</dd>
+<dt id="references">references</dt>
+<dd>
+
+<p>The <code>references</code> method permits read-only access to the <code>reference:</code> options in the rule. This is in the form of an array of arrays, with each reference in the format</p>
+
+<pre><code>  [ &#39;reference_type&#39; =&gt; &#39;reference_value&#39; ]</code></pre>
+
+<p>To modify references, use the <code>opts</code> method to grab all the rule options, modify it to your needs, and use the <code>opts</code> method to save your changes back to the rule object.</p>
+
+<pre><code>  $references = $rule-&gt;references(); # just the references
+  $no_references = grep { $_-&gt;[0] ne &quot;reference&quot; } @{ $rule-&gt;opts() }; # everything but the references</code></pre>
+
+</dd>
+<dt id="as_string">as_string</dt>
+<dd>
+
+<p>The <code>as_string</code> method returns a string that matches the normal Snort rule form of the object. This is what you want to use to write a rule to an output file that will be read by Snort.</p>
+
+</dd>
+<dt id="clone">clone</dt>
+<dd>
+
+<p>Returns a clone of the current rule object.</p>
+
+</dd>
+<dt id="reset">reset</dt>
+<dd>
+
+<p>Resets the internal state (deletes it!) of the current rule object, and returns the rule object itself. Useful for parsing multiple rules, one after another. Just call <code>$rule-&gt;reset()</code> after you&#39;re done with the current rule, and before you <code>$rule-&gt;parse()</code> or set new values via the accessor methods.</p>
+
+</dd>
+</dl>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>Richard G Harman Jr, <code>&lt;perl-cpan at richardharman.com&gt;</code></p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<p>Please report any bugs or feature requests to <code>bug-parse-snort at rt.cpan.org</code>, or through the web interface at <a href="http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Parse-Snort">http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Parse-Snort</a>. I will be notified, and then you&#39; ll automatically be notified of progress on your bug as I make changes.</p>
+
+<h1 id="SUPPORT">SUPPORT</h1>
+
+<p>You can find documentation for this module with the perldoc command.</p>
+
+<pre><code>    perldoc Parse::Snort</code></pre>
+
+<p>You can also look for information at:</p>
+
+<ul>
+
+<li><p>AnnoCPAN: Annotated CPAN documentation</p>
+
+<p><a href="http://annocpan.org/dist/Parse-Snort">http://annocpan.org/dist/Parse-Snort</a></p>
+
+</li>
+<li><p>CPAN Ratings</p>
+
+<p><a href="http://cpanratings.perl.org/d/Parse-Snort">http://cpanratings.perl.org/d/Parse-Snort</a></p>
+
+</li>
+<li><p>RT: CPAN&#39;s request tracker</p>
+
+<p><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=Parse-Snort">http://rt.cpan.org/NoAuth/Bugs.html?Dist=Parse-Snort</a></p>
+
+</li>
+<li><p>Search CPAN</p>
+
+<p><a href="http://search.cpan.org/dist/Parse-Snort">http://search.cpan.org/dist/Parse-Snort</a></p>
+
+</li>
+</ul>
+
+<h1 id="DEPENDENCIES">DEPENDENCIES</h1>
+
+<p><a href="/pod/Class::Accessor">Class::Accessor</a>, <a href="/pod/List::Util">List::Util</a>, <a href="/pod/Sub::Util">Sub::Util</a>, <a href="/pod/Carp">Carp</a></p>
+
+<h1 id="ACKNOWLEDGEMENTS">ACKNOWLEDGEMENTS</h1>
+
+<p>MagNET #perl for putting up with me :)</p>
+
+<h1 id="COPYRIGHT-&amp;-LICENSE"><a id="COPYRIGHT"></a><a id="COPYRIGHT---LICENSE"></a>COPYRIGHT &amp; LICENSE</h1>
+
+<p>Copyright 2007 Richard Harman, all rights reserved.</p>
+
+<p>This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Parse::Snort, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Parse::Snort
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Parse::Snort
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>

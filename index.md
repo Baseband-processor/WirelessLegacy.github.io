@@ -1,6 +1,6 @@
 ---
 layout: default
-post_list: true
+post_list: false
 toc: true
 comment: false
 home_btn: false
@@ -8,7 +8,7 @@ btn_text: true
 footer: true
 title: "Air-Legacy documentation"
 author: "Edoardo Mantovani"
-encrypted_text: false
+encrypted_text: true
 permalink: /
 ---
 

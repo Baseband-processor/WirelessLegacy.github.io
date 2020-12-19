@@ -1,0 +1,110 @@
+  ---
+layout: default
+home_btn: true
+btn_text: true
+footer: true
+toc: false
+footer: false
+---
+
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code>   use Net::Write::Layer2;
+
+   my $desc = Net::Write::Layer2-&gt;new(
+      dev =&gt; &#39;eth0&#39;,
+   );
+
+   $desc-&gt;open;
+   $desc-&gt;send(&#39;G&#39;x666);
+   $desc-&gt;close;</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This is the class for creating a layer 2 descriptor.</p>
+
+<h1 id="ATTRIBUTES">ATTRIBUTES</h1>
+
+<dl>
+
+<dt id="dev"><b>dev</b></dt>
+<dd>
+
+<p>The string specifying network interface to use.</p>
+
+<p>Under Unix-like systems, this is in this format: \w+\d+ (example: eth0).</p>
+
+<p>Under Windows systems, this is more complex; example: \Device\NPF_{0749A9BC-C665-4C55-A4A7-34AC2FBAB70F}</p>
+
+</dd>
+</dl>
+
+<h1 id="METHODS">METHODS</h1>
+
+<dl>
+
+<dt id="new"><b>new</b></dt>
+<dd>
+
+<p>Object constructor. You MUST pass a valid <b>dev</b> attribute. There is no default value. Returns undef on error.</p>
+
+</dd>
+<dt id="open"><b>open</b></dt>
+<dd>
+
+<p>Open the interface. Returns undef on error.</p>
+
+</dd>
+<dt id="send-(scalar)"><a id="send"></a><a id="send--scalar"></a><b>send</b> (scalar)</dt>
+<dd>
+
+<p>Send raw data to the network.</p>
+
+</dd>
+<dt id="close"><b>close</b></dt>
+<dd>
+
+<p>Close the descriptor.</p>
+
+</dd>
+</dl>
+
+<h1 id="CAVEATS">CAVEATS</h1>
+
+<p>Writing junk to loopback interface on BSD systems will not work.</p>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p><a href="/pod/Net::Write::Layer">Net::Write::Layer</a></p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>Patrice &lt;GomoR&gt; Auffret</p>
+
+<h1 id="COPYRIGHT-AND-LICENSE"><a id="COPYRIGHT"></a>COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (c) 2006-2015, Patrice &lt;GomoR&gt; Auffret</p>
+
+<p>You may distribute this module under the terms of the Artistic license. See LICENSE.Artistic file in the source distribution archive.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::Write::Layer2, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::Write
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::Write
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+                <img src="https://media3.giphy.com/media/ADiOs8AqeverrAuT4Q/giphy.gif" alt="drawing" width="2000"/>

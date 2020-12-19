@@ -8,7 +8,7 @@ btn_text: true
 footer: true
 title: "Air-Legacy documentation"
 author: "Edoardo Mantovani"
-encrypted_text: true
+encrypted_text: false
 permalink: /
 ---
 

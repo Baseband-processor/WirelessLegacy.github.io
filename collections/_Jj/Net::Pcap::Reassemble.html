@@ -1,0 +1,161 @@
+---
+layout: default
+home_btn: true
+btn_text: true
+footer: true
+toc: false
+footer: false
+---
+
+<h1 id="SYNOPSIS">SYNOPSIS</h1>
+
+<pre><code> use Net::Pcap::Reassemble;
+
+ my $pcap_t = Net::Pcap::open_offline($opt_p, \$err);
+ if (!defined($pcap_t)) {
+   print STDERR &quot;Net::Pcap::open_offline returned error: $err\n&quot;;
+   exit 1;
+ }
+
+ Net::Pcap::Reassemble::loop($pcap_t, -1, \&amp;callback, &quot;user data&quot;);</code></pre>
+
+<h1 id="DESCRIPTION">DESCRIPTION</h1>
+
+<p>This module performs reassembly of fragmented datagrams in libpcap packet capture data returned by the <b>Net::Pcap</b> <code>loop()</code> function. This module supports reassembly of IPv4 and IPv6 fragments.</p>
+
+<h1 id="FUNCTIONS">FUNCTIONS</h1>
+
+<dl>
+
+<dt id="loop($pcap,-$count,-\&amp;callback,-$user_data)"><a id="loop"></a><a id="loop-pcap---count---callback---user_data"></a>loop($pcap, $count, \&amp;callback, $user_data)</dt>
+<dd>
+
+<p>The <code>loop()</code> function in <b>Net::Pcap::Reassemble</b> is intended as a seamless wrapper around the same function from <b>Net::Pcap</b> and as such it takes the same arguments. <b>Net::Pcap::Reassemble</b>, however, will only invoke the <code>&amp;callback</code> function when it has a complete packet.</p>
+
+<p>The module will print debug information to stdout (mainly packet header values) if the <code>$debug</code> variable in the package namespace evaluates to true:</p>
+
+<pre><code> $Net::Pcap::Reassemble::debug = 1;</code></pre>
+
+<p>Layer 2 header data (typically an ethernet header) will be omitted from the packet supplied to the callback function if the <code>$stripl2</code> variable in the package namespace evaluates to true:</p>
+
+<pre><code> $Net::Pcap::Reassemble::stripl2 = 1;</code></pre>
+
+</dd>
+<dt id="flush()"><a id="flush"></a>flush()</dt>
+<dd>
+
+<p>The <code>flush()</code> function destroys the data structures storing any incomplete datagrams. This function can be called after <code>loop()</code> has returned to release memory used by the fragments of incomplete datagrams (assuming your program continues executing after the <code>loop()</code> finishes).</p>
+
+</dd>
+</dl>
+
+<h1 id="OBJECTS">OBJECTS</h1>
+
+<p>Data is represented internally using <code>Net::Pcap::Reassemble::Packet</code> and <code>Net::Pcap::Reassemble::Fragment</code> class objects.</p>
+
+<dl>
+
+<dt id="Net::Pcap::Reassemble::Packet"><a id="Net"></a>Net::Pcap::Reassemble::Packet</dt>
+<dd>
+
+<p>Each `Packet&#39; object represents a complete captured packet and contains:</p>
+
+<ol>
+
+<li><p>An ID: &#39;srcip dstip IPid protocol&#39; for IPv4; &#39;srcip dstip IPid&#39; for IPv6</p>
+
+</li>
+<li><p>A list of <code>Net::Pcap::Reassemble::Fragment</code> object references</p>
+
+</li>
+<li><p>The final octet, learned from the packet with MF==0</p>
+
+</li>
+<li><p>A flag to indicate if the fragment list is sorted</p>
+
+</li>
+</ol>
+
+<p>It has class functions to add a fragment to the Packet (<code>addfragment()</code>), return a string with information on the fragments received so far (<code>listfragments()</code>), and to test whether a datagram is complete and return its data if it is (<code>iscomplete()</code>).</p>
+
+</dd>
+<dt id="Net::Pcap::Reassemble::Fragment"><a id="Net1"></a>Net::Pcap::Reassemble::Fragment</dt>
+<dd>
+
+<p>Each `Fragment&#39; object represents an IP datagram fragment and contains:</p>
+
+<ol>
+
+<li><p>Start octet</p>
+
+</li>
+<li><p>End octet</p>
+
+</li>
+<li><p>(M)ore (F)ragments flag (`MF&#39; in IPv4; `M&#39; in IPv6)</p>
+
+</li>
+<li><p>Payload data</p>
+
+</li>
+</ol>
+
+<p>It has class functions to return the data above (<code>start()</code>, <code>end()</code>, <code>mf()</code> and <code>data()</code>), and a summary string for debugging (<code>vitals()</code>).</p>
+
+</dd>
+</dl>
+
+<h1 id="SEE-ALSO"><a id="SEE"></a>SEE ALSO</h1>
+
+<p><a href="/pod/Net::Pcap">Net::Pcap</a></p>
+
+<h1 id="BUGS">BUGS</h1>
+
+<ul>
+
+<li><p>Stale fragments are not aged out of the pending fragment list. We could look at the pcap header for the capture time of each packet and age out based on that.</p>
+
+</li>
+<li><p>This module offers no resistance against fragment overlap attacks, and other such malarky.</p>
+
+</li>
+<li><p>loop() should accept an optional anonymous hash reference for option passing.</p>
+
+</li>
+<li><p>Incomplete datagrams are left in limbo. Should be able to signal via an option that the callback be invoked for individual fragments aswell as the complete datagram.</p>
+
+</li>
+<li><p>The IP header in the packet supplied to the callback is from the first datagram. Length and checksum values will be incorrect with respect to the reassembled datagram that the callback sees. The layer 2 header, if present, will be from the last datagram to be captured.</p>
+
+</li>
+</ul>
+
+<h1 id="LICENSE">LICENSE</h1>
+
+<p>This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself. (Being a speaker of British english, I&#39;d call it a &quot;licence&quot; though)</p>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>James Raftery &lt;james@now.ie&gt;.</p>
+  
+        <div id="install-instructions-dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Module Install Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>To install Net::Pcap::Reassemble, copy and paste the appropriate command in to your terminal.</p>
+                <p><a href="/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a></p>
+                <pre>
+                    cpanm Net::Pcap::Reassemble
+                </pre>
+                <p><a href="/pod/CPAN">CPAN shell</a></p>
+                <pre>
+                    perl -MCPAN -e shell
+                    install Net::Pcap::Reassemble
+                </pre>
+                <p>For more information on module installation, please visit <a href="https://www.cpan.org/modules/INSTALL.html">the detailed CPAN module installation guide</a>.</p>
+ <img src="https://media3.giphy.com/media/ADiOs8AqeverrAuT4Q/giphy.gif" alt="drawing" width="2000"/>
+

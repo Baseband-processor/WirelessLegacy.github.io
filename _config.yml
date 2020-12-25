@@ -79,6 +79,10 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     alias           : "Download"
+  Oo: 
+    output          : true
+    permalink       : /:collection/:title/
+    alias           : "Plans for the future"
   Zz:
     output          : true
     permalink       : /:collection/:title/
@@ -93,7 +97,7 @@ github              : "Baseband-processor/"
 # Global Variables
 statement           : "Designed by DeerRIDER, All Rights Reserved, used by Edoardo Mantovani. All Rights Reserved too"
 toc_level           : 4
-bgtext              : "0123456789ABCFGHKLMNPQRSVWXYZabcdefghijklmnopqrstuvwxyz@#$%&*+-;/[]<>~=" # texts randomly displayed in background
+bgtext              : "01" # texts randomly displayed in background
 # Disqus settings（disqus.com）
 # disqus_username     : akiritsu
 # Plugins

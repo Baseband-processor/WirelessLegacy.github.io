@@ -53,7 +53,7 @@ collections:
     output          : true
     permalink       : /:collection/:title/
     sort_by         : date
-    alias           : "OSdep in Air::Legacy"
+    alias           : "Aircrack-ng in Air::Legacy"
   Hh:
     output          : true
     permalink       : /:collection/:title/

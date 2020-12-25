@@ -224,7 +224,7 @@ pcap_inject( $pcap, $probe, length( $probe ) );
 
 ```
 
-**Lorcon2 capture with Air::Legacy**
+**Lorcon2 packet capture with Air::Legacy**
 
 ```perl
 
@@ -292,7 +292,7 @@ BEGIN{
 }
 ```
 
-**Convert Pcap packet to Lorcon2 packet and analyze them**
+**Convert Pcap packet to Lorcon2 packet and then, analyze them**
 
 
 ```perl
@@ -336,7 +336,7 @@ sub process_packet {
  }
 ```
 
-**Represent WPS data into JSON file**
+**Represent WPS data into JSON file format**
 
 ```perl
 #!/usr/bin/perl
@@ -396,7 +396,7 @@ sleep(5);
 }
 ```
 
-**Create raw Beacon flooder**
+**Create a raw Beacon flooder**
 
 ```perl
 #!/usr/bin/perl

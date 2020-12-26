@@ -537,15 +537,11 @@ Companion Libraries
 As you have seen, usually Air::Legacy uses some companion libraries for extending its attack horizont, probably the most important library here is Net::Pcap, which is based on the famous libpcap library, also Air::Legacy support some additional pcap functions (see pcap_inject).
 
 
-<center> <font size="+3"><span style="color:red"> --------------------------------------------------------------------------------------------- </span> </font> </center>
-
 Requests and collaborations
 ==============================
 Feel free to email me at [Baseband@cpan.org](mailto:Baseband@cpan.org)
 
 I am open to suggestions, code improvement, collaboration and other requests
-
-<center> <font size="+3"><span style="color:red"> --------------------------------------------------------------------------------------------- </span> </font> </center>
 
 
 <img src="https://media3.giphy.com/media/ADiOs8AqeverrAuT4Q/giphy.gif" alt="drawing" width="2000"/>

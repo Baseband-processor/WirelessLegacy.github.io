@@ -22,7 +22,7 @@ permalink: /
 </script>
 
 
-<center> <font size="+3"><span style="color:red"> ------------------------------- </span> </font> </center>
+<center> <font size="+3"><span style="color:red"> --------------------------------------------------------------------------------------------- </span> </font> </center>
 
 
 ![installation](./installation.gif)
@@ -33,7 +33,7 @@ permalink: /
 
 
 
-<center> <font size="+3"><span style="color:red"> ------------------------------- </span> </font> </center>
+<center> <font size="+3"><span style="color:red"> --------------------------------------------------------------------------------------------- </span> </font> </center>
 
 Air::Legacy is growing, now it is ready to infect also the WWW!
 

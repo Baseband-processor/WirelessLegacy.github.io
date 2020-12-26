@@ -516,15 +516,23 @@ lorcon_close( $context );
 lorcon_free( $context );
 ```
 
+<center> <font size="+3"><span style="color:red"> --------------------------------------------------------------------------------------------- </span> </font> </center>
+
 Some Attack Ideas
 ==================================================================
+<center> <font size="+3"><span style="color:red"> --------------------------------------------------------------------------------------------- </span> </font> </center>
+
 
 * Create a passive WPA enterprise packet analyzer which studies some common patterns inside packets and try to craft a  fake one.
 * Create an advanced traffic analysis framework which works out of Wlans using entropy
 
 
+<center> <font size="+3"><span style="color:red"> --------------------------------------------------------------------------------------------- </span> </font> </center>
+
 Companion Libraries
 ==================================================================
+<center> <font size="+3"><span style="color:red"> --------------------------------------------------------------------------------------------- </span> </font> </center>
+
 
 As you have seen, usually Air::Legacy uses some companion libraries for extending its attack horizont, probably the most important library here is Net::Pcap, which is based on the famous libpcap library, also Air::Legacy support some additional pcap functions (see pcap_inject).
 

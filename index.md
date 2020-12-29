@@ -15,7 +15,9 @@ permalink: /
 
 <iframe src="https://cybermap.kaspersky.com/" width="2000" height="670"></iframe>
 
-*Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks, some are malwares and others are exploit*
+*Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks, some are malwares and others are exploit.*
+
+
 *Our mission is to let increase the wireless attacks exponentially*
 
 <script>

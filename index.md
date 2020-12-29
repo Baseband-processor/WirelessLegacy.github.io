@@ -22,6 +22,8 @@ permalink: /
 </script>
 
 
+INSTALLATION
+========================
 
 ![installation](./installation.gif)
 
@@ -29,6 +31,8 @@ permalink: /
 <center>for installing properly Air::Legacy libraries just type 'sudo make full', everything will be installed automatically.</center>
 
 
+DESCRIPTION
+==========================
 
 Air::Legacy is growing, now it is ready to infect also the WWW!
 

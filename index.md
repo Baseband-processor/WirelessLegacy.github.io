@@ -13,7 +13,7 @@ permalink: /
 ---
 
 
-<iframe src="https://threatmap.fortiguard.com/" width="2000" height="670"></iframe>
+<iframe src="https://cybermap.kaspersky.com/" width="2000" height="670"></iframe>
 
 *Every minute ~2000 people are affected by cyber attacks, most of those are phishing attacks*
 

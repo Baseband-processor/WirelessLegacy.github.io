@@ -8,16 +8,16 @@
 /* The actual popup (appears on top) */
 .popup .popuptext {
   visibility: hidden;
-  width: 160px;
+  width: 240px;
   background-color: #555;
   color: #fff;
   text-align: center;
-  border-radius: 6px;
-  padding: 8px 0;
+  border-radius: 12px;
+  padding: 10px 0;
   position: absolute;
   z-index: 1;
-  bottom: 125%;
-  left: 50%;
+  bottom: 10%;
+  left: 70%;
   margin-left: -80px;
 }
 

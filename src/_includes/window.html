@@ -1,10 +1,36 @@
-<div id="container">
-  <div class="link">Hover me now !
-    <span class="tip">
-      Some few text here<br><br>
-      Let's try something else<br><br>
-      And adding more info here too<br><br>
-      And even a bit more here also
-      </span>
-  </div>
+</head>
+<body>
+
+<h2>Popup Form</h2>
+<p>Click on the button at the bottom of this page to open the login form.</p>
+<p>Note that the button and the form is fixed - they will always be positioned to the bottom of the browser window.</p>
+
+<button class="open-button" onclick="openForm()">Open Form</button>
+
+<div class="form-popup" id="myForm">
+  <form action="/action_page.php" class="form-container">
+    <h1>Login</h1>
+
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+
+    <button type="submit" class="btn">Login</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
 </div>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+</body>
+</html>

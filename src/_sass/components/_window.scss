@@ -1,36 +1,66 @@
-#container {
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
   width: 100%;
-  height: auto;
-  text-align: center;
-  margin: 0 auto;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
 }
 
-.link {
-  position: relative;
-  display: inline-block;
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
 }
 
-.link .tip {
-  visibility: hidden;
-  width: 0;
-  height: 100px;
-  opacity: 0;
-  background-color: #008CBA;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  top: -5px;
-  right: 105%;
-  transition: 0.5s ease;
-  overflow: hidden;
-  margin-right: 20px;
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
 }
 
-.link:hover .tip {
-  visibility: visible;
-  width: 150px;
-  height: auto;
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
   opacity: 1;
 }

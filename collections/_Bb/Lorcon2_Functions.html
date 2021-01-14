@@ -7,6 +7,17 @@ footer: false
 
 <h1 id="lorcon2-in-air-legacy">Lorcon2 in Air::Legacy</h1>
 <p>Everything started from this point: Lorcon2, a library written in C and designed to inject potential malicious packets into the network, the first version dates back to 2005, time of WEP, WPA2 had not yet been implemented and, after many years, still support for TKIP/CCMP/WPA/WPA2 has not been included.</p>
+<br>
+<p>Air::Legacy is 100% compatible with both versions of lorcon, from the first one officially introduced in 2006 to the last one: the second one, introduced in 2010;</p>
+<p>The differences between these 2 versions can be summarized in the lack of functions related to tx80211, present only in the first version, as well as the specific functions for driver administration.
+Air::Legacy presents a new version of Lorcon, which is advancing very slowly but it is there, it exists, the main goals are:</p>
+<p>*) support for the latest security protocols, WPA3 included</p>
+<p>*) an extensive costomization regarding driver programming without going down to &quot;low&quot; levels 
+(no to cfg80211/mac80211, we will keep the nl80211 library level)</p>
+<p>*) integrated support for the SPIKE library, very useful to write practical network fuzzers</p>
+<p>*) exclusive support for formal methods, which can be used via a Haskell-like syntax to forge packets directly from logical-algebraic expressions</p>
+<p>Translated with www.DeepL.com/Translator (free version)</p>
 
+<br>
 
 <img src="https://media.giphy.com/media/cHLLRNVaqALxCv1Kgb/giphy.gif" alt="drawing" width="2000"/>

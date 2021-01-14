@@ -44,11 +44,6 @@ collections:
     permalink       : /:collection/:title/
     sort_by         : date
     alias           : "Formal methods in Air::Legacy"
-  Ff:
-    output          : true
-    permalink       : /:collection/:title/
-    sort_by         : date
-    alias           : "Wireless-Tools in Air::Legacy" 
   Gg:
     output          : true
     permalink       : /:collection/:title/
